@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build files
+dist/
+build/
+.cache/
+.vite/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+.env.development

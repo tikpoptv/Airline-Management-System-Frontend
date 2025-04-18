@@ -1,0 +1,63 @@
+.navbar {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    background-color: #1e1e5a;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 120px;
+    padding: 0 1rem;
+  }
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(213, 85, 85);
+    border-radius: 50%;
+}
+  
+.logo {
+    align-items: center;
+    margin: 10px;
+    font-size: 3rem;
+    display: flex;
+    gap: 0.5rem;
+    color: white;
+    margin-left: 40px;
+
+}
+.user-type {
+    display: flex;
+    margin-right: 60px;
+    font-size: 3rem;
+}
+  
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+  
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+}
+  
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+  
+.bar {
+    width: 25px;
+    height: 3px;
+    margin: 4px;
+    background-color: white;
+}
+  

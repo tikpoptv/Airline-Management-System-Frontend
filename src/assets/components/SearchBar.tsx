@@ -1,4 +1,4 @@
-import './SearchBar.css'; // your custom CSS
+import './SearchBar.css'; 
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 

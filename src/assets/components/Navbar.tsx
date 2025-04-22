@@ -20,7 +20,7 @@ const Navbar = () => {
         <li><a href="#">Contact</a></li>
       </ul> */}
 
-      <div className='user-type'>Admin</div>
+      <div className='user-type'>ADMIN</div>
 
       <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
         <span className="bar" />

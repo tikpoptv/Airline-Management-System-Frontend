@@ -1,37 +1,38 @@
-import "./CrewPage.css";
+
+import './AircraftPage.css'
 import { FaUser, FaEye } from "react-icons/fa";
 import SearchBar from "../../../components/SearchBar";
 import { FaUserCircle } from "react-icons/fa";
 import { useState } from "react";
 
 // Type definitions for Employee data
-interface Employee {
-  id: string;
-  name: string;
-  role: string;
+interface Aircraft {
+  AircraftId: string;
+  ModelName: string;
+  Owner: string;
 }
 
-const CrewPage = () => {
-  const employees: Employee[] = [
-    { id: "01010101", name: "Johnson Smith", role: "Chief" },
-    { id: "01010102", name: "Anna White", role: "Pilot" },
-    { id: "01010103", name: "Sam Brown", role: "Engineer" },
-    { id: "01010104", name: "Lily Green", role: "Flight Attendant" },
-    { id: "01010105", name: "Mike Blue", role: "Captain" },
+const AircraftPage = () => {
+  const Aircraft: Aircraft[] = [
+    { AircraftId: "01010101", ModelName: "Boeing 123", Owner: "AirAsia" },
+    { AircraftId: "01010102", ModelName: "Boeing 123", Owner: "AirAsia" },
+    { AircraftId: "01010103", ModelName: "Boeing 123", Owner: "AirAsia" },
+    { AircraftId: "01010104", ModelName: "Boeing 123", Owner: "AirAsia Attendant" },
+    { AircraftId: "01010105", ModelName: "Boeing 123", Owner: "AirAsia" },
   ];
 
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedAircraft, setSelectedAircraft] = useState<Aircraft | null>(null);
 
   return (
-    <div className="crew-page">
-      {!selectedEmployee ? (
+    <div className="Aircraft-page">
+      {!selectedAircraft ? (
         // Crew Page (default view)
         <div>
-          <div className="crew-header">
+          <div className="Aircraft-header">
             <div className="title-group">
               <h4>Crew</h4>
-              <h2 className="title">Crew Management</h2>
+              <h2 className="title">Aircraft Management</h2>
             </div>
             <div className="header-actions">
               <SearchBar />
@@ -59,23 +60,23 @@ const CrewPage = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((emp, index) => (
+              {Aircraft.map((air, index) => (
                 <tr key={index}>
                   {isEditing && (
                     <td>
                       <input type="checkbox" />
                     </td>
                   )}
-                  <td>{emp.id}</td>
+                  <td>{air.id}</td>
                   <td>
-                    <FaUser className="user-icon" /> {emp.name}
+                    <FaUser className="user-icon" /> {air.name}
                   </td>
-                  <td>{emp.role}</td>
+                  <td>{air.role}</td>
                   <td>
                     <FaEye
                       className="detail-icon"
                       aria-label="View details"
-                      onClick={() => setSelectedEmployee(emp)}
+                      onClick={() => setSelectedAircraft(emp)}
                       style={{ cursor: "pointer" }}
                     />
                   </td>
@@ -154,4 +155,5 @@ const CrewPage = () => {
   );
 };
 
-export default CrewPage;
+
+export default AircraftPage

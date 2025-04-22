@@ -1,9 +1,10 @@
 .navbar {
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 1000; 
+    right: 0;
+    height: 60px;
+    z-index: 1000;
     background-color: #1e1e5a;
     color: white;
     display: flex;
@@ -33,7 +34,7 @@
 .user-type {
     display: flex;
     margin-right: 60px;
-    font-size: 3rem;
+    font-size: 2rem;
 }
   
 .nav-links {

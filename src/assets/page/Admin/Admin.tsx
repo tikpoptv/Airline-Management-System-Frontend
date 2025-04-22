@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import './Admin.css'
 import CrewPage from './CrewPage/CrewPage'
+import AircraftPage from './AircraftPage/AircraftPage'
 import Navbar from '../../components/Navbar'
 
 function Admin() {
   const [selectedTab, setSelectedTab] = useState('Dashboard')
 
   return (
-    <div className="app">
+    <div className="Admin">
       <Navbar />
       <div className="main-layout">
         <aside className="sidebar">
@@ -23,6 +24,10 @@ function Admin() {
         </aside>
         <main className="content">
           {selectedTab === 'Crew' && <CrewPage />}
+          {selectedTab === 'Dashboard' && <div>Dashboard Page</div>}
+          {selectedTab === 'Aircraft' && <AircraftPage/>}
+          {selectedTab === 'Flight' && <div>Flight Page</div>}
+          {selectedTab === 'Maintenance' && <div>Maintenance Page</div>}
         </main>
       </div>
     </div>

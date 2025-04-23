@@ -1,10 +1,8 @@
-import './AircraftPage.css'
-import { FaPlane, FaEye } from "react-icons/fa";
+import './AircraftPage.css';
+import { FaPlane, FaEye, FaRegBuilding } from "react-icons/fa";
 import SearchBar from "../../../components/SearchBar";
-import { FaRegBuilding } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// Type definitions for Aircraft data
 interface Aircraft {
   AircraftId: string;
   ModelName: string;
@@ -12,21 +10,21 @@ interface Aircraft {
 }
 
 const AircraftPage = () => {
-  const aircraftList: Aircraft[] = [
-    { AircraftId: "01010101", ModelName: "Boeing 123", Owner: "AirAsia" },
-    { AircraftId: "01010102", ModelName: "Boeing 123", Owner: "AirAsia" },
-    { AircraftId: "01010103", ModelName: "Boeing 123", Owner: "AirAsia" },
-    { AircraftId: "01010104", ModelName: "Boeing 123", Owner: "AirAsia Attendant" },
-    { AircraftId: "01010105", ModelName: "Boeing 123", Owner: "AirAsia" },
-  ];
-
+  const [aircraftList, setAircraftList] = useState<Aircraft[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedAircraft, setSelectedAircraft] = useState<Aircraft | null>(null);
+
+  // Load aircraft data from public/aircraft.json
+  useEffect(() => {
+    fetch('/src/assets/JSON_example/Aircraft.json')
+      .then(res => res.json())
+      .then(data => setAircraftList(data))
+      .catch(err => console.error("Failed to load aircraft data:", err));
+  }, []);
 
   return (
     <div className="aircraft-page">
       {!selectedAircraft ? (
-        // Aircraft Page (default view)
         <div>
           <div className="aircraft-header">
             <div className="title-group">
@@ -83,12 +81,9 @@ const AircraftPage = () => {
           </table>
         </div>
       ) : (
-        // Aircraft Detail Page
+        // Detail View
         <div className="aircraft-detail">
-          <button
-            className="close-button"
-            onClick={() => setSelectedAircraft(null)}
-          >
+          <button className="close-button" onClick={() => setSelectedAircraft(null)}>
             ← Back
           </button>
 

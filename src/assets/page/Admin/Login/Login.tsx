@@ -1,3 +1,4 @@
+// Login.tsx
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,9 +18,7 @@ const Login = () => {
   }
 
   return (
-    <div>
     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
-    
       <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}>
         <h2>Login</h2>
         <input
@@ -38,7 +37,6 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
-    </div>
     </div>
   )
 }

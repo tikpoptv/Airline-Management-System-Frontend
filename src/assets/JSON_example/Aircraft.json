@@ -1,0 +1,22 @@
+[
+    {
+      "AircraftId": "01010101",
+      "ModelName": "Boeing 777",
+      "Owner": "Thai Airways"
+    },
+    {
+      "AircraftId": "01010102",
+      "ModelName": "Boeing 787 Dreamliner",
+      "Owner": "Lufthansa"
+    },
+    {
+      "AircraftId": "01010103",
+      "ModelName": "Airbus A330",
+      "Owner": "Delta Air Lines"
+    },
+    {
+        "AircraftId": "test",
+        "ModelName": "Airbus A330",
+        "Owner": "Delta Air Lines"
+      }
+  ]

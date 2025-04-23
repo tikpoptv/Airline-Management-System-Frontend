@@ -1,11 +1,10 @@
-
 import './AircraftPage.css'
-import { FaUser, FaEye } from "react-icons/fa";
+import { FaPlane, FaEye } from "react-icons/fa";
 import SearchBar from "../../../components/SearchBar";
-import { FaUserCircle } from "react-icons/fa";
+import { FaRegBuilding } from "react-icons/fa";
 import { useState } from "react";
 
-// Type definitions for Employee data
+// Type definitions for Aircraft data
 interface Aircraft {
   AircraftId: string;
   ModelName: string;
@@ -13,7 +12,7 @@ interface Aircraft {
 }
 
 const AircraftPage = () => {
-  const Aircraft: Aircraft[] = [
+  const aircraftList: Aircraft[] = [
     { AircraftId: "01010101", ModelName: "Boeing 123", Owner: "AirAsia" },
     { AircraftId: "01010102", ModelName: "Boeing 123", Owner: "AirAsia" },
     { AircraftId: "01010103", ModelName: "Boeing 123", Owner: "AirAsia" },
@@ -25,13 +24,13 @@ const AircraftPage = () => {
   const [selectedAircraft, setSelectedAircraft] = useState<Aircraft | null>(null);
 
   return (
-    <div className="Aircraft-page">
+    <div className="aircraft-page">
       {!selectedAircraft ? (
-        // Crew Page (default view)
+        // Aircraft Page (default view)
         <div>
-          <div className="Aircraft-header">
+          <div className="aircraft-header">
             <div className="title-group">
-              <h4>Crew</h4>
+              <h4>Aircraft</h4>
               <h2 className="title">Aircraft Management</h2>
             </div>
             <div className="header-actions">
@@ -49,34 +48,32 @@ const AircraftPage = () => {
               </div>
             </div>
           </div>
-          <table className="crew-table">
+          <table className="aircraft-table">
             <thead>
               <tr>
                 {isEditing && <th></th>}
-                <th>Employee ID</th>
-                <th>Employee Name</th>
-                <th>Role</th>
+                <th>Aircraft ID</th>
+                <th>Model</th>
+                <th>Owner</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {Aircraft.map((air, index) => (
+              {aircraftList.map((air, index) => (
                 <tr key={index}>
                   {isEditing && (
                     <td>
                       <input type="checkbox" />
                     </td>
                   )}
-                  <td>{air.id}</td>
-                  <td>
-                    <FaUser className="user-icon" /> {air.name}
-                  </td>
-                  <td>{air.role}</td>
+                  <td>{air.AircraftId}</td>
+                  <td><FaPlane className="plane-icon" /> {air.ModelName}</td>
+                  <td>{air.Owner}</td>
                   <td>
                     <FaEye
                       className="detail-icon"
                       aria-label="View details"
-                      onClick={() => setSelectedAircraft(emp)}
+                      onClick={() => setSelectedAircraft(air)}
                       style={{ cursor: "pointer" }}
                     />
                   </td>
@@ -86,43 +83,38 @@ const AircraftPage = () => {
           </table>
         </div>
       ) : (
-        // Employee Detail Page
-        <div className="employee-detail">
+        // Aircraft Detail Page
+        <div className="aircraft-detail">
           <button
             className="close-button"
-            onClick={() => setSelectedEmployee(null)}
+            onClick={() => setSelectedAircraft(null)}
           >
             ← Back
           </button>
 
-          <h3 style={{ fontSize: "25px" }}>Profile</h3>
+          <h3 style={{ fontSize: "25px" }}>Aircraft Profile</h3>
           <div className="profile-card">
             <div className="profile-avatar">
-              <FaUserCircle />
+              <FaRegBuilding />
             </div>
             <div className="profile-fields">
-              <div>
-                <strong>Mr. {selectedEmployee.name.split(" ")[0]}</strong>
-              </div>
-              <div><strong>{selectedEmployee.name.split(" ")[1]}</strong></div>
-
-              <div>Employe ID : {selectedEmployee.id}</div>
-              <div>Role : {selectedEmployee.role}</div>
-
-              <div>License Expire Date : 12/12/2027</div>
-              <div>Passport Expire Date : 12/12/2027</div>
+              <div><strong>Model:</strong> {selectedAircraft.ModelName}</div>
+              <div><strong>Aircraft ID:</strong> {selectedAircraft.AircraftId}</div>
+              <div><strong>Owner:</strong> {selectedAircraft.Owner}</div>
+              <div><strong>Last Inspection:</strong> 01/01/2024</div>
+              <div><strong>Next Inspection:</strong> 01/01/2025</div>
             </div>
           </div>
 
-          <h4 style={{ fontSize: "25px" }}>Schedule</h4>
+          <h4 style={{ fontSize: "25px" }}>Flight Schedule</h4>
           <table className="schedule-table">
-              <thead>
-                <tr className="task-row">
-                  <td colSpan={5}>
-                    <h3><strong>Task</strong></h3>
-                  </td>
-                </tr>
-              </thead>
+            <thead>
+              <tr className="task-row">
+                <td colSpan={5}>
+                  <h3><strong>Task</strong></h3>
+                </td>
+              </tr>
+            </thead>
             <thead>
               <tr>
                 <th>Status</th>
@@ -155,5 +147,4 @@ const AircraftPage = () => {
   );
 };
 
-
-export default AircraftPage
+export default AircraftPage;

@@ -3,9 +3,9 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 80px;
     z-index: 1000;
-    background-color: #1e1e5a;
+    background-color: #113862;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -61,4 +61,6 @@
     margin: 4px;
     background-color: white;
 }
+
+
   

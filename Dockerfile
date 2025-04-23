@@ -1,24 +1,17 @@
-# Step 1: Build stage
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy source files
 COPY . .
-RUN npm run build
 
-# Step 2: Production stage
-FROM nginx:alpine
+# Expose port 5173 (internal Vite dev server port)
+EXPOSE 5173
 
-# Copy build output
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy custom nginx config (listens on port 85)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Set exposed port
-EXPOSE 85
-
-CMD ["nginx", "-g", "daemon off;"]
+# Default command to run the dev server
+CMD ["npm", "run", "dev", "--", "--host", "--port=5173"]

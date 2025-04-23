@@ -1,25 +1,24 @@
+# Step 1: Build stage
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy source code and build
 COPY . .
 RUN npm run build
 
-# Step 2: Serve with nginx
+# Step 2: Production stage
 FROM nginx:alpine
 
-# Copy built app to nginx directory
+# Copy build output
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy default nginx config
-COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy custom nginx config (listens on port 85)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port
-EXPOSE 80
+# Set exposed port
+EXPOSE 85
 
 CMD ["nginx", "-g", "daemon off;"]

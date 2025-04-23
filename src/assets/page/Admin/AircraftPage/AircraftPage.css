@@ -101,51 +101,69 @@
   }
   
   /* Buttons */
-  .button-group {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .add-button,
-  .edit-button,
-  .close-button {
-    background-color: #f2f2f2;
-    color: black;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-button:hover,
-  .edit-button:hover,
-  .close-button:hover {
-    background-color: #ddd;
-  }
-  
-  .close-button {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-bottom: 2rem;
-  }
-  
-  .add-button:focus,
-  .edit-button:focus,
-  .close-button:focus {
-    outline: 2px solid #1f1f4e;
-  }
-  
-  .done-button {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .done-button:hover {
-    background-color: #45a049;
-  }
+  /* Button group container */
+.button-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Base button style */
+button {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* ADD Button */
+.add-button {
+  background-color: #3498db; /* Blue */
+  color: white;
+}
+
+.add-button:hover {
+  background-color: #2980b9;
+}
+
+
+/* When edit mode is done */
+.done-button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.done-button:hover {
+  background-color: #45a049;
+}
+
+/* DELETE Button */
+.delete-button {
+  background-color: #e74c3c; /* Red */
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Close Button */
+.close-button {
+  align-self: flex-end;
+  background-color: #bdc3c7;
+  color: #2c3e50;
+}
+
+.close-button:hover {
+  background-color: #a6acaf;
+}
+
+/* Focus outline for accessibility */
+button:focus {
+  outline: 2px solid #1f1f4e;
+  outline-offset: 2px;
+}
   
   /* Icons */
   .detail-icon {

@@ -43,6 +43,9 @@
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
   }
   
   .sidebar-item.active {

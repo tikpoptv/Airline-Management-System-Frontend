@@ -35,7 +35,10 @@ const AircraftPage = () => {
               <SearchBar />
               <div className="button-group">
                 {isEditing && (
-                  <button className="add-button">+ Add new</button>
+                  <>
+                    <button className="add-button">Add New</button>
+                    <button className="delete-button" >Delete</button>
+                  </>
                 )}
                 <button
                   className={`edit-button ${isEditing ? "done-button" : ""}`}

@@ -41,6 +41,7 @@ function Admin() {
                         setIsPathwayOpen(!isPathwayOpen);
                       } else {
                         setSelectedTab(tab);
+                        setIsPathwayOpen(false);
                       }
                     }}
                     className={`sidebar-item ${selectedTab === tab ? 'active' : ''} ${isPathway && isPathwayOpen ? 'expanded' : ''}`}

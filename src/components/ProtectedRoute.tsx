@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { getToken, getUser, logout } from '../services/authService';
+import { getToken, getUser, logout } from '../services/auth/authService';
 
 const ProtectedRoute = ({ children, allowedRole }: { children: JSX.Element, allowedRole: string }) => {
   const token = getToken();

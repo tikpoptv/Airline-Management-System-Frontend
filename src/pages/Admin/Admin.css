@@ -43,10 +43,13 @@
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
+    gap: 2rem;
+    display: flex;
+    align-items: center;
   }
   
   .sidebar-item.active {
-    background-color: #007bff;
+    background-color: rgb(165, 221, 244);
     color: white;
   }
 

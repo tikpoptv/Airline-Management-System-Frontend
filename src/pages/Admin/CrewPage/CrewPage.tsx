@@ -1,32 +1,33 @@
-import "./CrewPage.css";
 import { FaUser, FaEye } from "react-icons/fa";
 import SearchBar from "../../../components/SearchBar";
 import { FaUserCircle } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "./CrewPage.css"
 
 // Type definitions for Employee data
 interface Employee {
   id: string;
   name: string;
   role: string;
+  licenseExpireDate: string;
+  passportExpireDate: string;
 }
 
 const CrewPage = () => {
-  const employees: Employee[] = [
-    { id: "01010101", name: "Johnson Smith", role: "Chief" },
-    { id: "01010102", name: "Anna White", role: "Pilot" },
-    { id: "01010103", name: "Sam Brown", role: "Engineer" },
-    { id: "01010104", name: "Lily Green", role: "Flight Attendant" },
-    { id: "01010105", name: "Mike Blue", role: "Captain" },
-  ];
-
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+
+  useEffect(() => {
+    fetch("src/mock/Crew.json")
+      .then((res) => res.json())
+      .then((data) => setEmployees(data))
+      .catch((err) => console.error("Failed to load crew data:", err));
+  }, []);
 
   return (
     <div className="crew-page">
       {!selectedEmployee ? (
-        // Crew Page (default view)
         <div>
           <div className="crew-header">
             <div className="title-group">
@@ -37,7 +38,10 @@ const CrewPage = () => {
               <SearchBar />
               <div className="button-group">
                 {isEditing && (
-                  <button className="add-button">+ Add new</button>
+                  <>
+                    <button className="add-button">Add New</button>
+                    <button className="delete-button" >Delete</button>
+                  </>
                 )}
                 <button
                   className={`edit-button ${isEditing ? "done-button" : ""}`}
@@ -104,24 +108,22 @@ const CrewPage = () => {
                 <strong>Mr. {selectedEmployee.name.split(" ")[0]}</strong>
               </div>
               <div><strong>{selectedEmployee.name.split(" ")[1]}</strong></div>
-
-              <div>Employe ID : {selectedEmployee.id}</div>
-              <div>Role : {selectedEmployee.role}</div>
-
-              <div>License Expire Date : 12/12/2027</div>
-              <div>Passport Expire Date : 12/12/2027</div>
+              <div>Employee ID: {selectedEmployee.id}</div>
+              <div>Role: {selectedEmployee.role}</div>
+              <div>License Expire Date: {selectedEmployee.licenseExpireDate}</div>
+              <div>Passport Expire Date: {selectedEmployee.passportExpireDate}</div>
             </div>
           </div>
 
           <h4 style={{ fontSize: "25px" }}>Schedule</h4>
           <table className="schedule-table">
-              <thead>
-                <tr className="task-row">
-                  <td colSpan={5}>
-                    <h3><strong>Task</strong></h3>
-                  </td>
-                </tr>
-              </thead>
+            <thead>
+              <tr className="task-row">
+                <td colSpan={5}>
+                  <h3><strong>Task</strong></h3>
+                </td>
+              </tr>
+            </thead>
             <thead>
               <tr>
                 <th>Status</th>

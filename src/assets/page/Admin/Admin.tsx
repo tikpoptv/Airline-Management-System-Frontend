@@ -3,15 +3,17 @@ import './Admin.css'
 import CrewPage from './CrewPage/CrewPage'
 import AircraftPage from './AircraftPage/AircraftPage'
 import Navbar from '../../components/Navbar'
-import { FaTachometerAlt, FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaWrench } from 'react-icons/fa';
+import { FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaWrench } from 'react-icons/fa';
+import { TbLayoutDashboardFilled } from "react-icons/tb";
+
 import { IconType } from 'react-icons';
 
 import { tabs,Tab } from '../../components/SidebarTab'
 
 const tabIcons: Record<Tab, IconType> = {
-  Dashboard: FaTachometerAlt,
+  Dashboard: TbLayoutDashboardFilled,
   Flight: FaPlaneDeparture, // Now different
-  Route: FaRoute,
+  Pathway: FaRoute,
   Aircraft: FaPlane,        // Still FaPlane
   Crew: FaUser,
   Maintenance: FaWrench,

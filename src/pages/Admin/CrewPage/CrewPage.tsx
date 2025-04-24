@@ -19,7 +19,7 @@ const CrewPage = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
-    fetch("/src/assets/JSON_example/Crew.json")
+    fetch("src/mock/Crew.json")
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) => console.error("Failed to load crew data:", err));

@@ -1,29 +1,17 @@
-// Login.tsx
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../../api'; // ✅ ปรับ path ตามจริง
 
 const Login = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      console.log("API URL:", import.meta.env.VITE_API_URL);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || 'Login failed');
-      }
-
-      const data = await res.json();
+      const data = await login(username, password);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setError('');
@@ -35,7 +23,7 @@ const Login = () => {
         setError("Login failed");
       }
     }
-  }
+  };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
@@ -59,7 +47,7 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

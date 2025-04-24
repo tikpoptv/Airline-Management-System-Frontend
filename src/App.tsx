@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Admin from './pages/Admin/Admin';
-import Login from './pages/Admin/Login/Login';
+import Login from './pages/Public/Login/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from './pages/NotFound/NotFound';
 import ApiStatusChecker from './components/ApiStatusChecker';

@@ -1,107 +1,107 @@
 /* Aircraft Page Layout */
 .aircraft-page {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 0 2rem;
-    background-color: #fafafa;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  
-  /* Header */
-  .aircraft-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    padding-top: 1rem;
-  }
-  
-  /* Table hover effects */
-  .aircraft-table tbody tr:hover {
-    background-color: #cfe2f3;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Checkbox styling */
-  .aircraft-table input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  
-  .aircraft-table input[type="checkbox"]:checked {
-    transform: scale(1.2);
-  }
-  
-  /* Aircraft Table */
-  .aircraft-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #f4f5f6;
-    min-width: 600px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .aircraft-table th,
-  .aircraft-table td {
-    padding: 1rem 1.5rem;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 1.5rem;
-  }
-  
-  .aircraft-table th {
-    font-weight: bold;
-    background-color: #d2e6f5;
-    color: #1f1f4e;
-  }
-  
-  /* Title */
-  .title-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .title-group h4 {
-    margin: 0;
-    font-size: 16px;
-    color: #acacb1;
-  }
-  
-  .title-group h2 {
-    margin: 0;
-    font-size: 30px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f1f4e;
-    margin: 0.2rem 0 0 0;
-  }
-  
-  /* Header Actions */
-  .header-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* Search */
-  .search-bar {
-    max-width: 250px;
-  }
-  
-  /* Buttons */
-  /* Button group container */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 2rem;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Header */
+.aircraft-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+/* Table hover effects */
+.aircraft-table tbody tr:hover {
+  background-color: #cfe2f3;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Checkbox styling */
+.aircraft-table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.aircraft-table input[type="checkbox"]:checked {
+  transform: scale(1.2);
+}
+
+/* Aircraft Table */
+.aircraft-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f4f5f6;
+  min-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.aircraft-table th,
+.aircraft-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.5rem;
+}
+
+.aircraft-table th {
+  font-weight: bold;
+  background-color: #d2e6f5;
+  color: #1f1f4e;
+}
+
+/* Title */
+.title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-group h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #acacb1;
+}
+
+.title-group h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f1f4e;
+  margin: 0.2rem 0 0 0;
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Search */
+.search-bar {
+  max-width: 250px;
+}
+
+/* Buttons */
+/* Button group container */
 .button-group {
   display: flex;
   gap: 1.5rem;
@@ -119,7 +119,8 @@ button {
 
 /* ADD Button */
 .add-button {
-  background-color: #3498db; /* Blue */
+  background-color: #3498db;
+  /* Blue */
   color: white;
 }
 
@@ -130,7 +131,8 @@ button {
 
 /* When edit mode is done */
 .done-button {
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50;
+  /* Green */
   color: white;
 }
 
@@ -140,7 +142,8 @@ button {
 
 /* DELETE Button */
 .delete-button {
-  background-color: #e74c3c; /* Red */
+  background-color: #e74c3c;
+  /* Red */
   color: white;
 }
 
@@ -164,121 +167,178 @@ button:focus {
   outline: 2px solid #1f1f4e;
   outline-offset: 2px;
 }
-  
-  /* Icons */
-  .detail-icon {
-    color: #3e5e8e;
-    cursor: pointer;
-    font-size: 1.3rem;
-    transition: color 0.2s ease;
-  }
-  
-  .detail-icon:hover {
-    color: #1f1f4e;
-  }
-  
-  .user-icon {
-    margin-right: 8px;
-    color: #3e5e8e;
-    font-size: 2rem;
-  }
-  
-  /* Aircraft Detail View */
-  .aircraft-detail {
-    background-color: #fffefe;
-    padding: 4rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Profile Card */
-  .profile-card {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    padding: 2rem;
-    background-color: #eef4fb;
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    margin-top: 1rem;
-  }
-  
-  .profile-avatar {
-    font-size: 6rem;
-    color: #3e5e8e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
-    height: 120px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-fields {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    gap: 1rem 2rem;
-    flex: 1;
-  }
-  
-  .profile-fields div {
-    background-color: white;
-    padding: 0.8rem 1.2rem;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    color: #3e5e8e;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  }
-  
-  .profile-fields strong {
-    color: #2b3f65;
-    font-size: 1.4rem;
-  }
-  
-  /* Schedule Table */
-  .schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 2rem;
-    border-radius: 8px;
-    background-color: #eaecee;
-    border: 2px solid #c2c2c2;
-    overflow: hidden;
-  }
-  
-  .schedule-table th,
-  .schedule-table td {
-    padding: 1rem 1.5rem;
-    text-align: left;
-    border: 1px solid #e0e0e0;
-  }
-  
-  .schedule-table th {
-    background-color: #f9fdfe;
-    color: #1f1f4e;
-  }
-  
-  .schedule-table tbody tr:hover {
-    background-color: #f1f1f5;
-    cursor: pointer;
-  }
-  
-  .schedule-table td {
-    font-size: 1.2rem;
-    color: #3e5e8e;
-    background-color: white;
-  }
-  
-  .task-row td {
-    height: 30px;
-    padding: 0;
-    line-height: 20px;
-    font-size: 20px;
-    vertical-align: middle;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-    background-color: #dadcdcc9;
-    color: black;
-  }
+
+/* Icons */
+.detail-icon {
+  color: #3e5e8e;
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: color 0.2s ease;
+}
+
+.detail-icon:hover {
+  color: #1f1f4e;
+}
+
+.user-icon {
+  margin-right: 8px;
+  color: #3e5e8e;
+  font-size: 2rem;
+}
+
+/* Aircraft Detail View */
+.aircraft-detail {
+  background-color: #fffefe;
+  padding: 4rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Card */
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #eef4fb;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+}
+
+.profile-avatar {
+  font-size: 6rem;
+  color: #3e5e8e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-fields {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 1rem 2rem;
+  flex: 1;
+}
+
+.profile-fields div {
+  background-color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  color: #3e5e8e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profile-fields strong {
+  color: #2b3f65;
+  font-size: 1.4rem;
+}
+
+/* Schedule Table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  border-radius: 8px;
+  background-color: #eaecee;
+  border: 2px solid #c2c2c2;
+  overflow: hidden;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border: 1px solid #e0e0e0;
+}
+
+.schedule-table th {
+  background-color: #f9fdfe;
+  color: #1f1f4e;
+}
+
+.schedule-table tbody tr:hover {
+  background-color: #f1f1f5;
+  cursor: pointer;
+}
+
+.schedule-table td {
+  font-size: 1.2rem;
+  color: #3e5e8e;
+  background-color: white;
+}
+
+.task-row td {
+  height: 30px;
+  padding: 0;
+  line-height: 20px;
+  font-size: 20px;
+  vertical-align: middle;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  background-color: #dadcdcc9;
+  color: black;
+}
+
+.filter-sort-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dropdown-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.dropdown-control select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.dropdown-control select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.flight-status {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.flight-status.Scheduled {
+  color: green;
+}
+
+.flight-status.Boarding {
+  color: #007bff;
+}
+
+.flight-status.Delayed {
+  color: orange;
+}
+
+.flight-status.Completed {
+  color: gray;
+}
+
+.flight-status.Cancelled {
+  color: red;
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUser, logout } from '../services/authService';
+import { getUser, logout } from '../services/auth/authService';
 import './Navbar.css';
 
 const Navbar = () => {

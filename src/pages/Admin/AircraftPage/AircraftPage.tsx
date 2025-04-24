@@ -16,7 +16,7 @@ const AircraftPage = () => {
 
   // Load aircraft data from public/aircraft.json
   useEffect(() => {
-    fetch('/src/assets/JSON_example/Aircraft.json')
+    fetch('src/mock/Aircraft.json')
       .then(res => res.json())
       .then(data => setAircraftList(data))
       .catch(err => console.error("Failed to load aircraft data:", err));

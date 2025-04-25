@@ -8,3 +8,9 @@ export interface Aircraft {
     aircraft_history: string;
   }
   
+  export interface UpdateAircraftPayload {
+    model: string;
+    maintenance_status: string;
+    aircraft_history: string;
+  }
+  

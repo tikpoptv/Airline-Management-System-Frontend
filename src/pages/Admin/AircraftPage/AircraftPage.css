@@ -33,7 +33,6 @@
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
 .aircraft-table input[type="checkbox"]:checked {
   transform: scale(1.2);
 }
@@ -47,7 +46,6 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .aircraft-table th,
 .aircraft-table td {
   padding: 1rem 1.5rem;
@@ -55,7 +53,6 @@
   border-bottom: 1px solid #e0e0e0;
   font-size: 1.5rem;
 }
-
 .aircraft-table th {
   font-weight: bold;
   background-color: #d2e6f5;
@@ -67,18 +64,15 @@
   display: flex;
   flex-direction: column;
 }
-
 .title-group h4 {
   margin: 0;
   font-size: 16px;
   color: #acacb1;
 }
-
 .title-group h2 {
   margin: 0;
   font-size: 30px;
 }
-
 .title {
   font-size: 24px;
   font-weight: 600;
@@ -97,72 +91,129 @@
 
 /* Search */
 .search-bar {
-  max-width: 250px;
+  background-color: transparent; /* ✅ เอาสีฟ้าออก */
+  border: none;
+  border-radius: 0; /* ✅ เอาความโค้งออก */
+  padding: 0;
+  box-shadow: none;
 }
 
-/* Buttons */
-/* Button group container */
+.search-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.search-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.search-modal .input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.search-modal label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.search-modal input,
+.search-modal select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search-popup-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* ✅ ปรับ global button เพื่อลดผลกระทบ */
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* ✅ กลุ่มปุ่มด้านบน */
 .button-group {
   display: flex;
   gap: 1.5rem;
 }
 
-/* Base button style */
-button {
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-/* ADD Button */
-.add-button {
+/* ✅ ปุ่ม Add */
+button.add-button {
   background-color: #3498db;
-  /* Blue */
   color: white;
+  padding: 0.6rem 1.2rem !important;
+  font-size: 1rem;
+  width: 130px;
+  height: 48px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1;
 }
-
-.add-button:hover {
+button.add-button:hover {
   background-color: #2980b9;
 }
 
-
-/* When edit mode is done */
-.done-button {
-  background-color: #4CAF50;
-  /* Green */
-  color: white;
-}
-
-.done-button:hover {
-  background-color: #45a049;
-}
-
-/* DELETE Button */
-.delete-button {
+/* ✅ ปุ่ม Delete */
+button.delete-button {
   background-color: #e74c3c;
-  /* Red */
   color: white;
+  padding: 0.6rem 1.2rem !important;
+  font-size: 1rem;
+  width: 130px;
+  height: 48px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1;
 }
-
-.delete-button:hover {
+button.delete-button:hover {
   background-color: #c0392b;
 }
 
-/* Close Button */
+/* ✅ ปุ่ม Done (หรือ Edit ที่อยู่ในโหมดแก้ไข) */
+button.done-button,
+button.edit-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.6rem 1.2rem !important;
+  font-size: 1rem;
+  width: 130px;
+  height: 48px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1;
+}
+button.done-button:hover,
+button.edit-button:hover {
+  background-color: #45a049;
+}
+
 .close-button {
   align-self: flex-end;
   background-color: #bdc3c7;
   color: #2c3e50;
 }
-
 .close-button:hover {
   background-color: #a6acaf;
 }
-
-/* Focus outline for accessibility */
 button:focus {
   outline: 2px solid #1f1f4e;
   outline-offset: 2px;
@@ -175,11 +226,9 @@ button:focus {
   font-size: 1.3rem;
   transition: color 0.2s ease;
 }
-
 .detail-icon:hover {
   color: #1f1f4e;
 }
-
 .user-icon {
   margin-right: 8px;
   color: #3e5e8e;
@@ -189,7 +238,8 @@ button:focus {
 /* Aircraft Detail View */
 .aircraft-detail {
   background-color: #fffefe;
-  padding: 4rem;
+  padding: 2rem;
+  padding-top: 1.5rem;   
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -205,27 +255,24 @@ button:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   margin-top: 1rem;
 }
-
 .profile-avatar {
   font-size: 6rem;
   color: #3e5e8e;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   background-color: white;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 .profile-fields {
   display: grid;
   grid-template-columns: repeat(2, auto);
   gap: 1rem 2rem;
   flex: 1;
 }
-
 .profile-fields div {
   background-color: white;
   padding: 0.8rem 1.2rem;
@@ -234,7 +281,6 @@ button:focus {
   color: #3e5e8e;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
 .profile-fields strong {
   color: #2b3f65;
   font-size: 1.4rem;
@@ -250,30 +296,25 @@ button:focus {
   border: 2px solid #c2c2c2;
   overflow: hidden;
 }
-
 .schedule-table th,
 .schedule-table td {
   padding: 1rem 1.5rem;
   text-align: left;
   border: 1px solid #e0e0e0;
 }
-
 .schedule-table th {
   background-color: #f9fdfe;
   color: #1f1f4e;
 }
-
 .schedule-table tbody tr:hover {
   background-color: #f1f1f5;
   cursor: pointer;
 }
-
 .schedule-table td {
   font-size: 1.2rem;
   color: #3e5e8e;
   background-color: white;
 }
-
 .task-row td {
   height: 30px;
   padding: 0;
@@ -286,6 +327,7 @@ button:focus {
   color: black;
 }
 
+/* Filter/Sort Section */
 .filter-sort-bar {
   display: flex;
   justify-content: space-between;
@@ -294,7 +336,6 @@ button:focus {
   gap: 16px;
   flex-wrap: wrap;
 }
-
 .dropdown-group {
   display: flex;
   align-items: center;
@@ -303,7 +344,6 @@ button:focus {
   font-weight: 500;
   color: #333;
 }
-
 .dropdown-control select {
   padding: 6px 10px;
   border: 1px solid #ccc;
@@ -312,33 +352,311 @@ button:focus {
   background-color: #fff;
   transition: border-color 0.3s ease;
 }
-
 .dropdown-control select:focus {
   border-color: #007bff;
   outline: none;
 }
 
+/* Flight Status Colors */
 .flight-status {
   font-weight: 600;
   text-transform: capitalize;
 }
-
 .flight-status.Scheduled {
   color: green;
 }
-
 .flight-status.Boarding {
   color: #007bff;
 }
-
 .flight-status.Delayed {
   color: orange;
 }
-
 .flight-status.Completed {
   color: gray;
 }
-
 .flight-status.Cancelled {
   color: red;
+}
+
+/* ========== Aircraft Profile Section (Layout ใหม่ 4x3 Grid) ========== */
+
+.profile-wrapper {
+  background: #f4f8fd;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem 2rem;
+  align-items: start;
+}
+
+/* 👤 Avatar คร่อม 2 แถว */
+.avatar-cell {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+  display: flex;
+  align-items: center;     /* 🟢 จัดให้ตรงกลางแนวตั้ง */
+  justify-content: center; /* 🟢 จัดให้ตรงกลางแนวนอน */
+}
+.page-header {
+  display: flex;
+  justify-content: flex-end; /* 🟢 ชิดขวา */
+  margin-bottom: 1rem;
+}
+
+
+.profile-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.profile-avatar img {
+  width: 100%;
+  height: auto;
+}
+
+/* 📄 ช่องฟอร์มทั่วไป */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+.input-group input,
+.input-group select,
+.input-group textarea {
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  background: white;
+}
+.input-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* 🔒 สำหรับ read-only mode */
+.read-only-field {
+  padding: 10px 12px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+
+/* ✈️ Aircraft ID รวมกับ Trash (colspan 2) */
+.aircraft-id-group {
+  grid-column: 2 / 4;
+  width: 100%;
+}
+
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.input-with-icon input {
+  flex: 1;
+}
+
+.delete-button {
+  padding: 0.5rem;
+  border-radius: 10px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.edit-button {
+  background-color: #6c757d; /* สีเทา */
+  color: white;
+  padding: 0.6rem 1.2rem;  /* 🔽 ลดขนาดจาก 1rem 2rem */
+  font-size: 1rem;         /* 🔽 ลด font ให้ดูพอดี */
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #5a6268;
+}
+
+/* 📜 Aircraft History (colspan 3) */
+.aircraft-history {
+  grid-column: 1 / 4;
+}
+
+/* ✅ ปุ่ม Save (มุมล่างขวา) */
+.save-button-cell {
+  grid-column: 3;
+  justify-self: end;
+}
+.save-button {
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.save-button:hover {
+  background-color: #218838;
+}
+
+
+.breadcrumb {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+.breadcrumb-section {
+  color: #4a4a4a;
+  font-weight: 500;
+}
+
+.breadcrumb-arrow {
+  margin: 0 0.5rem;
+}
+
+.breadcrumb-current {
+  color: #1f1f4e;
+  font-weight: 600;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f1f4e;
+  margin: 0 0 0.4rem 0; /* ✅ บังคับชิดบนและให้ห่าง breadcrumb เล็กน้อย */
+}
+
+
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.page-heading-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ✅ ดึงขึ้นบน */
+  padding-top: 0;              /* ✅ ป้องกันลอยลงมา */
+  margin-top: 0;
+}
+
+
+.back-button {
+  background-color: #f1f1f1;
+  color: #000;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #f5f8fa;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.confirm-button {
+  background-color: #2e8b57;
+  color: white;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+}
+
+.cancel-button {
+  background-color: #000;
+  color: white;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+}
+
+.toast {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background-color: #323232;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
+  animation: fadeinout 3s forwards;
+  z-index: 9999;
+}
+
+@keyframes fadeinout {
+  0% { opacity: 0; transform: translateY(-20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
 }

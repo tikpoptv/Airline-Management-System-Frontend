@@ -2,16 +2,14 @@ import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { Aircraft } from '../../../types/aircraft';
 import avatarImg from '../../../assets/images/resize.webp';
-import { updateAircraftById } from '../../../services/aircraft/aircraftService';
-
-
+import { updateAircraftById, deleteAircraftById } from '../../../services/aircraft/aircraftService';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   editData: Aircraft;
   originalData: Aircraft;
   isEditMode: boolean;
   handleChange: <K extends keyof Aircraft>(field: K, value: Aircraft[K]) => void;
-  onDelete: () => void;
 }
 
 const AircraftProfileSection = ({
@@ -19,22 +17,24 @@ const AircraftProfileSection = ({
   originalData,
   isEditMode,
   handleChange,
-  onDelete,
 }: Props) => {
-
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   const [saving, setSaving] = useState(false);
+
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // ✅ Modal confirm delete
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState<'success' | 'error'>('success'); // ✅ success หรือ error
 
-  const triggerToast = (message: string) => {
+  const navigate = useNavigate();
+
+  const triggerToast = (message: string, type: 'success' | 'error') => {
     setToastMessage(message);
+    setToastType(type);
     setShowToast(true);
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000);
+    setTimeout(() => setShowToast(false), 3000);
   };
 
   const confirmSave = async () => {
@@ -47,23 +47,39 @@ const AircraftProfileSection = ({
       });
 
       if (response && response.success !== false) {
-        triggerToast("✅ Aircraft updated successfully!");
+        triggerToast("✅ Aircraft updated successfully!", 'success');
         setShowConfirmModal(false);
       } else {
-        triggerToast("❌ Update failed: Unexpected server response.");
+        triggerToast("❌ Update failed: Unexpected server response.", 'error');
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        triggerToast("❌ Update failed: " + error.message);
+        triggerToast("❌ Update failed: " + error.message, 'error');
       } else {
-        triggerToast("❌ Update failed: Unknown error");
+        triggerToast("❌ Update failed: Unknown error", 'error');
       }
     } finally {
       setSaving(false);
     }
   };
 
-
+  const confirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteAircraftById(editData.aircraft_id);
+      triggerToast("✅ Aircraft deleted successfully!", 'success');
+      navigate('/admin/aircrafts');
+    } catch (error) {
+      if (error instanceof Error) {
+        triggerToast("❌ Delete failed: " + error.message, 'error');
+      } else {
+        triggerToast("❌ Delete failed: Unknown error", 'error');
+      }
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
 
   return (
     <div className="profile-wrapper">
@@ -75,19 +91,17 @@ const AircraftProfileSection = ({
           </div>
         </div>
 
-
         <div className="aircraft-id-group">
           <label>Aircraft ID</label>
           <div className="input-with-icon">
             <div className="read-only-field">{editData.aircraft_id}</div>
             {isEditMode && (
-              <button className="delete-button" onClick={onDelete}>
+              <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
                 <FaTrash />
               </button>
             )}
           </div>
         </div>
-
 
         {/* Row 2: Airline Owner + Maintenance Status */}
         <div className="input-group airline-owner">
@@ -102,7 +116,6 @@ const AircraftProfileSection = ({
             <div className="read-only-field">{editData.airline_owner}</div>
           )}
         </div>
-
 
         <div className="input-group maintenance-status">
           <label>Maintenance Status</label>
@@ -180,10 +193,10 @@ const AircraftProfileSection = ({
             <button className="save-button" onClick={() => setShowConfirmModal(true)}>
               Save Changes
             </button>
-
           </div>
         )}
 
+        {/* Modal Confirm Save */}
         {showConfirmModal && (
           <div className="modal-backdrop">
             <div className="modal-content">
@@ -207,26 +220,58 @@ const AircraftProfileSection = ({
                 <button className="confirm-button" onClick={confirmSave} disabled={saving}>
                   {saving ? 'Saving...' : 'Confirm'}
                 </button>
-
                 <button className="cancel-button" onClick={() => setShowConfirmModal(false)} disabled={saving}>
                   Back
                 </button>
-
               </div>
             </div>
           </div>
         )}
 
+        {/* Modal Confirm Delete */}
+        {showDeleteConfirm && (
+          <div className="modal-backdrop">
+            <div className="modal-content">
+              <h3>Confirm Delete Aircraft</h3>
+              <p>Are you sure you want to delete Aircraft ID: {editData.aircraft_id}?</p>
+
+              <div className="modal-actions">
+                <button className="confirm-button" onClick={confirmDelete} disabled={isDeleting}>
+                  {isDeleting ? 'Deleting...' : 'Confirm'}
+                </button>
+                <button className="cancel-button" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+                  Back
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
+
+      {/* Toast Message */}
       {showToast && (
-        <div className="toast">
+        <div
+          className={`toast ${toastType}`}
+          style={{
+            position: 'fixed',
+            top: '2rem',
+            right: '2rem',
+            backgroundColor: toastType === 'success' ? '#4caf50' : '#f44336',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+            zIndex: 9999,
+            fontSize: '1rem',
+            transition: 'opacity 0.3s ease',
+          }}
+        >
           {toastMessage}
         </div>
       )}
 
     </div>
-
   );
 };
 

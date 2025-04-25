@@ -66,3 +66,20 @@ export const getAircraftById = async (id: number): Promise<Aircraft> => {
 
   return response.json();
 };
+
+export const deleteAircraftById = async (id: number): Promise<void> => {
+  const token = getToken();
+  if (!token) throw new Error("Unauthorized");
+
+  const response = await fetch(`${API_BASE_URL}/api/aircrafts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to delete aircraft");
+  }
+};

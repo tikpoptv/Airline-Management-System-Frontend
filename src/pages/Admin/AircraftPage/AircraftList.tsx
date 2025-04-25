@@ -9,7 +9,11 @@ interface Props {
   setIsEditing: (value: boolean) => void;
   setSelectedAircraft: (aircraft: Aircraft) => void;
   loading: boolean;
+  selectedAircraftIds: number[];
+  setSelectedAircraftIds: React.Dispatch<React.SetStateAction<number[]>>;
+  onDelete: () => void;
 }
+
 
 const AircraftList = ({
   aircraftList,
@@ -17,8 +21,10 @@ const AircraftList = ({
   setIsEditing,
   setSelectedAircraft,
   loading,
+  selectedAircraftIds,
+  setSelectedAircraftIds,
+  onDelete,
 }: Props) => {
-  const [selectedAircraftIds, setSelectedAircraftIds] = useState<number[]>([]);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [filterAircraftId, setFilterAircraftId] = useState('');
   const [filterModel, setFilterModel] = useState('');
@@ -65,7 +71,9 @@ const AircraftList = ({
               <button className="add-button">Add New</button>
             )}
             {isEditing && (
-              <button className="delete-button">Delete</button>
+              <button className="delete-button" onClick={onDelete}>
+                Delete
+              </button>
             )}
             <button
               className={`edit-button ${isEditing ? 'done-button' : ''}`}

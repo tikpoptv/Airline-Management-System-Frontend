@@ -5,91 +5,84 @@ import AircraftProfileSection from './AircraftProfileSection';
 import FlightSchedule from './FlightSchedule';
 
 interface Props {
-  aircraft: Aircraft;
-  flightList: Flight[];
-  loading: boolean;
-  sortOption: 'date' | 'status';
-  setSortOption: (v: 'date' | 'status') => void;
-  flightFilter: 'all' | 'today';
-  setFlightFilter: (v: 'all' | 'today') => void;
-  onBack: () => void;
-  isEditMode: boolean;
+    aircraft: Aircraft;
+    flightList: Flight[];
+    loading: boolean;
+    sortOption: 'date' | 'status';
+    setSortOption: (v: 'date' | 'status') => void;
+    flightFilter: 'all' | 'today';
+    setFlightFilter: (v: 'all' | 'today') => void;
+    onBack: () => void;
+    isEditMode: boolean;
 }
 
 const AircraftDetail = ({
-  aircraft,
-  flightList,
-  loading,
-  sortOption,
-  setSortOption,
-  flightFilter,
-  setFlightFilter,
-  onBack,
-  isEditMode,
+    aircraft,
+    flightList,
+    loading,
+    sortOption,
+    setSortOption,
+    flightFilter,
+    setFlightFilter,
+    onBack,
+    isEditMode,
 }: Props) => {
-  const [editData, setEditData] = useState<Aircraft>(aircraft);
-  const [originalData, setOriginalData] = useState<Aircraft>(aircraft);
+    const [editData, setEditData] = useState<Aircraft>(aircraft);
+    const [originalData, setOriginalData] = useState<Aircraft>(aircraft);
 
-  useEffect(() => {
-    setEditData(aircraft);
-    setOriginalData(aircraft);
-  }, [aircraft]);
+    useEffect(() => {
+        setEditData(aircraft);
+        setOriginalData(aircraft);
+    }, [aircraft]);
 
-  const handleChange = <K extends keyof Aircraft>(field: K, value: Aircraft[K]) => {
-    setEditData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+    const handleChange = <K extends keyof Aircraft>(field: K, value: Aircraft[K]) => {
+        setEditData((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
 
-  const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this aircraft?')) {
-      console.log('Deleted aircraft:', editData.aircraft_id);
-      onBack();
-    }
-  };
+    return (
+        <div className="aircraft-detail">
+            <div className="page-header-row">
+                <div className="page-heading-left">
+                    <h1 className="page-title">
+                        {isEditMode ? 'Edit Aircraft Info' : 'Aircraft Details'}
+                    </h1>
+                    <div className="breadcrumb">
+                        <span className="breadcrumb-section">Aircraft</span>
+                        <span className="breadcrumb-arrow">›</span>
+                        <span className="breadcrumb-current">
+                            {isEditMode ? 'Edit Detail' : 'View Detail'}
+                        </span>
+                    </div>
+                </div>
 
-  return (
-    <div className="aircraft-detail">
-      <div className="page-header-row">
-        <div className="page-heading-left">
-          <h1 className="page-title">
-            {isEditMode ? 'Edit Aircraft Info' : 'Aircraft Details'}
-          </h1>
-          <div className="breadcrumb">
-            <span className="breadcrumb-section">Aircraft</span>
-            <span className="breadcrumb-arrow">›</span>
-            <span className="breadcrumb-current">
-              {isEditMode ? 'Edit Detail' : 'View Detail'}
-            </span>
-          </div>
+                <button className="back-button" onClick={onBack}>
+                    ← Back
+                </button>
+            </div>
+
+            <h2 className="section-title">Aircraft Profile</h2>
+
+            <AircraftProfileSection
+                editData={editData}
+                originalData={originalData}
+                isEditMode={isEditMode}
+                handleChange={handleChange}
+            />
+
+
+            <FlightSchedule
+                flightList={flightList}
+                loading={loading}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+                flightFilter={flightFilter}
+                setFlightFilter={setFlightFilter}
+            />
         </div>
-
-        <button className="back-button" onClick={onBack}>
-          ← Back
-        </button>
-      </div>
-
-      <h2 className="section-title">Aircraft Profile</h2>
-
-      <AircraftProfileSection
-        editData={editData}
-        originalData={originalData}
-        isEditMode={isEditMode}
-        handleChange={handleChange}
-        onDelete={handleDelete}
-      />
-
-      <FlightSchedule
-        flightList={flightList}
-        loading={loading}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        flightFilter={flightFilter}
-        setFlightFilter={setFlightFilter}
-      />
-    </div>
-  );
+    );
 };
 
 export default AircraftDetail;

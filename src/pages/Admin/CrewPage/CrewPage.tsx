@@ -52,6 +52,7 @@ const CrewPage = () => {
               </div>
             </div>
           </div>
+          <div className="crew-table-container">
           <table className="crew-table">
             <thead>
               <tr>
@@ -87,6 +88,7 @@ const CrewPage = () => {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         // Employee Detail Page

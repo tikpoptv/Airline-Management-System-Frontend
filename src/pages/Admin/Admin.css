@@ -1,4 +1,26 @@
 /* Main wrapper */
+
+
+.logout {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Logout button styling */
+.logout-button {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+
 .Admin {
     display: flex;
     height: 100vh;
@@ -24,7 +46,7 @@
     height: calc(100vh - 80px);
     position: sticky;
     top: 80px;
-    background-color: #f9fbfc;
+    background-color: #1b19c0;
     padding: 1rem;
     display: flex;
     flex-direction: column;

@@ -19,6 +19,8 @@
   padding-top: 1rem;
 }
 
+
+
 .crew-table tbody tr:hover {
   background-color: #cfe2f3;
   cursor: pointer;
@@ -34,17 +36,27 @@
 }
 
 .crew-table input[type="checkbox"]:checked {
-  transform: scale(1.2); /* Slightly enlarge the checkbox when checked */
+  transform: scale(1.2); 
 }
 
 .crew-table {
   width: 100%;
-  border: 2px solid #c2c2c2;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 15px;
   background-color: #f4f5f6;
   min-width: 600px;
-  border-radius: 8px; /* Rounded corners for the table */
+  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add slight shadow for a card effect */
+}
+
+.crew-table-container {
+  border: 2px solid #ada9a9; /* You can customize the border color */
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Optional subtle shadow */
 }
 
 .crew-table th,
@@ -60,6 +72,8 @@
   background-color: #d2e6f5;
   color: #1f1f4e;
 }
+
+
 /* title */
 
 .title-group {

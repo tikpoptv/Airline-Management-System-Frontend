@@ -43,6 +43,7 @@ const AircraftProfileSection = ({
       const response = await updateAircraftById(editData.aircraft_id, {
         model: editData.model,
         maintenance_status: editData.maintenance_status,
+        capacity: editData.capacity,
         aircraft_history: editData.aircraft_history,
       });
 
@@ -106,15 +107,7 @@ const AircraftProfileSection = ({
         {/* Row 2: Airline Owner + Maintenance Status */}
         <div className="input-group airline-owner">
           <label>Airline Owner</label>
-          {isEditMode ? (
-            <input
-              type="text"
-              value={editData.airline_owner}
-              onChange={(e) => handleChange('airline_owner', e.target.value)}
-            />
-          ) : (
-            <div className="read-only-field">{editData.airline_owner}</div>
-          )}
+          <div className="read-only-field">{editData.airline_owner}</div>
         </div>
 
         <div className="input-group maintenance-status">
@@ -138,15 +131,13 @@ const AircraftProfileSection = ({
         {/* Row 3: Model Name + Capacity + Year */}
         <div className="input-group">
           <label>Model Name</label>
-          {isEditMode ? (
-            <input
-              value={editData.model}
-              onChange={(e) => handleChange('model', e.target.value)}
-            />
-          ) : (
-            <div className="read-only-field">{editData.model}</div>
-          )}
+          <div className="read-only-field">{editData.model}</div>
         </div>
+
+        {/* <div className="input-group">
+          <label>Capacity</label>
+          <div className="read-only-field">{editData.capacity}</div>
+        </div> */}
 
         <div className="input-group">
           <label>Capacity</label>
@@ -163,15 +154,7 @@ const AircraftProfileSection = ({
 
         <div className="input-group">
           <label>Manufacture Year</label>
-          {isEditMode ? (
-            <input
-              type="number"
-              value={editData.manufacture_year}
-              onChange={(e) => handleChange('manufacture_year', Number(e.target.value))}
-            />
-          ) : (
-            <div className="read-only-field">{editData.manufacture_year}</div>
-          )}
+          <div className="read-only-field">{editData.manufacture_year}</div>
         </div>
 
         {/* Row 4: Aircraft History */}
@@ -206,6 +189,11 @@ const AircraftProfileSection = ({
                   <p>
                     <strong>Maintenance Status:</strong>{' '}
                     {originalData.maintenance_status} → {editData.maintenance_status}
+                  </p>
+                )}
+                {editData.capacity !== originalData.capacity && (
+                  <p>
+                    <strong>Capacity:</strong> {originalData.capacity} → {editData.capacity}
                   </p>
                 )}
                 {editData.aircraft_history !== originalData.aircraft_history && (

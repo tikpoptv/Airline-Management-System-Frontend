@@ -11,6 +11,7 @@ export interface Aircraft {
   export interface UpdateAircraftPayload {
     model: string;
     maintenance_status: string;
+    capacity: number;
     aircraft_history: string;
   }
   

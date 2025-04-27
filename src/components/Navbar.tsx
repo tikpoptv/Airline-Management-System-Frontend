@@ -1,74 +1,38 @@
 import { useState } from 'react';
-import { tabs, tabIcons, Tab } from './SidebarTab'; // Import tabs and icons
-import { IoIosArrowForward, IoIosArrowDown } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import { getUser, logout } from '../services/auth/authService';
 import './Navbar.css';
-import { MdAirplaneTicket } from "react-icons/md";
 
-const Navbar = ({ setSelectedTab }: { setSelectedTab: (tab: Tab) => void }) => {
-  const [isPathwayOpen, setIsPathwayOpen] = useState(false);
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const user = getUser();
 
-  const handleTabClick = (tab: Tab) => {
-    setSelectedTab(tab); // Update selected tab
-    if (tab === 'Pathway') {
-      setIsPathwayOpen(!isPathwayOpen); // Toggle Pathway open/close
-    }
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
     <nav className="navbar">
       <div className="logo">
-        <MdAirplaneTicket />
+        <div className="circle"></div>
+        <div className="circle"></div>
+        <div className="circle"></div>
         Airline Name
       </div>
 
-      <div className="navbar-menu">
-        {/* Iterate over the tabs to create each menu item */}
-        {tabs.map((tab) => {
-          const Icon = tabIcons[tab];
-          const isPathway = tab === 'Pathway';
+      <div className="navbar-right">
+        {user && <span className="user-type">{user.role.toUpperCase()}</span>}
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
 
-          return (
-            <div key={tab} className="navbar-item">
-              <div
-                onClick={() => handleTabClick(tab)}
-                className={`navbar-link ${isPathway && isPathwayOpen ? 'expanded' : ''}`}
-              >
-                <Icon className="tab-icon" />
-                <span>{tab}</span>
-                {isPathway &&
-                  (isPathwayOpen ? (
-                    <IoIosArrowDown className="arrow-icon" />
-                  ) : (
-                    <IoIosArrowForward className="arrow-icon" />
-                  ))}
-              </div>
-
-              {/* Nested buttons inside Pathway */}
-              {isPathway && isPathwayOpen && (
-                <div className="nested-buttons">
-                  <button
-                    className="nested-tab-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedTab('Routes' as Tab);
-                    }}
-                  >
-                    Routes
-                  </button>
-                  <button
-                    className="nested-tab-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedTab('Airport' as Tab);
-                    }}
-                  >
-                    Airport
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
       </div>
     </nav>
   );

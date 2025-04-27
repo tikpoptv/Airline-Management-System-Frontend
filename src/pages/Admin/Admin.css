@@ -147,4 +147,17 @@
 
   }
 
+  .sidebar-item {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .sidebar-item:visited {
+    color: #333;
+  }
+  
+  .sidebar-item.active {
+    background-color: #b3e5fc;
+    color: white;
+  }
   

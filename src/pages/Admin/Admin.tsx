@@ -3,7 +3,9 @@ import './Admin.css';
 import { FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaWrench } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
-import Navbar from '../../components/SIdebar';
+import Navbar from '../../components/Sidebar';
+
+
 
 function Admin() {
   return (

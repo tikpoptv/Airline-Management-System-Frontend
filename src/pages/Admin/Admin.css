@@ -1,163 +1,80 @@
-/* Main wrapper */
-
-
-.logout {
-  position: absolute;
-  top: 0;
-  right: 0;
+.admin-container {
+  display: flex;
+  height: 100vh;
 }
 
-/* Logout button styling */
-.logout-button {
-  background-color: #e74c3c;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  background-color: #c0392b;
-}
-
-.Admin {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-  }
-  
-  .Admin > .navbar {
-    height: 80px; /* or your actual navbar height */
-  }
-  
-  /* Layout below navbar */
-  .main-layout {
-    display: flex;
-    flex: 1;
-    height: calc(100vh - 80px);;
-    padding-top: 0;
-    margin-top: 80px;
-  }
-  
-  /* Sidebar */
-  .sidebar {
-    width: 300px;
-    height: calc(100vh - 80px);
-    position: sticky;
-    top: 80px;
-    background-color: #1b19c0;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    font-size: 25px;
-    font-weight: 500;
-  }
-  
-  /* Sidebar item styling */
-  .sidebar-item {
-    background-color: rgb(241, 237, 237);
-    padding: 30px 20px;
-    margin-bottom: 1rem;
-    border-radius: 30px;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    gap: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .sidebar-item.active {
-    background-color: rgb(133, 220, 255);
-    color: white;
-  }
-
-  .sidebar-item:hover{
-    background-color: rgb(133, 220, 255);
-  }
-
-  .sidebar-item.expanded {
-    background-color: rgb(133, 220, 255);
-    transition: max-height 0.5s ease-in-out;
-  }
-
-
-.nested-buttons {
-  transform: scaleY(0);
-  transform-origin: top;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease;
-  opacity: 0;
+.sidebar {
+  width: 300px;
+  background-color: #183152;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
 }
 
-.sidebar-item.expanded .nested-buttons {
-  transform: scaleY(1);
-  opacity: 1;
+.sidebar-header {
+  background-color: #A93434;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 20px;
 }
-  
-.nested-tab-button {
-  margin: 4px 16px;
-  padding: 10px 80px;
-  background-color: #f5f5f5;
-  border: none;
+
+.sidebar-logo {
+  font-size: 2rem;
+  color: rgb(24, 12, 12);
+}
+
+.airline-name {
+  color: white;
+  font-weight: bold;
+}
+
+.sidebar-item {
+  width: 90%;
+  padding: 2.2rem 0.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  color: white;
   border-radius: 20px;
-  cursor: pointer;
-  text-align: left;
-  transition: background-color 0.2s ease;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  margin-left: 2px;
+  margin-right: 2px;
 }
-  
-  .nested-tab-button:hover {
-    background-color: rgb(133, 220, 255);
-  }
 
-  .nested-tab-button:active{
-    background-color: rgb(133, 220, 255);
-  }
-  .tab-icon {
-    font-size: 2rem;
-  }
-  
-  .arrow-icon {
-    font-size: 2rem;
-    color: rgb(9, 7, 7);
-    transition: transform 0.3s ease;
-  }
+.sidebar-item .sidebar-icon {
+  margin-right: 0.75rem;
+  font-size: 1.5rem;
+}
 
+.sidebar-item.active {
+  background-color: white;
+  color: #183152;
+  font-weight: bold;
+}
 
-  .sidebar-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-  
-  /* Main content */
-  .content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 2rem;
-    box-sizing: border-box;
-    background-color: #fff;
+.sidebar-item.active .sidebar-icon {
+  color: #183152;
+}
 
-  }
+.sidebar-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
 
-  .sidebar-item {
-    color: #333;
-    text-decoration: none;
-  }
-  
-  .sidebar-item:visited {
-    color: #333;
-  }
-  
-  .sidebar-item.active {
-    background-color: #b3e5fc;
-    color: white;
-  }
-  
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f8fa;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}

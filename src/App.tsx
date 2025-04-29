@@ -1,11 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Public/Login/Login';
-import ProtectedRoute from './components/ProtectedRoute';
-import Admin from './pages/Admin/Admin';
-import AircraftPage from './pages/Admin/AircraftPage/AircraftPage';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Public/Login/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Admin from "./pages/Admin/Admin";
+import AircraftPage from "./pages/Admin/AircraftPage/AircraftPage";
 import AircraftDetailPage from "./pages/Admin/AircraftPage/AircraftDetailPage";
-import NotFound from './pages/NotFound/NotFound';
-import ApiStatusChecker from './components/ApiStatusChecker';
+import NotFound from "./pages/NotFound/NotFound";
+import ApiStatusChecker from "./components/ApiStatusChecker";
+import Maintenance from "./pages/Maintenance/Maintenance";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
-          
+
           <Route
             path="/admin"
             element={
@@ -29,8 +30,19 @@ function App() {
             <Route path="aircrafts/:id" element={<AircraftDetailPage />} />
           </Route>
 
+          <Route
+            path="/Maintenance"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <Maintenance />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<div>Helloworld Maintenance</div>} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
+        
       </Router>
     </>
   );

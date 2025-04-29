@@ -17,13 +17,13 @@ const Sidebar = () => {
       </div>
 
       <div className="navbar-right">
-        <div className="logout">
-        <button className="logout-button" onClick={handleLogout}>
-          Logout
-        </button>
-        </div>
         {user && <span className="user-type">{user.role.toUpperCase()}</span>}
         <FaUserCircle className="user-icon" />
+        <div className="logout">
+        <button className="logout-button" onClick={handleLogout}>
+          LOGOUT
+        </button>
+        </div>
       </div>
     </nav>
   );

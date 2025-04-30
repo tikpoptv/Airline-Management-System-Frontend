@@ -1,87 +1,387 @@
 .admin-container {
   display: flex;
-  height: 100vh;
-
+  min-height: 100vh;
+  background-color: #f0f9ff;
+  position: relative;
 }
 
 .sidebar {
-  position:fixed;
-  width: 300px;
-  background-color: #183152;
-  height: 100vh;
+  position: fixed;
+  width: 280px;
+  background: #0c4a6e;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 1rem;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 10;
 }
 
 .sidebar-header {
-  background-color: #A93434;
-  padding: 0.8rem 2rem;
-  border-radius: 15px;
+  background: #0369a1;
+  padding: 1.2rem;
+  margin: 0 1rem 2rem;
+  border-radius: 16px;
   display: flex;
   align-items: center;
-  font-size: 20px;
-  margin-bottom: 5rem;
+  justify-content: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+.sidebar-header:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-logo {
-  font-size: 2rem;
-  color: rgb(24, 12, 12);
+  font-size: 1.5rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .airline-name {
   color: white;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: 0.5px;
 }
 
 .sidebar-item {
-  width: 90%;
-  padding: 2.2rem 0.5rem;
-  margin-bottom: 0rem;
+  width: calc(100% - 2rem);
+  margin: 0.25rem 1rem;
+  padding: 0.75rem 1.25rem;
   display: flex;
   align-items: center;
-  color: white;
-  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-weight: 500;
-  transition: background-color 0.3s;
-  margin-left: 2px;
-  margin-right: 2px;
-  font-size: 25px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  border-radius: 12px;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+  animation-fill-mode: both;
 }
 
-.sidebar-item .sidebar-icon {
-  margin-right: 0.75rem;
-  font-size: 3rem;
+.sidebar-item:nth-child(1) { animation-delay: 0.1s; }
+.sidebar-item:nth-child(2) { animation-delay: 0.2s; }
+.sidebar-item:nth-child(3) { animation-delay: 0.3s; }
+.sidebar-item:nth-child(4) { animation-delay: 0.4s; }
+.sidebar-item:nth-child(5) { animation-delay: 0.5s; }
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-item:hover::before {
+  transform: translateX(0);
 }
 
 .sidebar-item.active {
-  background-color: white;
-  color: #183152;
-  font-weight: bold;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
-.sidebar-item.active .sidebar-icon {
-  color: #183152;
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #38bdf8;
+  transform: none;
+}
+
+.sidebar-item.active::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 50%;
+  transform: translateY(-50%);
 }
 
 .sidebar-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateX(5px);
+}
+
+.sidebar-item .sidebar-icon {
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  min-width: 24px;
+  transition: all 0.2s ease;
 }
 
 .main-content {
   flex: 1;
+  margin-left: 280px;
+  min-height: 100vh;
+  background-color: #f0f9ff;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  background-color: #f7f8fa;
-  margin-left: 300px;
+  gap: 1.5rem;
+  max-width: calc(100vw - 280px);
+}
+
+.top-nav {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  width: calc(100% - 3rem);
+  margin: 0 auto;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #0c4a6e;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  background: rgba(12, 74, 110, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-profile::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
+.admin-profile:hover::after {
+  opacity: 1;
+  transform: rotate(45deg) translateY(100%);
+}
+
+.logout-btn {
+  padding: 0.75rem 1.25rem;
+  background: #0c4a6e;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(12, 74, 110, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.6s ease;
+}
+
+.logout-btn:hover::before {
+  left: 100%;
 }
 
 .content-area {
   flex: 1;
+  background: white;
+  border-radius: 16px;
   padding: 2rem;
-  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-width: calc(100% - 4rem);
+  margin: 0 auto;
+}
+
+.content-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(12, 74, 110, 0.05) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.content-area:hover::before {
+  opacity: 1;
+}
+
+.welcome-message {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0c4a6e;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+  letter-spacing: -0.5px;
+  transition: all 0.3s ease;
+}
+
+.welcome-message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 4rem;
+  height: 4px;
+  background: #0c4a6e;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.welcome-message:hover::after {
+  width: 100%;
+}
+
+/* เพิ่ม Keyframes สำหรับ animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ส่วนของ Aircraft Management */
+.aircraft-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.aircraft-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0c4a6e;
+}
+
+/* ปรับแต่งตาราง */
+.aircraft-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.aircraft-table thead {
+  background: #f8fafc;
+}
+
+.aircraft-table th {
+  text-align: left;
+  padding: 1rem;
+  font-weight: 600;
+  color: #0c4a6e;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.aircraft-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+.aircraft-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* ปรับแต่งปุ่ม Edit */
+.edit-button {
+  padding: 0.5rem 1.5rem;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-button:hover {
+  background: #16a34a;
+  transform: translateY(-1px);
+}
+
+/* ปรับแต่ง view icon */
+.view-icon {
+  color: #0c4a6e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-icon:hover {
+  color: #0ea5e9;
+  transform: scale(1.1);
 }

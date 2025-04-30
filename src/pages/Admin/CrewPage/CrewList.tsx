@@ -81,6 +81,7 @@ const CrewList = ({
       {loading ? (
     <Loading message="Loading crew..." />
     ) : (
+    <div className="table-wrapper">
     <table className="crew-table">
         <thead>
         <tr>
@@ -126,6 +127,7 @@ const CrewList = ({
         ))}
         </tbody>
     </table>
+    </div>
     )}
 
       {/* Search Modal */}

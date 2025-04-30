@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import './Sidebar.css';
 import { useNavigate } from 'react-router-dom';
 import { getUser, logout } from '../services/auth/authService';
-import './Navbar.css';
+import { FaUserCircle } from 'react-icons/fa';
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = () => {
   const navigate = useNavigate();
   const user = getUser();
 
@@ -12,30 +11,22 @@ const Navbar = () => {
     logout();
     navigate('/');
   };
-
   return (
     <nav className="navbar">
-      <div className="logo">
-        <div className="circle"></div>
-        <div className="circle"></div>
-        <div className="circle"></div>
-        Airline Name
+      <div className="navbar-left">
       </div>
 
       <div className="navbar-right">
         {user && <span className="user-type">{user.role.toUpperCase()}</span>}
+        <FaUserCircle className="user-icon" />
+        <div className="logout">
         <button className="logout-button" onClick={handleLogout}>
-          Logout
+          LOGOUT
         </button>
-      </div>
-
-      <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
-        <span className="bar" />
-        <span className="bar" />
-        <span className="bar" />
+        </div>
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default Sidebar;

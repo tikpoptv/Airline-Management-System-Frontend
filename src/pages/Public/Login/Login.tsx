@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../../api';
 import { getToken, getUser } from '../../../services/auth/authService';
 import { getRouteByRole } from '../../../utils/roleRoutes';
+import styles from './Login.module.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ const Login = () => {
       const redirectPath = getRouteByRole(user.role);
       setTimeout(() => navigate(redirectPath), 3000);
     }
-  }, []);
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,45 +37,67 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
+    <div className={styles.loginContainer}>
       {alreadyLoggedIn && (
-        <div style={{
-          position: 'fixed',
-          top: '20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          backgroundColor: '#fff',
-          border: '1px solid #ddd',
-          padding: '1.5rem 2rem',
-          borderRadius: '8px',
-          boxShadow: '0 0 12px rgba(0, 0, 0, 0.2)',
-          zIndex: 9999,
-          textAlign: 'center'
-        }}>
-          <h3 style={{ color: 'orange' }}>⚠️ คุณยังอยู่ในระบบ</h3>
+        <div className={styles.alreadyLoggedIn}>
+          <h3 className={styles.warningTitle}>⚠️ คุณยังอยู่ในระบบ</h3>
           <p>ระบบจะนำคุณไปยังหน้า Dashboard โดยอัตโนมัติ</p>
         </div>
       )}
 
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}>
-        <h2>Login</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+      <div className={styles.leftSection}>
+        <div style={{ textAlign: 'center', width: '100%' }}>
+          <h1 className={styles.title}>
+            Airline<br />
+            Management<br />
+            system
+          </h1>
+          <p className={styles.description}>
+            Our company provides software services covering all aspects of airline management, from flight planning, aircraft management, crew, airports and maintenance.
+          </p>
+        </div>
+      </div>
+
+      <div className={styles.rightSection}>
+        <div className={styles.loginCard}>
+          <h2 className={styles.loginTitle}>Sign in</h2>
+          {error && <p className={styles.error}>{error}</p>}
+          
+          <form onSubmit={handleLogin}>
+            <div className={styles.formGroup}>
+              <label htmlFor="username" className={styles.label}>Username</label>
+              <input
+                id="username"
+                type="text"
+                className={styles.input}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.label}>Password</label>
+              <input
+                id="password"
+                type="password"
+                className={styles.input}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className={styles.submitButton}>
+              Sign in
+            </button>
+          </form>
+
+          <p className={styles.createAccount}>
+            <a href="#" className={styles.createAccountLink}>Create an account ?</a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

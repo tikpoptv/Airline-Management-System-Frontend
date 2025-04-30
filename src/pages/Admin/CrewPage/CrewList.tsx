@@ -1,4 +1,5 @@
-import { FaUser, FaEye, FaSearch } from 'react-icons/fa';
+import {  FaEye, FaSearch } from 'react-icons/fa';
+// import { FaUser } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
 import { Crew } from '../../../types/crew';
@@ -78,48 +79,54 @@ const CrewList = ({
       </div>
 
       {loading ? (
-        <Loading message="Loading crew..." />
-      ) : (
-        <table className="crew-table">
-          <thead>
-            <tr>
-              {isEditing && <th />}
-              <th>Crew ID</th>
-              <th>Name</th>
-              <th>Role</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCrew.map((crew) => (
-              <tr
-                key={crew.crew_id}
-                onClick={() => handleRowClick(crew)}
-                className="crew-row"
-              >
-                {isEditing && (
-                  <td onClick={(e) => e.stopPropagation()}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCrewIds.includes(crew.crew_id)}
-                      onChange={() => handleCheckboxChange(crew.crew_id)}
-                    />
-                  </td>
-                )}
-                <td>{crew.crew_id}</td>
-                <td><FaUser className="crew-icon" /> {crew.name}</td>
-                <td>{crew.role}</td>
+    <Loading message="Loading crew..." />
+    ) : (
+    <table className="crew-table">
+        <thead>
+        <tr>
+            {isEditing && <th />}
+            <th>Crew ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Passport Number</th>
+            <th>Flight Hour</th>
+            <th />
+        </tr>
+        </thead>
+        <tbody>
+        {filteredCrew.map((crew) => (
+            <tr
+            key={crew.crew_id}
+            onClick={() => handleRowClick(crew)}
+            className="crew-row"
+            >
+            {isEditing && (
                 <td onClick={(e) => e.stopPropagation()}>
-                  <FaEye
-                    className="detail-icon"
-                    onClick={() => setSelectedCrew(crew)}
-                  />
+                <input
+                    type="checkbox"
+                    checked={selectedCrewIds.includes(crew.crew_id)}
+                    onChange={() => handleCheckboxChange(crew.crew_id)}
+                />
                 </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            )}
+            <td>{crew.crew_id}</td>
+            <td>{crew.name}</td>
+            <td>{crew.role}</td>
+            <td>{crew.user.email}</td>
+            <td>{crew.passport_number}</td>
+            <td>{crew.flight_hours}</td>
+            <td onClick={(e) => e.stopPropagation()}>
+                <FaEye
+                className="detail-icon"
+                onClick={() => setSelectedCrew(crew)}
+                />
+            </td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+    )}
 
       {/* Search Modal */}
       {showSearchModal && (

@@ -7,7 +7,7 @@ export const getCrewList = async (): Promise<Crew[]> => {
   const token = getToken();
   if (!token) throw new Error('Unauthorized: No token provided');
 
-  const response = await fetch(`${API_BASE_URL}/api/crews`, {
+  const response = await fetch(`${API_BASE_URL}/api/crew`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Aircraft, AircraftModel, AirlineModel } from '../../../types/aircraft';
 import { createAircraft, getAircraftModels, getAirlineModels } from '../../../services/aircraft/aircraftService';
-import { FaArrowLeft, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle, FaExclamationCircle, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
+import uploadPlaceholder from '../../../assets/images/upload.png';
 import './CreateAircraftPage.css';
 
 const CreateAircraftPage = () => {
@@ -27,6 +28,10 @@ const CreateAircraftPage = () => {
     message: '',
     type: 'success'
   });
+
+  // New state for image handling
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     fetchOptions();
@@ -134,6 +139,52 @@ const CreateAircraftPage = () => {
     }
   };
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setSelectedImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        showToast('Please select an image file', 'error');
+      }
+    }
+  };
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      showToast('Please drop an image file', 'error');
+    }
+  }, []);
+
+  const removeImage = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedImage(null);
+  }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -150,7 +201,7 @@ const CreateAircraftPage = () => {
           <h1 className="page-title">Create New Aircraft</h1>
         </div>
         <button className="back-button" onClick={() => navigate('/admin/aircrafts')}>
-          <FaArrowLeft /> Back
+          <FaArrowLeft /> Back to List
         </button>
       </div>
 
@@ -158,12 +209,42 @@ const CreateAircraftPage = () => {
 
       <div className="profile-form">
         <div className="form-layout">
-          {/* Left side - Aircraft Image */}
-          <div className="aircraft-image">
-            <img src="/aircraft-placeholder.png" alt="Aircraft" />
+          {/* Aircraft Image Upload */}
+          <div 
+            className={`aircraft-image ${isDragging ? 'dragging' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {selectedImage ? (
+              <>
+                <img src={selectedImage} alt="Selected aircraft" />
+                <button className="remove-image" onClick={removeImage}>
+                  <FaTimes />
+                </button>
+              </>
+            ) : (
+              <>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  title=""
+                />
+                <img src={uploadPlaceholder} alt="Upload placeholder" className="placeholder-image" />
+                <div className="upload-overlay">
+                  <FaCloudUploadAlt className="upload-icon" />
+                  <span className="upload-text">
+                    Click to upload or drag and drop
+                    <br />
+                    your aircraft image here
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Right side - Form Fields */}
+          {/* Form Fields */}
           <div className="form-fields">
             <div className="form-row">
               <div className="form-group">
@@ -180,7 +261,12 @@ const CreateAircraftPage = () => {
                     </option>
                   ))}
                 </select>
-                {errors.model && <span className="error-message">{errors.model}</span>}
+                {errors.model && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.model}
+                  </span>
+                )}
               </div>
 
               <div className="form-group">
@@ -197,7 +283,12 @@ const CreateAircraftPage = () => {
                     </option>
                   ))}
                 </select>
-                {errors.airline_owner && <span className="error-message">{errors.airline_owner}</span>}
+                {errors.airline_owner && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.airline_owner}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -213,7 +304,12 @@ const CreateAircraftPage = () => {
                   <option value="In Maintenance">In Maintenance</option>
                   <option value="Retired">Retired</option>
                 </select>
-                {errors.maintenance_status && <span className="error-message">{errors.maintenance_status}</span>}
+                {errors.maintenance_status && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.maintenance_status}
+                  </span>
+                )}
               </div>
 
               <div className="form-group">
@@ -223,8 +319,14 @@ const CreateAircraftPage = () => {
                   value={formData.capacity}
                   onChange={(e) => setFormData({ ...formData, capacity: Number(e.target.value) })}
                   className={errors.capacity ? 'error' : ''}
+                  placeholder="Enter aircraft capacity"
                 />
-                {errors.capacity && <span className="error-message">{errors.capacity}</span>}
+                {errors.capacity && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.capacity}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -236,8 +338,14 @@ const CreateAircraftPage = () => {
                   value={formData.manufacture_year}
                   onChange={(e) => setFormData({ ...formData, manufacture_year: Number(e.target.value) })}
                   className={errors.manufacture_year ? 'error' : ''}
+                  placeholder="Enter manufacture year"
                 />
-                {errors.manufacture_year && <span className="error-message">{errors.manufacture_year}</span>}
+                {errors.manufacture_year && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.manufacture_year}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -248,28 +356,26 @@ const CreateAircraftPage = () => {
                   value={formData.aircraft_history}
                   onChange={(e) => setFormData({ ...formData, aircraft_history: e.target.value })}
                   rows={6}
+                  placeholder="Enter aircraft history and notes..."
                 />
               </div>
             </div>
-
-            <div className="form-actions">
-              <button 
-                className="create-button" 
-                onClick={handleSubmit} 
-                disabled={saving}
-              >
-                {saving ? 'Creating...' : 'Create Aircraft'}
-              </button>
-              <button 
-                className="cancel-button" 
-                onClick={() => navigate('/admin/aircrafts')} 
-                disabled={saving}
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         </div>
+      </div>
+
+      <div className="form-actions">
+        <button
+          className="create-button"
+          onClick={handleSubmit}
+          disabled={saving}
+        >
+          {saving ? (
+            <>Creating...</>
+          ) : (
+            <>Create Aircraft</>
+          )}
+        </button>
       </div>
 
       {/* Confirm Modal */}

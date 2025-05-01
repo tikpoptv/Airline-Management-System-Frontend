@@ -36,3 +36,24 @@ export const deleteCrewById = async (id: number): Promise<void> => {
   }
 };
 
+export const updateCrewById = async (id: number, crewData: Partial<Crew>): Promise<Crew> => {
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized: No token provided');
+
+  const response = await fetch(`${API_BASE_URL}/api/crew/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(crewData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: 'Failed to update crew' }));
+    throw new Error(errorData.message || `Failed to update crew with ID ${id}`);
+  }
+
+  return response.json();
+};
+

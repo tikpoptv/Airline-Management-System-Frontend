@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ApiStatusChecker from "./components/ApiStatusChecker";
 import Maintenance from "./pages/Maintenance/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
-
+import CrewDetailPage from "./pages/Admin/CrewPage/CrewDetailPage";
 function App() {
   return (
     <>
@@ -30,7 +30,7 @@ function App() {
             <Route path="aircrafts" element={<AircraftPage />} />
             <Route path="aircrafts/:id" element={<AircraftDetailPage />} />
             <Route path="crew" element={<CrewPage />} />
-            <Route path="crew/:id" element={<AircraftDetailPage />} />
+            <Route path="crew/:id" element={<CrewDetailPage/>} />
           </Route>
 
           <Route

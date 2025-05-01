@@ -83,16 +83,16 @@ const AircraftProfileSection = ({
   };
 
   return (
-    <div className="profile-wrapper">
+    <div className={`profile-wrapper ${isEditMode ? 'edit-mode' : ''}`}>
       <div className="form-grid">
         {/* Row 1: Avatar + Aircraft ID + Trash */}
         <div className="avatar-cell">
           <div className="profile-avatar">
-            <img src={avatarImg} alt="avatar" />
+            <img src={avatarImg} alt="Aircraft" />
           </div>
         </div>
 
-        <div className="aircraft-id-group">
+        <div className="input-group aircraft-id-group">
           <label>Aircraft ID</label>
           <div className="input-with-icon">
             <div className="read-only-field">{editData.aircraft_id}</div>
@@ -114,6 +114,7 @@ const AircraftProfileSection = ({
           <label>Maintenance Status</label>
           {isEditMode ? (
             <select
+              name="maintenance_status"
               value={editData.maintenance_status}
               onChange={(e) =>
                 handleChange('maintenance_status', e.target.value as Aircraft['maintenance_status'])
@@ -164,6 +165,7 @@ const AircraftProfileSection = ({
             <textarea
               value={editData.aircraft_history}
               onChange={(e) => handleChange('aircraft_history', e.target.value)}
+              rows={4}
             />
           ) : (
             <div className="read-only-field">{editData.aircraft_history}</div>

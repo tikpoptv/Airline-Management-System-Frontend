@@ -45,87 +45,83 @@ const FlightSchedule = ({
   };
 
   return (
-    <>
-      <h4 style={{ fontSize: 25 }}>Flight Schedule</h4>
+    <div className="flight-schedule">
+      <h2>Flight Schedule</h2>
+      
+      <div className="filter-sort-controls">
+        <div>
+          Filter: {' '}
+          <select 
+            value={flightFilter}
+            onChange={(e) => setFlightFilter(e.target.value as 'all' | 'today')}
+          >
+            <option value="all">All Flights</option>
+            <option value="today">Today</option>
+          </select>
+        </div>
+        <div>
+          Sort by: {' '}
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value as 'date' | 'status')}
+          >
+            <option value="date">Departure Time</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+      </div>
 
       {loading ? (
-        <Loading message="Loading flight schedule..." />
+        <Loading message="Loading flights..." />
+      ) : flightList.length === 0 ? (
+        <div className="empty-state">
+          No flights scheduled
+        </div>
       ) : (
-        <>
-          <div className="filter-sort-bar">
-            <div className="dropdown-group">
-              <label htmlFor="filter">Filter:</label>
-              <select
-                id="filter"
-                value={flightFilter}
-                onChange={(e) => setFlightFilter(e.target.value as 'all' | 'today')}
-              >
-                <option value="all">All Flights</option>
-                <option value="today">Today Only</option>
-              </select>
-            </div>
-
-            <div className="dropdown-group">
-              <label htmlFor="sort">Sort by:</label>
-              <select
-                id="sort"
-                value={sortOption}
-                onChange={(e) => setSortOption(e.target.value as 'date' | 'status')}
-              >
-                <option value="date">Departure Time</option>
-                <option value="status">Flight Status</option>
-              </select>
-            </div>
-          </div>
-
-          <table className="schedule-table">
-            <thead>
-              <tr className="task-row">
-                <td colSpan={6}>
-                  <h3><strong>Flight Tasks</strong></h3>
+        <table className="flight-tasks">
+          <thead>
+            <tr>
+              <th>STATUS</th>
+              <th>FLIGHT NUMBER</th>
+              <th>DATE</th>
+              <th>FROM</th>
+              <th>TO</th>
+              <th>TIME</th>
+            </tr>
+          </thead>
+          <tbody>
+            {getFilteredAndSortedFlights().map((flight) => (
+              <tr key={flight.flight_id}>
+                <td>
+                  <span className={`status-badge ${flight.flight_status}`}>
+                    {flight.flight_status}
+                  </span>
+                </td>
+                <td>
+                  <span className="flight-number">{flight.flight_number}</span>
+                </td>
+                <td>{new Date(flight.departure_time).toLocaleDateString('th-TH')}</td>
+                <td>
+                  <span className="airport-code">{flight.route.from_airport.iata_code}</span>
+                </td>
+                <td>
+                  <span className="airport-code">{flight.route.to_airport.iata_code}</span>
+                </td>
+                <td className="time-column">
+                  {new Date(flight.departure_time).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })} → {new Date(flight.arrival_time).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </td>
               </tr>
-              <tr>
-                <th>Status</th>
-                <th>Flight Number</th>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getFilteredAndSortedFlights().length ? (
-                getFilteredAndSortedFlights().map((f) => (
-                  <tr key={f.flight_id}>
-                    <td className={`flight-status ${f.flight_status}`}>{f.flight_status}</td>
-                    <td>{f.flight_number}</td>
-                    <td>{new Date(f.departure_time).toLocaleDateString('th-TH')}</td>
-                    <td>{f.route.from_airport.iata_code}</td>
-                    <td>{f.route.to_airport.iata_code}</td>
-                    <td>
-                      {new Date(f.departure_time).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })} → {new Date(f.arrival_time).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} style={{ textAlign: 'center' }}>
-                    No flight data available
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </>
+            ))}
+          </tbody>
+        </table>
       )}
-    </>
+    </div>
   );
 };
 

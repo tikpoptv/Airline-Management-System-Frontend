@@ -1,0 +1,623 @@
+/* Aircraft Details Page */
+.aircraft-detail {
+  padding: 2rem;
+  background: white;
+}
+
+/* Page Header */
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-heading-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-section {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.breadcrumb-arrow {
+  color: #94a3b8;
+  margin: 0 0.375rem;
+  font-size: 0.875rem;
+}
+
+.breadcrumb-current {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Back Button */
+.back-button {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Edit Button */
+.edit-button {
+  padding: 0.5rem 1.25rem;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Aircraft Profile */
+.profile-wrapper {
+  background: #f8fafc;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2rem;
+}
+
+/* Form Layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Avatar */
+.avatar-cell {
+  grid-row: 1 / 3;
+  width: 120px;
+  height: 120px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Form Fields */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.read-only-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  color: #1e293b;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+}
+
+/* Aircraft History */
+.aircraft-history {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+}
+
+.aircraft-history .read-only-field {
+  min-height: 120px;
+  line-height: 1.5;
+  resize: none;
+}
+
+/* Grid Areas */
+.aircraft-id-group {
+  grid-column: 2 / -1;
+}
+
+.airline-owner {
+  grid-column: 2;
+}
+
+.maintenance-status {
+  grid-column: 3;
+}
+
+.model-name {
+  grid-column: 2;
+}
+
+.capacity {
+  grid-column: 2;
+}
+
+.manufacture-year {
+  grid-column: 3;
+}
+
+/* Input with Icon */
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Delete Button */
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  background-color: #ef4444;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+}
+
+/* Editable fields */
+.input-group input,
+.input-group select,
+.input-group textarea {
+  padding: 1rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1.0625rem;
+  color: #1f1f4e;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.input-group input:hover,
+.input-group select:hover,
+.input-group textarea:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Save Button */
+.save-button-cell {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.save-button {
+  padding: 1rem 2rem;
+  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  color: white;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+}
+
+/* Flight Schedule Section */
+.flight-schedule {
+  margin-top: 3rem;
+}
+
+.flight-schedule h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2rem;
+}
+
+/* Filter and Sort Controls */
+.filter-sort-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+}
+
+.filter-sort-controls > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.filter-sort-controls select {
+  padding: 0.625rem 2.5rem 0.625rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: #1f1f4e;
+  font-size: 0.875rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  min-width: 160px;
+  transition: all 0.2s ease;
+}
+
+.filter-sort-controls select:hover {
+  border-color: #cbd5e1;
+  background-color: #f8fafc;
+}
+
+.filter-sort-controls select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Flight Tasks Table */
+.flight-tasks {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+}
+
+.flight-tasks th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1.25rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.flight-tasks td {
+  padding: 1rem;
+  color: #1f1f4e;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #f1f5f9;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.flight-tasks tr:hover td {
+  background: #f8fafc;
+}
+
+/* Flight Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.status-badge.Scheduled {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.status-badge.Boarding {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.status-badge.Delayed {
+  background-color: #fef9c3;
+  color: #ca8a04;
+}
+
+.status-badge.Cancelled {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-badge.Completed {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* Time Column */
+.flight-tasks .time-column {
+  color: #64748b;
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+/* Airport Codes */
+.flight-tasks .airport-code {
+  font-weight: 600;
+  color: #1e40af;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+}
+
+/* Flight Number */
+.flight-tasks .flight-number {
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
+  color: #3b82f6;
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.025em;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  font-size: 0.875rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px dashed #e2e8f0;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  background: #f8fafc;
+  border-radius: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filter-sort-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .filter-sort-controls > div {
+    width: 100%;
+  }
+  
+  .filter-sort-controls select {
+    flex: 1;
+  }
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 32rem;
+}
+
+.modal-content h3 {
+  margin: 0 0 1rem 0;
+  color: #1f1f4e;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-diff {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.375rem;
+}
+
+.modal-diff p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.modal-diff strong {
+  color: #1f1f4e;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: fadeinout 3s ease-in-out;
+}
+
+.toast.success {
+  background-color: #10b981;
+  color: white;
+}
+
+.toast.error {
+  background-color: #ef4444;
+  color: white;
+}
+
+@keyframes fadeinout {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Schedule Table */
+.schedule-table-container {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.875rem;
+}
+
+.schedule-table th {
+  font-weight: 600;
+  background-color: #f8fafc;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.schedule-table tbody tr:hover {
+  background-color: #f1f5f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Flight Status */
+.flight-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.flight-status.Scheduled {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.flight-status.Boarding {
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.flight-status.Delayed {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.flight-status.Completed {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.flight-status.Cancelled {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.edit-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* Error Message */
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+} 

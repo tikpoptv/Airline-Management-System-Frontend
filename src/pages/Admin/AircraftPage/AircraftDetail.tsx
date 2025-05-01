@@ -3,6 +3,7 @@ import { Aircraft } from '../../../types/aircraft';
 import { Flight } from '../../../types/flight';
 import AircraftProfileSection from './AircraftProfileSection';
 import FlightSchedule from './FlightSchedule';
+import './AircraftDetails.css';
 
 interface Props {
     aircraft: Aircraft;

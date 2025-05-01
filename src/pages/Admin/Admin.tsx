@@ -5,12 +5,9 @@ import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import Sidebar from '../../components/Sidebar';
 
-
-
 function Admin() {
   return (
     <div className="admin-container">
-      
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-header">
@@ -56,7 +53,6 @@ function Admin() {
           <Outlet />
         </div>
       </div>
-
     </div>
   );
 }

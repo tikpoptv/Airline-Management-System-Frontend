@@ -83,7 +83,7 @@ const AircraftProfileSection = ({
   };
 
   return (
-    <div className="profile-wrapper">
+    <div className={`profile-wrapper ${isEditMode ? 'is-edit-mode' : ''}`}>
       <div className="form-grid">
         <div className="avatar-cell">
           <img 

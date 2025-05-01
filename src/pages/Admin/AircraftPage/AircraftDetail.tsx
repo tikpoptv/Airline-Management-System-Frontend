@@ -44,7 +44,7 @@ const AircraftDetail = ({
     };
 
     return (
-        <div className="aircraft-detail">
+        <div className={`aircraft-detail ${isEditMode ? 'is-edit-mode' : ''}`}>
             <div className="page-header-row">
                 <div className="page-heading-left">
                     <h1 className="page-title">

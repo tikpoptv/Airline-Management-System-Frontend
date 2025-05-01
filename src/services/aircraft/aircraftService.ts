@@ -19,3 +19,15 @@ export const getAircraftById = async (id: number): Promise<Aircraft> => {
 export const deleteAircraftById = async (id: number) => {
   return api.delete(`/api/aircrafts/${id}`);
 };
+
+export const getAircraftModels = async () => {
+  return api.get('/api/models/aircraft');
+};
+
+export const getAirlineModels = async () => {
+  return api.get('/api/models/airline');
+};
+
+export const createAircraft = async (data: Omit<Aircraft, 'aircraft_id'>) => {
+  return api.post('/api/aircrafts', data);
+};

@@ -15,3 +15,23 @@ export interface Aircraft {
     aircraft_history: string;
   }
   
+  export interface AircraftModel {
+    model_id: number;
+    model_name: string;
+    manufacturer: string;
+    capacity_range: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+  }
+  
+  export interface AirlineModel {
+    id: number;
+    name: string;
+    country: string;
+    alliance: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+  }
+  

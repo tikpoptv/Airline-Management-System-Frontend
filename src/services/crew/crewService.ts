@@ -1,38 +1,11 @@
-import { API_BASE_URL } from "../../config";
+import { api } from "../../api";
 import { Crew } from "../../types/crew";
 
-const getToken = () => localStorage.getItem("token");
-
 export const getCrewList = async (): Promise<Crew[]> => {
-  const token = getToken();
-  if (!token) throw new Error('Unauthorized: No token provided');
-
-  const response = await fetch(`${API_BASE_URL}/api/crew`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to fetch crew list');
-  }
-
-  return response.json();
+  return api.get('/api/crew');
 };
 
 export const deleteCrewById = async (id: number): Promise<void> => {
-  const res = await fetch(`${API_BASE_URL}/crew/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
-
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ error: 'unknown error' }));
-    throw new Error(error.error || `Failed to delete crew with ID ${id}`);
-  }
+  return api.delete(`/api/crew/${id}`);
 };
 

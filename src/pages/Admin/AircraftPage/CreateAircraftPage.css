@@ -1,8 +1,6 @@
 /* Create Aircraft Page */
 .content-container {
   background: #f8fafc;
-  margin: -1.5rem;
-  padding: 0;
   width: 100%;
   min-height: calc(100vh - 64px);
 }
@@ -12,16 +10,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
+  padding: 24px 32px;
   background: white;
   border-bottom: 1px solid #e2e8f0;
-  margin-bottom: 2rem;
 }
 
-.page-header > div {
+.header-content {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: flex-start;
+  gap: 0.25rem;
 }
 
 .page-title {
@@ -30,6 +28,7 @@
   color: #1e293b;
   line-height: 1.2;
   margin: 0;
+  order: -1;
 }
 
 .breadcrumb {
@@ -37,12 +36,15 @@
   align-items: center;
   gap: 0.5rem;
   margin: 0;
+  padding: 0;
 }
 
 .breadcrumb span {
   color: #64748b;
   font-size: 0.875rem;
   font-weight: 500;
+  padding: 0;
+  margin: 0;
 }
 
 .breadcrumb span:last-child {
@@ -53,6 +55,8 @@
 .breadcrumb-separator {
   color: #94a3b8;
   font-size: 0.875rem;
+  padding: 0;
+  margin: 0 0.5rem;
 }
 
 .back-button {
@@ -82,7 +86,8 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: #1e293b;
-  margin: 0 2rem 1.5rem;
+  padding: 0 32px;
+  margin: 24px 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -98,12 +103,12 @@
 
 /* Profile Form */
 .profile-form {
-  padding: 2rem;
+  padding: 32px;
   background: white;
   border-radius: 1.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
               0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  margin: 0 2rem 2rem;
+  margin: 0 32px;
 }
 
 .form-layout {

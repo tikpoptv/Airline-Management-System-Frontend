@@ -9,6 +9,8 @@ import ApiStatusChecker from "./components/ApiStatusChecker";
 import Maintenance from "./pages/Maintenance/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CrewDetailPage from "./pages/Admin/CrewPage/CrewDetailPage";
+import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
+
 function App() {
   return (
     <>
@@ -31,6 +33,7 @@ function App() {
             <Route path="aircrafts/:id" element={<AircraftDetailPage />} />
             <Route path="crew" element={<CrewPage />} />
             <Route path="crew/:id" element={<CrewDetailPage/>} />
+            <Route path="aircraft/create" element={<CreateAircraftPage />} />
           </Route>
 
           <Route

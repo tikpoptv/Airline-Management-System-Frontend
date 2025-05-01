@@ -1,7 +1,9 @@
-import { FaPlane, FaEye, FaSearch } from 'react-icons/fa';
+import { FaPlane, FaEye, FaSearch, FaPlus } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
 import { Aircraft } from '../../../types/aircraft';
+import CreateAircraftModal from './CreateAircraftModal';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   aircraftList: Aircraft[];
@@ -26,9 +28,11 @@ const AircraftList = ({
   onDelete,
 }: Props) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterAircraftId, setFilterAircraftId] = useState('');
   const [filterModel, setFilterModel] = useState('');
   const [filterOwner, setFilterOwner] = useState('');
+  const navigate = useNavigate();
 
   const handleCheckboxChange = (id: number) => {
     setSelectedAircraftIds((prev) =>
@@ -68,7 +72,9 @@ const AircraftList = ({
 
           <div className={`button-group`}>
             {isEditing && (
-              <button className="add-button">Add New</button>
+              <button className="add-button" onClick={() => navigate('/admin/aircraft/create')}>
+                <FaPlus className="add-icon" /> Add New
+              </button>
             )}
             {isEditing && (
               <button className="delete-button" onClick={onDelete}>
@@ -181,6 +187,17 @@ const AircraftList = ({
           </div>
         </div>
       )}
+
+      {/* Create Aircraft Modal */}
+      <CreateAircraftModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={() => {
+          setShowCreateModal(false);
+          // Refresh aircraft list
+          window.location.reload();
+        }}
+      />
     </>
   );
 };

@@ -21,12 +21,12 @@ const AircraftProfileSection = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // ✅ Modal confirm delete
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState<'success' | 'error'>('success'); // ✅ success หรือ error
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
   const navigate = useNavigate();
 
@@ -83,13 +83,14 @@ const AircraftProfileSection = ({
   };
 
   return (
-    <div className={`profile-wrapper ${isEditMode ? 'edit-mode' : ''}`}>
+    <div className="profile-wrapper">
       <div className="form-grid">
-        {/* Row 1: Avatar + Aircraft ID + Trash */}
         <div className="avatar-cell">
-          <div className="profile-avatar">
-            <img src={avatarImg} alt="Aircraft" />
-          </div>
+          <img 
+            src={editData.image_url || avatarImg} 
+            alt="Aircraft"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </div>
 
         <div className="input-group aircraft-id-group">
@@ -104,17 +105,15 @@ const AircraftProfileSection = ({
           </div>
         </div>
 
-        {/* Row 2: Airline Owner + Maintenance Status */}
-        <div className="input-group airline-owner">
+        <div className="input-group">
           <label>Airline Owner</label>
           <div className="read-only-field">{editData.airline_owner}</div>
         </div>
 
-        <div className="input-group maintenance-status">
+        <div className="input-group">
           <label>Maintenance Status</label>
           {isEditMode ? (
             <select
-              name="maintenance_status"
               value={editData.maintenance_status}
               onChange={(e) =>
                 handleChange('maintenance_status', e.target.value as Aircraft['maintenance_status'])
@@ -129,16 +128,10 @@ const AircraftProfileSection = ({
           )}
         </div>
 
-        {/* Row 3: Model Name + Capacity + Year */}
         <div className="input-group">
           <label>Model Name</label>
           <div className="read-only-field">{editData.model}</div>
         </div>
-
-        {/* <div className="input-group">
-          <label>Capacity</label>
-          <div className="read-only-field">{editData.capacity}</div>
-        </div> */}
 
         <div className="input-group">
           <label>Capacity</label>
@@ -158,7 +151,6 @@ const AircraftProfileSection = ({
           <div className="read-only-field">{editData.manufacture_year}</div>
         </div>
 
-        {/* Row 4: Aircraft History */}
         <div className="input-group aircraft-history">
           <label>Aircraft History</label>
           {isEditMode ? (
@@ -172,7 +164,6 @@ const AircraftProfileSection = ({
           )}
         </div>
 
-        {/* Save Button */}
         {isEditMode && (
           <div className="save-button-cell">
             <button className="save-button" onClick={() => setShowConfirmModal(true)}>
@@ -181,7 +172,6 @@ const AircraftProfileSection = ({
           </div>
         )}
 
-        {/* Modal Confirm Save */}
         {showConfirmModal && (
           <div className="modal-backdrop">
             <div className="modal-content">
@@ -218,7 +208,6 @@ const AircraftProfileSection = ({
           </div>
         )}
 
-        {/* Modal Confirm Delete */}
         {showDeleteConfirm && (
           <div className="modal-backdrop">
             <div className="modal-content">
@@ -236,10 +225,8 @@ const AircraftProfileSection = ({
             </div>
           </div>
         )}
-
       </div>
 
-      {/* Toast Message */}
       {showToast && (
         <div
           className={`toast ${toastType}`}
@@ -260,7 +247,6 @@ const AircraftProfileSection = ({
           {toastMessage}
         </div>
       )}
-
     </div>
   );
 };

@@ -6,6 +6,7 @@ export interface Aircraft {
     airline_owner: string;
     maintenance_status: 'Operational' | 'In Maintenance' | 'Retired';
     aircraft_history: string;
+    image_url?: string;
   }
   
   export interface UpdateAircraftPayload {

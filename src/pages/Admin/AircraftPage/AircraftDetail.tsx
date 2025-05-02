@@ -3,6 +3,7 @@ import { Aircraft } from '../../../types/aircraft';
 import { Flight } from '../../../types/flight';
 import AircraftProfileSection from './AircraftProfileSection';
 import FlightSchedule from './FlightSchedule';
+import './AircraftDetails.css';
 
 interface Props {
     aircraft: Aircraft;
@@ -43,7 +44,7 @@ const AircraftDetail = ({
     };
 
     return (
-        <div className="aircraft-detail">
+        <div className={`aircraft-detail ${isEditMode ? 'is-edit-mode' : ''}`}>
             <div className="page-header-row">
                 <div className="page-heading-left">
                     <h1 className="page-title">

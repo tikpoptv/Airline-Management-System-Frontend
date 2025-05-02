@@ -128,22 +128,7 @@ const AircraftPage = () => {
       )}
 
       {showToast && (
-        <div
-          className={`toast ${toastType}`}
-          style={{
-            position: 'fixed',
-            top: '2rem',
-            right: '2rem',
-            backgroundColor: toastType === 'success' ? '#4caf50' : '#f44336',
-            color: 'white',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            zIndex: 9999,
-            fontSize: '1rem',
-            transition: 'opacity 0.3s ease',
-          }}
-        >
+        <div className={`toast ${toastType} ${showToast ? 'show' : 'hide'}`}>
           {toastMessage}
         </div>
       )}

@@ -1,11 +1,14 @@
+export type MaintenanceStatus = 'Operational' | 'In Maintenance' | 'Retired';
+
 export interface Aircraft {
     aircraft_id: number;
     model: string;
     manufacture_year: number;
     capacity: number;
     airline_owner: string;
-    maintenance_status: 'Operational' | 'In Maintenance' | 'Retired';
+    maintenance_status: MaintenanceStatus;
     aircraft_history: string;
+    image_url?: string;
   }
   
   export interface UpdateAircraftPayload {

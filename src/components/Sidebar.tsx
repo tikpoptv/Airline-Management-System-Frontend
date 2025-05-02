@@ -1,7 +1,7 @@
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
-import { useNavigate } from 'react-router-dom';
+import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { getUser, logout } from '../services/auth/authService';
-import { FaUserCircle } from 'react-icons/fa';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -11,22 +11,24 @@ const Sidebar = () => {
     logout();
     navigate('/');
   };
+
   return (
     <nav className="navbar">
       <div className="navbar-left">
       </div>
 
       <div className="navbar-right">
-        {user && <span className="user-type">{user.role.toUpperCase()}</span>}
-        <FaUserCircle className="user-icon" />
-        <div className="logout">
-        <button className="logout-button" onClick={handleLogout}>
-          LOGOUT
-        </button>
+        <div className="admin-profile">
+          <FaUser className="admin-icon" />
+          <span>{user?.role.toUpperCase()}</span>
         </div>
+        <button className="logout-btn" onClick={handleLogout}>
+          <FaSignOutAlt className="logout-icon" />
+          <span>LOGOUT</span>
+        </button>
       </div>
     </nav>
   );
 };
 
-export default Sidebar;
+export default Sidebar; 

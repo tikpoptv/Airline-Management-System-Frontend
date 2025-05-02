@@ -161,6 +161,8 @@ const FlightPage: React.FC = () => {
                   </select>
                 </div>
               </div>
+            </div>
+            <div className="search-row" style={{ justifyContent: 'flex-end' }}>
               <button type="submit" className="search-button">
                 <FaSearch /> Search Flights
               </button>

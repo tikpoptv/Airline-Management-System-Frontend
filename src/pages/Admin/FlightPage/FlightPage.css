@@ -227,10 +227,10 @@ select:hover {
   height: 38px;
   font-size: 13px;
   padding: 0 24px 0 12px;
-  flex: 0 0 160px;
-  min-width: 140px;
-  width: auto;
-  max-width: 220px;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -239,10 +239,11 @@ select:hover {
 
 /* Date Input Styling */
 input[type="date"] {
+  height: 38px;
   padding: 0 12px;
-  position: relative;
-  min-width: 130px;
-  cursor: pointer;
+  line-height: normal;
+  min-height: 38px;
+  box-sizing: border-box;
 }
 
 /* Hide default calendar icon */
@@ -287,7 +288,9 @@ input[type="date"]:focus::-webkit-datetime-edit {
 /* Input with icon specific for date */
 .input-with-icon input[type="date"] {
   padding-left: 36px;
-  padding-right: 32px;
+  padding-right: 12px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 input::placeholder {
@@ -652,10 +655,11 @@ button:focus {
 }
 
 input[type="date"] {
-  height: 44px;
-  padding: 0.625rem 0.75rem;
+  height: 38px;
+  padding: 0 12px;
   line-height: normal;
-  min-height: 44px;
+  min-height: 38px;
+  box-sizing: border-box;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -718,4 +722,22 @@ select::-ms-expand {
   background: #e0e7ff;
   color: #3730a3;
   border: 1px solid #a5b4fc;
+}
+
+@media (min-width: 0) {
+  input[type="date"] {
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .input-with-icon input[type="date"] {
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 12px !important;
+  }
 } 

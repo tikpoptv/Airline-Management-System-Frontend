@@ -210,7 +210,7 @@ const FlightPage: React.FC = () => {
                   <td>{flight.date}</td>
                   <td>{flight.depart}</td>
                   <td>{flight.arrival}</td>
-                  <td>{flight.remark || 'null'}</td>
+                  <td>{flight.remark ? flight.remark : '-'}</td>
                 </tr>
               ))}
             </tbody>

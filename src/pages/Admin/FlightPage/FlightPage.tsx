@@ -1,19 +1,9 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import './FlightPage.css';
 import { FaSearch, FaPlus, FaSort, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
-interface Flight {
-  status: 'Schedule' | 'Cancelled';
-  flightId: number;
-  flightNumber: string;
-  aircraftId: number;
-  routeId: number;
-  date: string;
-  depart: string;
-  arrival: string;
-  remark: string | null;
-}
+import { getAllFlights } from '../../../services/flight/flightService';
+import { Flight as ApiFlight } from '../../../types/flight';
 
 interface SearchFormData {
   from: string;
@@ -32,6 +22,14 @@ const FlightPage: React.FC = () => {
     status: ''
   });
 
+  const [flights, setFlights] = useState<ApiFlight[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const totalPages = Math.ceil(flights.length / pageSize);
+  const pagedFlights = flights.slice((page - 1) * pageSize, page * pageSize);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setSearchData(prev => ({
@@ -46,42 +44,21 @@ const FlightPage: React.FC = () => {
     console.log('Search data:', searchData);
   };
 
-  // Mock data - will be replaced with API data later
-  const flights: Flight[] = [
-    {
-      status: 'Schedule',
-      flightId: 1,
-      flightNumber: 'TG101',
-      aircraftId: 2,
-      routeId: 5,
-      date: '2025-04-30',
-      depart: '09:00',
-      arrival: '11:00',
-      remark: null
-    },
-    {
-      status: 'Schedule',
-      flightId: 1,
-      flightNumber: 'TG101',
-      aircraftId: 2,
-      routeId: 5,
-      date: '2025-04-30',
-      depart: '09:00',
-      arrival: '11:00',
-      remark: null
-    },
-    {
-      status: 'Cancelled',
-      flightId: 1,
-      flightNumber: 'TG101',
-      aircraftId: 2,
-      routeId: 5,
-      date: '2025-04-30',
-      depart: '09:00',
-      arrival: '11:00',
-      remark: 'Heavy storm in Tokyo'
-    }
-  ];
+  useEffect(() => {
+    const fetchFlights = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getAllFlights();
+        setFlights(data);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch flights');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFlights();
+  }, []);
 
   return (
     <div className="flight-page">
@@ -183,40 +160,75 @@ const FlightPage: React.FC = () => {
         </div>
 
         <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Flight ID</th>
-                <th>Flight_number</th>
-                <th>Aircraft ID</th>
-                <th>Route ID</th>
-                <th>Date</th>
-                <th>Depart</th>
-                <th>Arrival</th>
-                <th>Remark</th>
-              </tr>
-            </thead>
-            <tbody>
-              {flights.map((flight, index) => (
-                <tr key={index}>
-                  <td>
-                    <span className={`status-badge ${flight.status.toLowerCase()}`}>
-                      {flight.status}
-                    </span>
-                  </td>
-                  <td>{flight.flightId}</td>
-                  <td>{flight.flightNumber}</td>
-                  <td>{flight.aircraftId}</td>
-                  <td>{flight.routeId}</td>
-                  <td>{flight.date}</td>
-                  <td>{flight.depart}</td>
-                  <td>{flight.arrival}</td>
-                  <td>{flight.remark ? flight.remark : '-'}</td>
+          {loading ? (
+            <div className="flight-table-empty">Loading...</div>
+          ) : error ? (
+            <div className="flight-table-empty">{error}</div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Flight ID</th>
+                  <th>Flight_number</th>
+                  <th className="aircraft">Aircraft</th>
+                  <th className="route">Route</th>
+                  <th>Date</th>
+                  <th>Depart</th>
+                  <th>Arrival</th>
+                  <th className="remark">Remark</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {pagedFlights.map((flight) => (
+                  <tr key={flight.flight_id}>
+                    <td>
+                      <span className={`status-badge ${flight.flight_status?.toLowerCase()}`}>{flight.flight_status}</span>
+                    </td>
+                    <td>{flight.flight_id}</td>
+                    <td>{flight.flight_number}</td>
+                    <td className="aircraft">{flight.aircraft?.model ?? '-'}</td>
+                    <td className="route">
+                      {flight.route?.from_airport?.iata_code && flight.route?.to_airport?.iata_code
+                        ? `${flight.route.from_airport.iata_code} → ${flight.route.to_airport.iata_code}`
+                        : '-'}
+                    </td>
+                    <td>{flight.departure_time ? new Date(flight.departure_time).toLocaleDateString('th-TH') : '-'}</td>
+                    <td>{flight.departure_time ? new Date(flight.departure_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
+                    <td>{flight.arrival_time ? new Date(flight.arrival_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
+                    <td
+                      className="remark"
+                      data-hastext={!!flight.cancellation_reason && flight.cancellation_reason !== '-' ? 'true' : undefined}
+                      title={flight.cancellation_reason && flight.cancellation_reason !== '-' ? flight.cancellation_reason : undefined}
+                    >
+                      {flight.cancellation_reason
+                        ? (flight.cancellation_reason.length > 32
+                            ? flight.cancellation_reason.slice(0, 32) + '...'
+                            : flight.cancellation_reason)
+                        : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <div className="table-pagination">
+            <div className="page-size">
+              Show
+              <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+              entries
+            </div>
+            <div className="page-controls">
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
+              <span className="page-info">Page {page} / {totalPages || 1}</span>
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || totalPages === 0}>Next</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

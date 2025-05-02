@@ -30,6 +30,10 @@
   --spacing-xl: 2rem;
 }
 
+body, .flight-page {
+  font-family: 'Inter', 'Prompt', 'Sarabun', Arial, sans-serif;
+}
+
 .flight-page {
   padding: var(--spacing-xl);
   max-width: 1400px;
@@ -391,13 +395,13 @@ select:focus {
 }
 
 .table-container {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(59,130,246,0.07);
+  border: 1px solid #f1f5f9;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(2px);
   padding: 0;
-  border: 1px solid #e5eaf2;
   margin-bottom: 24px;
-  backdrop-filter: none;
 }
 
 table {
@@ -422,11 +426,11 @@ th {
 }
 
 tr:nth-child(even) td {
-  background: #fafbfc;
+  background: #f6faff;
 }
 
 tr:hover td {
-  background: #f3f6fa;
+  background: #e8f0fe;
   transition: background 0.18s;
 }
 
@@ -495,36 +499,51 @@ tr:last-child td {
 }
 
 .status-badge {
-  padding: 5px 14px;
-  border-radius: 8px;
+  display: inline-block;
+  min-width: 110px;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  margin: auto;
+  box-shadow: 0 2px 8px 0 rgba(59,130,246,0.08);
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f0fdf4 60%, #d1fae5 100%);
+  transition: box-shadow 0.18s, transform 0.18s;
   font-size: 13px;
   font-weight: 600;
-  text-transform: capitalize;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 80px;
-  box-shadow: none;
-  letter-spacing: 0.1px;
-  gap: 6px;
-  background: #f3f6fa;
-  border: none;
-  color: #15803d;
+  padding: 3px 10px;
+  border-width: 1px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-.status-badge.cancelled {
-  background: #ffeaea;
-  color: #b91c1c;
+.status-badge.scheduled {
+  background: linear-gradient(90deg, #dbeafe 60%, #bfdbfe 100%);
+  color: #2563eb;
+  border: 1.5px solid #60a5fa;
+}
+
+.status-badge.boarding {
+  background: linear-gradient(90deg, #f0fdf4 60%, #bbf7d0 100%);
+  color: #15803d;
+  border: 1.5px solid #4ade80;
 }
 
 .status-badge.delayed {
-  background: #fef9c3;
+  background: linear-gradient(90deg, #fef9c3 60%, #fde68a 100%);
   color: #b45309;
+  border: 1.5px solid #fbbf24;
 }
 
-.status-badge.completed {
-  background: #e0e7ff;
-  color: #3730a3;
+.status-badge.cancelled {
+  background: linear-gradient(90deg, #fee2e2 60%, #fecaca 100%);
+  color: #b91c1c;
+  border: 1.5px solid #fca5a5;
+}
+
+.status-badge:hover {
+  box-shadow: 0 6px 24px 0 rgba(59,130,246,0.13);
+  transform: scale(1.04);
 }
 
 /* เน้นคอลัมน์สำคัญ */
@@ -596,7 +615,7 @@ td.date, th.date {
     width: 100%;
     min-width: auto;
   }
-  
+
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -614,7 +633,7 @@ td.date, th.date {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .table-actions button {
     width: 100%;
   }
@@ -740,4 +759,234 @@ select::-ms-expand {
     padding-bottom: 0 !important;
     padding-right: 12px !important;
   }
+}
+
+.table-container table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+th, td {
+  padding-left: 14px;
+  padding-right: 14px;
+  font-size: 15px;
+  border-bottom: 1px solid #f3f6fa;
+  vertical-align: middle;
+}
+
+th {
+  background: #fff;
+  font-weight: 700;
+  color: #334155;
+  border-bottom: 1.5px solid #e5eaf2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th.status, td.status {
+  min-width: 110px;
+  text-align: center;
+}
+th.flight-number, td.flight-number {
+  min-width: 120px;
+}
+th.date, td.date {
+  min-width: 110px;
+}
+th.remark, td.remark {
+  max-width: 220px;
+  width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+th, td {
+  border-right: 1px solid #f3f6fa;
+}
+th:last-child, td:last-child {
+  border-right: none;
+}
+tr:hover td {
+  background: #f6faff;
+  transition: background 0.18s;
+}
+
+th.aircraft, td.aircraft {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+th.route, td.route {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 24px;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  padding-right: 8px;
+  flex-wrap: wrap;
+}
+
+.table-pagination .page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.table-pagination select {
+  border-radius: 8px;
+  border: 1px solid #e5eaf2;
+  padding: 4px 16px 4px 8px;
+  font-size: 15px;
+  background: #f9fbfd;
+  color: #1e293b;
+}
+
+.table-pagination .page-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-pagination button {
+  background: #f3f6fa;
+  color: #2563eb;
+  border: 1px solid #e5eaf2;
+  border-radius: 8px;
+  padding: 4px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.table-pagination button:disabled {
+  background: #f9fbfd;
+  color: #b6bcc8;
+  cursor: not-allowed;
+}
+
+.table-pagination .page-info {
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .table-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-right: 0;
+  }
+  .table-pagination .page-controls {
+    justify-content: flex-end;
+  }
+}
+
+/* ลบ dot สีออก */
+.status-badge.boarding::before,
+.status-badge.scheduled::before,
+.status-badge.delayed::before,
+.status-badge.cancelled::before {
+  content: none;
+  display: none;
+}
+
+/* ปรับสีพื้นหลังและสีตัวอักษรของแต่ละสถานะ */
+.status-badge.boarding {
+  background: linear-gradient(90deg, #d1fae5 60%, #bbf7d0 100%);
+  color: #15803d;
+  border: 1.5px solid #4ade80;
+  font-weight: 700;
+}
+.status-badge.scheduled {
+  background: linear-gradient(90deg, #dbeafe 60%, #bfdbfe 100%);
+  color: #2563eb;
+  border: 1.5px solid #60a5fa;
+  font-weight: 700;
+}
+.status-badge.delayed {
+  background: linear-gradient(90deg, #fef9c3 60%, #fde68a 100%);
+  color: #b45309;
+  border: 1.5px solid #fbbf24;
+  font-weight: 700;
+}
+.status-badge.cancelled {
+  background: linear-gradient(90deg, #fee2e2 60%, #fecaca 100%);
+  color: #b91c1c;
+  border: 1.5px solid #fca5a5;
+  font-weight: 700;
+}
+
+/* ปรับ remark สีเทาอ่อนและ italic ถ้าเป็น '-' */
+td.remark {
+  color: #b6bcc8;
+  font-style: italic;
+  cursor: pointer;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+td.remark[data-hastext="true"] {
+  color: #334155;
+  font-style: normal;
+}
+td.remark[data-hastext="true"]:hover {
+  color: #2563eb;
+  font-style: normal;
+}
+
+/* ปรับ route เป็นลูกศร */
+td.route {
+  font-weight: 500;
+  color: #2563eb;
+  letter-spacing: 0.5px;
+}
+
+/* เพิ่ม hover effect ชัดขึ้น */
+tr:hover td {
+  background: #e8f0fe;
+  transition: background 0.18s;
+}
+
+/* ปรับ empty state ให้น่ารักขึ้น */
+.flight-table-empty {
+  text-align: center;
+  color: #64748b;
+  font-size: 18px;
+  padding: 48px 0;
+  background: #f9fbfd;
+  border-radius: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.flight-table-empty::before {
+  content: "✈️";
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.route {
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline dotted transparent;
+  transition: text-decoration-color 0.2s;
+}
+.route:hover {
+  text-decoration-color: #2563eb;
 } 

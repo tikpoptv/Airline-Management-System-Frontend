@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import './FlightPage.css';
-import { FaSearch, FaPlus, FaSort, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
+import { FaSearch, FaPlus, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { getAllFlights } from '../../../services/flight/flightService';
 import { Flight as ApiFlight } from '../../../types/flight';
@@ -38,6 +38,23 @@ const FlightPage: React.FC = () => {
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
   const flightNumberInputRef = useRef<HTMLInputElement>(null);
+
+  const sortOptions = [
+    { value: 'default', label: 'Default' },
+    { value: 'date_desc', label: 'Date (Newest)' },
+    { value: 'date_asc', label: 'Date (Oldest)' },
+    { value: 'depart_asc', label: 'Departure Time (Earliest)' },
+    { value: 'depart_desc', label: 'Departure Time (Latest)' },
+    { value: 'flight_az', label: 'Flight Number (A-Z)' },
+    { value: 'flight_za', label: 'Flight Number (Z-A)' },
+    { value: 'status', label: 'Status' },
+    { value: 'aircraft', label: 'Aircraft (A-Z)' },
+    { value: 'id_asc', label: 'Flight ID (Lowest)' },
+    { value: 'id_desc', label: 'Flight ID (Highest)' },
+  ];
+  const [sortBy, setSortBy] = useState('default');
+  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
+  const sortBtnRef = useRef<HTMLButtonElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -123,12 +140,64 @@ const FlightPage: React.FC = () => {
     if (field === 'flightNumber') setShowFlightNumberDropdown(false);
   };
 
+  // ฟังก์ชัน sort
+  const sortFlights = (flights: ApiFlight[]) => {
+    const sorted = [...flights];
+    switch (sortBy) {
+      case 'default':
+        // ไม่ต้อง sort เพิ่มเติม
+        break;
+      case 'date_desc':
+        sorted.sort((a, b) => new Date(b.departure_time || 0).getTime() - new Date(a.departure_time || 0).getTime());
+        break;
+      case 'date_asc':
+        sorted.sort((a, b) => new Date(a.departure_time || 0).getTime() - new Date(b.departure_time || 0).getTime());
+        break;
+      case 'depart_asc':
+        sorted.sort((a, b) => {
+          const at = a.departure_time ? new Date(a.departure_time).getHours() * 60 + new Date(a.departure_time).getMinutes() : 0;
+          const bt = b.departure_time ? new Date(b.departure_time).getHours() * 60 + new Date(b.departure_time).getMinutes() : 0;
+          return at - bt;
+        });
+        break;
+      case 'depart_desc':
+        sorted.sort((a, b) => {
+          const at = a.departure_time ? new Date(a.departure_time).getHours() * 60 + new Date(a.departure_time).getMinutes() : 0;
+          const bt = b.departure_time ? new Date(b.departure_time).getHours() * 60 + new Date(b.departure_time).getMinutes() : 0;
+          return bt - at;
+        });
+        break;
+      case 'flight_az':
+        sorted.sort((a, b) => (a.flight_number || '').localeCompare(b.flight_number || ''));
+        break;
+      case 'flight_za':
+        sorted.sort((a, b) => (b.flight_number || '').localeCompare(a.flight_number || ''));
+        break;
+      case 'status':
+        sorted.sort((a, b) => (a.flight_status || '').localeCompare(b.flight_status || ''));
+        break;
+      case 'aircraft':
+        sorted.sort((a, b) => (a.aircraft?.model || '').localeCompare(b.aircraft?.model || ''));
+        break;
+      case 'id_asc':
+        sorted.sort((a, b) => (a.flight_id || 0) - (b.flight_id || 0));
+        break;
+      case 'id_desc':
+        sorted.sort((a, b) => (b.flight_id || 0) - (a.flight_id || 0));
+        break;
+      default:
+        break;
+    }
+    return sorted;
+  };
+
   // ให้ pagedFlights ใช้ filteredFlights ถ้าเคยค้นหา (filteredFlights !== null)
   const flightsToShow = filteredFlights !== null
     ? filteredFlights
     : flights;
-  const totalPages = Math.ceil(flightsToShow.length / pageSize);
-  const pagedFlights = flightsToShow.slice((page - 1) * pageSize, page * pageSize);
+  const sortedFlights = sortFlights(flightsToShow);
+  const totalPages = Math.ceil(sortedFlights.length / pageSize);
+  const pagedFlights = sortedFlights.slice((page - 1) * pageSize, page * pageSize);
 
   // เพิ่มฟังก์ชัน reset
   const handleReset = () => {
@@ -142,6 +211,18 @@ const FlightPage: React.FC = () => {
     setFilteredFlights(null);
     setPage(1);
   };
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (sortBtnRef.current && !sortBtnRef.current.contains(e.target as Node)) {
+        setSortDropdownOpen(false);
+      }
+    };
+    if (sortDropdownOpen) {
+      document.addEventListener('click', handleClick);
+    }
+    return () => document.removeEventListener('click', handleClick);
+  }, [sortDropdownOpen]);
 
   return (
     <div className="flight-page">
@@ -275,9 +356,35 @@ const FlightPage: React.FC = () => {
           <button className="add-new-button">
             <FaPlus /> Add new
           </button>
-          <button className="sort-button">
-            <FaSort /> Sort by
-          </button>
+          <div className="sortby-dropdown-wrapper" style={{ position: 'relative' }}>
+            <button
+              ref={sortBtnRef}
+              type="button"
+              className="sortby-btn"
+              onClick={() => setSortDropdownOpen(open => !open)}
+              style={{ minWidth: 160, height: 38, borderRadius: 10, border: '1.5px solid #e5eaf2', fontWeight: 600, color: '#2563eb', background: '#fff', marginLeft: 8, marginRight: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 18px', cursor: 'pointer', boxShadow: sortDropdownOpen ? '0 2px 8px 0 rgba(59,130,246,0.10)' : 'none' }}
+            >
+              Sort by: {sortOptions.find(opt => opt.value === sortBy)?.label || 'Default'}
+              <span style={{ marginLeft: 8, fontSize: 16, transition: 'transform 0.18s', transform: sortDropdownOpen ? 'rotate(180deg)' : 'none' }}>▼</span>
+            </button>
+            {sortDropdownOpen && (
+              <ul className="sortby-dropdown-menu" style={{ position: 'absolute', top: 44, left: 0, right: 0, zIndex: 20, background: '#fff', border: '1.5px solid #e5eaf2', borderRadius: 10, boxShadow: '0 4px 16px 0 rgba(59,130,246,0.07)', padding: 0, margin: 0, listStyle: 'none', overflow: 'hidden' }}>
+                {sortOptions.map(opt => (
+                  <li
+                    key={opt.value}
+                    onClick={() => {
+                      setSortBy(opt.value);
+                      setSortDropdownOpen(false);
+                      setPage(1);
+                    }}
+                    style={{ padding: '12px 20px', fontSize: 15, color: opt.value === sortBy ? '#2563eb' : '#334155', fontWeight: opt.value === sortBy ? 700 : 500, background: opt.value === sortBy ? '#f0f9ff' : '#fff', cursor: 'pointer', borderBottom: '1px solid #f3f6fa', transition: 'background 0.15s, color 0.15s' }}
+                  >
+                    {opt.label}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <button className="edit-button">
             <FaEdit /> Edit
           </button>

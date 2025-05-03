@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Crew } from '../../../types/crew';
 import { Flight } from '../../../types/flight';
 import CrewProfileSection from './CrewProfileSection';
-import CrewSchedule from './CrewSchedule';
+import FlightSchedule from './CrewFlightSchedule';
+import './CrewDetail.css'
 
 interface Props {
   crew: Crew;
@@ -15,6 +16,7 @@ interface Props {
   onBack: () => void;
   isEditMode: boolean;
 }
+
 
 const CrewDetail = ({
   crew,
@@ -34,14 +36,13 @@ const CrewDetail = ({
     setEditData(crew);
     setOriginalData(crew);
   }, [crew]);
-
+  console.log('Flight List:', flightList);
   const handleChange = <K extends keyof Crew>(field: K, value: Crew[K]) => {
     setEditData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-
   return (
     <div className="crew-detail">
       <div className="page-header-row">
@@ -67,7 +68,7 @@ const CrewDetail = ({
         handleChange={handleChange}
       />
 
-      <CrewSchedule
+      <FlightSchedule
         flightList={flightList}
         loading={loading}
         sortOption={sortOption}
@@ -76,6 +77,7 @@ const CrewDetail = ({
         setFlightFilter={setFlightFilter}
       />
     </div>
+    
   );
 };
 

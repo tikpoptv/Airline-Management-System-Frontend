@@ -79,11 +79,6 @@ const CrewSchedule = ({
 
           <table className="schedule-table">
             <thead>
-              <tr className="task-row">
-                <td colSpan={6}>
-                  <h3><strong>Flight Assignments</strong></h3>
-                </td>
-              </tr>
               <tr>
                 <th>Status</th>
                 <th>Flight Number</th>

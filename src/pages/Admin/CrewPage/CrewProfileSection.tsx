@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { Crew } from '../../../types/crew';
-import avatarImg from '../../../assets/images/resize.webp';
+import avatarImg from '../../../assets/images/profile_web.webp';
 import { updateCrewById, deleteCrewById } from '../../../services/crew/crewService';
 import { useNavigate } from 'react-router-dom';
 

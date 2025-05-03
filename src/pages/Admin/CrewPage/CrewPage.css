@@ -264,9 +264,10 @@
 
 .search-icon {
   color: var(--crew-text);
-  font-size: 1.25rem;
+  font-size: 40px;
   cursor: pointer;
   margin-right: 1rem;
+  
 }
 
 .eye-icon {
@@ -406,8 +407,6 @@ button:focus {
   color: var(--gray-500);
   border-radius: 6px;
   transition: all 0.2s ease;
-  background: transparent;
-  border: none;
 }
 
 .search-popup-button:hover {

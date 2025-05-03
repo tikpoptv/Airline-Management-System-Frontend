@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { Crew } from '../../../types/crew';
 import avatarImg from '../../../assets/images/profile_web.webp';
@@ -20,13 +20,19 @@ const CrewProfileSection = ({
 }: Props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [saving, setSaving] = useState(false);
-
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const [firstName, setFirstName] = useState(() => editData.name.split(' ')[0] || '');
+  const [lastName, setLastName] = useState(() => editData.name.split(' ').slice(1).join(' ') || '');
+
+  useEffect(() => {
+    const fullName = `${firstName} ${lastName}`.trim();
+    handleChange('name', fullName);
+  }, [firstName, handleChange, lastName]);
 
   const navigate = useNavigate();
 
@@ -44,8 +50,11 @@ const CrewProfileSection = ({
         name: editData.name,
         role: editData.role,
         flight_hours: editData.flight_hours,
+        passport_number: editData.passport_number,
+        license_expiry_date: editData.license_expiry_date,
+        passport_expiry_date: editData.passport_expiry_date,
       });
-  
+
       triggerToast("✅ Crew updated successfully!", 'success');
       setShowConfirmModal(false);
     } catch (error) {
@@ -82,7 +91,7 @@ const CrewProfileSection = ({
           </div>
         </div>
 
-        <div className="aircraft-id-group">
+        <div className="crew-id-group">
           <label>Crew ID</label>
           <div className="input-with-icon">
             <div className="read-only-field">{editData.crew_id}</div>
@@ -95,16 +104,21 @@ const CrewProfileSection = ({
         </div>
 
         <div className="input-group">
-          <label>Full Name</label>
-          {isEditMode ? (
-            <input
-              type="text"
-              value={editData.name}
-              onChange={(e) => handleChange('name', e.target.value)}
-            />
-          ) : (
-            <div className="read-only-field">{editData.name}</div>
-          )}
+          <label>First Name</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Last Name</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </div>
 
         <div className="input-group">
@@ -125,16 +139,39 @@ const CrewProfileSection = ({
         </div>
 
         <div className="input-group">
+          <label>Passport Number</label>
+          <input
+            type="text"
+            value={editData.passport_number}
+            onChange={(e) => handleChange('passport_number', e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <label>License Expiry Date</label>
+          <input
+            type="date"
+            value={editData.license_expiry_date}
+            onChange={(e) => handleChange('license_expiry_date', e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Passport Expiry Date</label>
+          <input
+            type="date"
+            value={editData.passport_expiry_date}
+            onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
           <label>Flight Hours</label>
-          {isEditMode ? (
-            <input
-              type="number"
-              value={editData.flight_hours}
-              onChange={(e) => handleChange('flight_hours', Number(e.target.value))}
-            />
-          ) : (
-            <div className="read-only-field">{editData.flight_hours}</div>
-          )}
+          <input
+            type="number"
+            value={editData.flight_hours}
+            onChange={(e) => handleChange('flight_hours', Number(e.target.value))}
+          />
         </div>
 
         {isEditMode && (

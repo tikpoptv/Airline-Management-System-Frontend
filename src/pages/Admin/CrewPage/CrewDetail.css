@@ -7,22 +7,23 @@
   }
   
   /* Page Header */
-  .crew-detail .page-header-row {
+   .page-header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.25rem 1.5rem;
     background: white;
+    margin-bottom: 2rem;
     border-bottom: 1px solid #e2e8f0;
   }
   
-  .crew-detail .page-heading-left {
+   .page-heading-left {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
   
-  .crew-detail .page-title {
+  .page-title {
     font-size: 1.5rem;
     font-weight: 600;
     color: #1e293b;
@@ -30,7 +31,7 @@
     margin: 0;
   }
   
-  .crew-detail .breadcrumb {
+  .breadcrumb {
     display: flex;
     align-items: center;
     gap: 0.5rem;

@@ -9,3 +9,7 @@ export const getFlightsByAircraftId = async (aircraftId: number): Promise<Flight
 export const getFlightsByCrewId = async (crewId: number): Promise<Flight[]> => {
   return api.get(`/api/crews/${crewId}/flights`);
 };
+
+export const getAllFlights = async () => {
+  return api.get('/api/flights');
+};

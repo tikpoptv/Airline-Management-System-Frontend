@@ -53,6 +53,7 @@ const CrewProfileSection = ({
         passport_number: editData.passport_number,
         license_expiry_date: editData.license_expiry_date,
         passport_expiry_date: editData.passport_expiry_date,
+        crew_id: editData.user?.user_id,
       });
 
       triggerToast("✅ Crew updated successfully!", 'success');
@@ -84,149 +85,241 @@ const CrewProfileSection = ({
 
   return (
     <div className="profile-wrapper">
-      <div className="form-grid">
-        <div className="avatar-cell">
+      <div className="form-container">
+        {/* Profile Avatar Section */}
+        <div className="avatar-section">
           <div className="profile-avatar">
             <img src={avatarImg} alt="avatar" />
           </div>
         </div>
 
-        <div className="crew-id-group">
-          <label>Crew ID</label>
-          <div className="input-with-icon">
-            <div className="read-only-field">{editData.crew_id}</div>
-            {isEditMode && (
-              <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
-                <FaTrash />
-              </button>
-            )}
+        {/* Main Content Layout */}
+        <div className="profile-content">
+          {/* Work Section */}
+          <div className="section work-section">
+            <h2>Work</h2>
+            <div className="field-group">
+              <label>Role</label>
+              {isEditMode ? (
+                <select
+                  value={editData.role}
+                  onChange={(e) => handleChange('role', e.target.value as Crew['role'])}
+                >
+                  <option value="Pilot">Pilot</option>
+                  <option value="Co-Pilot">Co-Pilot</option>
+                  <option value="Attendant">Attendant</option>
+                  <option value="Technician">Technician</option>
+                </select>
+              ) : (
+                <div className="read-only-field">{editData.role}</div>
+              )}
+            </div>
+
+            <div className="field-group">
+              <label>Crew ID</label>
+              <div className="input-with-icon">
+                <div className="read-only-field">{editData.crew_id}</div>
+                {isEditMode && (
+                  <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
+                    <FaTrash />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="field-group">
+              <label>Flight hours</label>
+              {isEditMode ? (
+                <input
+                  type="number"
+                  value={editData.flight_hours}
+                  onChange={(e) => handleChange('flight_hours', Number(e.target.value))}
+                />
+              ) : (
+                <div className="read-only-field">{editData.flight_hours}</div>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="input-group">
-          <label>First Name</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
+          {/* Information Section */}
+          <div className="section information-section">
+            <h2>Information</h2>
+            <div className="field-row">
+              <div className="field-group">
+                <label>First name</label>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{firstName}</div>
+                )}
+              </div>
+              
+              <div className="field-group">
+                <label>Last name</label>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{lastName}</div>
+                )}
+              </div>
+            </div>
 
-        <div className="input-group">
-          <label>Last Name</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
+            <div className="field-row">
+              <div className="field-group">
+                <label>Role</label>
+                {isEditMode ? (
+                  <select
+                    value={editData.role}
+                    onChange={(e) => handleChange('role', e.target.value as Crew['role'])}
+                  >
+                    <option value="Pilot">Pilot</option>
+                    <option value="Co-Pilot">Co-Pilot</option>
+                    <option value="Attendant">Attendant</option>
+                    <option value="Technician">Technician</option>
+                  </select>
+                ) : (
+                  <div className="read-only-field">{editData.role}</div>
+                )}
+              </div>
+              
+              <div className="field-group">
+                <label>License expire date</label>
+                {isEditMode ? (
+                  <input
+                    type="date"
+                    value={editData.license_expiry_date}
+                    onChange={(e) => handleChange('license_expiry_date', e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.license_expiry_date}</div>
+                )}
+              </div>
+            </div>
 
-        <div className="input-group">
-          <label>Role</label>
-          {isEditMode ? (
-            <select
-              value={editData.role}
-              onChange={(e) => handleChange('role', e.target.value as Crew['role'])}
-            >
-              <option value="Pilot">Pilot</option>
-              <option value="Co-Pilot">Co-Pilot</option>
-              <option value="Attendant">Attendant</option>
-              <option value="Technician">Technician</option>
-            </select>
-          ) : (
-            <div className="read-only-field">{editData.role}</div>
+            <div className="field-row">
+              <div className="field-group">
+                <label>Passport number</label>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    value={editData.passport_number}
+                    onChange={(e) => handleChange('passport_number', e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.passport_number}</div>
+                )}
+              </div>
+              
+              <div className="field-group">
+                <label>Passport expire date</label>
+                {isEditMode ? (
+                  <input
+                    type="date"
+                    value={editData.passport_expiry_date}
+                    onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.passport_expiry_date}</div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Section */}
+          <div className="section contact-section">
+            <h2>Contact</h2>
+            <div className="field-row">
+              <div className="field-group">
+                <label>User ID</label>
+                <div className="read-only-field">{editData.user?.user_id || 'N/A'}</div>
+              </div>
+              
+              <div className="field-group">
+                <label>Username</label>
+                <div className="read-only-field">{editData.user?.username || 'N/A'}</div>
+              </div>
+            </div>
+
+            <div className="field-group full-width">
+              <label>Email</label>
+              <div className="read-only-field">{editData.user?.email || 'N/A'}</div>
+            </div>
+          </div>
+
+          {/* Save Button (when in edit mode) */}
+          {isEditMode && (
+            <div className="save-button-container">
+              <button className="save-button" onClick={() => setShowConfirmModal(true)}>
+                Save Changes
+              </button>
+            </div>
           )}
         </div>
-
-        <div className="input-group">
-          <label>Passport Number</label>
-          <input
-            type="text"
-            value={editData.passport_number}
-            onChange={(e) => handleChange('passport_number', e.target.value)}
-          />
-        </div>
-
-        <div className="input-group">
-          <label>License Expiry Date</label>
-          <input
-            type="date"
-            value={editData.license_expiry_date}
-            onChange={(e) => handleChange('license_expiry_date', e.target.value)}
-          />
-        </div>
-
-        <div className="input-group">
-          <label>Passport Expiry Date</label>
-          <input
-            type="date"
-            value={editData.passport_expiry_date}
-            onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
-          />
-        </div>
-
-        <div className="input-group">
-          <label>Flight Hours</label>
-          <input
-            type="number"
-            value={editData.flight_hours}
-            onChange={(e) => handleChange('flight_hours', Number(e.target.value))}
-          />
-        </div>
-
-        {isEditMode && (
-          <div className="save-button-cell">
-            <button className="save-button" onClick={() => setShowConfirmModal(true)}>
-              Save Changes
-            </button>
-          </div>
-        )}
-
-        {showConfirmModal && (
-          <div className="modal-backdrop">
-            <div className="modal-content">
-              <h3>Confirm Edit Crew</h3>
-              <div className="modal-diff">
-                {editData.name !== originalData.name && (
-                  <p><strong>Name:</strong> {originalData.name} → {editData.name}</p>
-                )}
-                {editData.role !== originalData.role && (
-                  <p><strong>Role:</strong> {originalData.role} → {editData.role}</p>
-                )}
-                {editData.flight_hours !== originalData.flight_hours && (
-                  <p><strong>Flight Hours:</strong> {originalData.flight_hours} → {editData.flight_hours}</p>
-                )}
-              </div>
-              <div className="modal-actions">
-                <button className="confirm-button" onClick={confirmSave} disabled={saving}>
-                  {saving ? 'Saving...' : 'Confirm'}
-                </button>
-                <button className="cancel-button" onClick={() => setShowConfirmModal(false)} disabled={saving}>
-                  Back
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showDeleteConfirm && (
-          <div className="modal-backdrop">
-            <div className="modal-content">
-              <h3>Confirm Delete Crew</h3>
-              <p>Are you sure you want to delete Crew ID: {editData.crew_id}?</p>
-              <div className="modal-actions">
-                <button className="confirm-button" onClick={confirmDelete} disabled={isDeleting}>
-                  {isDeleting ? 'Deleting...' : 'Confirm'}
-                </button>
-                <button className="cancel-button" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
-                  Back
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
+      {/* Modals */}
+      {showConfirmModal && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <h3>Confirm Edit Crew</h3>
+            <div className="modal-diff">
+              {editData.name !== originalData.name && (
+                <p><strong>Name:</strong> {originalData.name} → {editData.name}</p>
+              )}
+              {editData.role !== originalData.role && (
+                <p><strong>Role:</strong> {originalData.role} → {editData.role}</p>
+              )}
+              {editData.flight_hours !== originalData.flight_hours && (
+                <p><strong>Flight Hours:</strong> {originalData.flight_hours} → {editData.flight_hours}</p>
+              )}
+              {editData.passport_number !== originalData.passport_number && (
+                <p><strong>Passport Number:</strong> {originalData.passport_number} → {editData.passport_number}</p>
+              )}
+              {editData.passport_expiry_date !== originalData.passport_expiry_date && (
+                <p><strong>Passport Expiry:</strong> {originalData.passport_expiry_date} → {editData.passport_expiry_date}</p>
+              )}
+              {editData.license_expiry_date !== originalData.license_expiry_date && (
+                <p><strong>License Expiry:</strong> {originalData.license_expiry_date} → {editData.license_expiry_date}</p>
+              )}
+            </div>
+            <div className="modal-actions">
+              <button className="confirm-button" onClick={confirmSave} disabled={saving}>
+                {saving ? 'Saving...' : 'Confirm'}
+              </button>
+              <button className="cancel-button" onClick={() => setShowConfirmModal(false)} disabled={saving}>
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showDeleteConfirm && (
+        <div className="modal-backdrop">
+          <div className="modal-content">
+            <h3>Confirm Delete Crew</h3>
+            <p>Are you sure you want to delete Crew ID: {editData.crew_id}?</p>
+            <div className="modal-actions">
+              <button className="confirm-button" onClick={confirmDelete} disabled={isDeleting}>
+                {isDeleting ? 'Deleting...' : 'Confirm'}
+              </button>
+              <button className="cancel-button" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast notifications */}
       {showToast && (
         <div
           className={`toast ${toastType}`}

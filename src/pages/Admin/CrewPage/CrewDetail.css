@@ -75,7 +75,7 @@
   }
   
   /* Edit Button */
-  .crew-detail .edit-button {
+  .edit-button {
     padding: 0.5rem 1rem;
     background-color: #22c55e;
     color: white;
@@ -92,7 +92,7 @@
     justify-content: center;
   }
   
-  .crew-detail .edit-button:hover {
+  .edit-button:hover {
     background-color: #16a34a;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -176,7 +176,6 @@
     margin-bottom: 0.5rem;
     width: 100%;
     display: flex;
-    flex-direction: column;
     gap: 0.25rem;
   }
   

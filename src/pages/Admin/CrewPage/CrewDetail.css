@@ -6,6 +6,7 @@
     width: 100%;
   }
   
+  
   /* Page Header */
    .page-header-row {
     display: flex;
@@ -121,9 +122,10 @@
   
   /* Profile Section */
   .crew-detail .profile-wrapper {
-    padding: 2rem;
+    padding: 24px;
+    width: 100%;
     background: linear-gradient(to bottom, #ffffff, #f8fafc);
-    border-radius: 1rem;
+    border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
                 inset 0 1px 0 rgba(255, 255, 255, 0.9);
     margin: 0 1.5rem 2rem;
@@ -137,6 +139,11 @@
     gap: 0.5rem;
     align-items: start;
     padding: 0.5rem;
+  }
+
+  .form-container {
+    display: flex;
+    gap: 24px;
   }
   
   /* Avatar */
@@ -155,6 +162,53 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     overflow: hidden;
   }
+  .avatar-section {
+    flex: 0 0 auto;
+    padding: 1rem;
+  }
+  /* Main Content Layout */
+  .profile-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 24px;
+  }
+
+  /* Section Styling */
+.section {
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+
+  }
+  
+  .work-section {
+    grid-column: 1;
+    grid-row: 2 / span 3;
+  }
+  
+  .information-section {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+  }
+  
+  .contact-section {
+    grid-column: 2;
+    grid-row: 5;
+    position: relative;
+  }
+  
+  .section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #333;
+    position: relative;
+  }
+
   
   .crew-detail .avatar-cell img {
     width: 100%;
@@ -321,19 +375,19 @@
   }
   
   /* Save Button */
-  .crew-detail .save-button-cell {
+  .save-button-container{
     grid-column: 1 / -1;
     display: flex;
     justify-content: flex-end;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     gap: 1rem;
   }
   
-  .crew-detail .save-button {
-    padding: 1rem 2rem;
+  .save-button {
+    padding: 0.75rem 1.5rem;
     background: linear-gradient(45deg, #3b82f6, #2563eb);
     color: white;
-    border-radius: 0.75rem;
+    border-radius: 0.6rem;
     font-weight: 600;
     font-size: 1.0625rem;
     transition: all 0.2s ease;
@@ -353,8 +407,70 @@
     background-color: #ef4444;
     color: white;
     transition: all 0.2s ease;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
   }
   
   .crew-detail .delete-button:hover {
     background-color: #dc2626;
+  }
+
+/* Field Groups */
+.field-group {
+    margin-bottom: 16px;
+  }
+  
+  .field-row {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .field-row .field-group {
+    flex: 1;
+  }
+  
+  .field-group.full-width {
+    width: 100%;
+  }
+  
+  .field-group label {
+    display: block;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 992px) {
+    .form-container {
+      flex-direction: column;
+    }
+    
+    .profile-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .work-section, .information-section, .contact-section {
+      grid-column: 1;
+    }
+    
+    .work-section {
+      grid-row: 1;
+    }
+    
+    .information-section {
+      grid-row: 2;
+    }
+    
+    .contact-section {
+      grid-row: 3;
+    }
+    
+    .save-button-container {
+      grid-column: 1;
+    }
+    .created-at {
+        grid-column: 1;
+        grid-row: 4;
+      }
   }

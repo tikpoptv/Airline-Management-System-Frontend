@@ -572,6 +572,7 @@ button:focus {
 
 /* Input with Icon */
 .input-with-icon {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -584,17 +585,17 @@ button:focus {
 
 /* Read-only Field */
 .read-only-field {
-  padding: 0.625rem 0.75rem;
+  padding: 10px 12px;
   background-color: var(--gray-50);
   border: 1px solid var(--gray-200);
   border-radius: 6px;
   font-size: 0.875rem;
   color: var(--gray-700);
-  height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  margin-bottom: 0.5rem;
 }
 
 /* ========== Crew Profile ========== */
@@ -623,20 +624,24 @@ button:focus {
 }
 
 .profile-avatar {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  /* border-radius: 50%; */
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  margin-bottom: 1.5rem;
+  position: relative;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-avatar img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
 }
 
 /* Profile Card */
@@ -665,6 +670,13 @@ button:focus {
 .profile-fields strong {
   font-weight: 600;
   color: var(--gray-700);
+}
+
+.profile-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
 }
 
 /* ========== Schedule Table ========== */

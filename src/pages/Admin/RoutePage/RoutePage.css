@@ -1,0 +1,228 @@
+body, .routepage-bg {
+  background: #f4f7fa;
+}
+.routepage-outer {
+  background: #f4f7fa;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+.routepage-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.routepage-title {
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 0;
+}
+.routepage-subtitle {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.routepage-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #e5eaf2;
+  box-shadow: 0 4px 24px 0 rgba(59,130,246,0.07);
+  padding: 32px 0;
+  margin-bottom: 32px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.routepage-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #d3e6f8;
+  border-radius: 8px;
+  padding: 12px 20px;
+  max-width: 700px;
+  margin: 0 auto 24px auto;
+}
+.routepage-input-group {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border-radius: 8px;
+  padding: 0;
+}
+.routepage-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  width: 140px;
+}
+.routepage-swap-btn {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 16px;
+}
+.routepage-swap-btn:hover {
+  background: #b6d6f6;
+}
+.routepage-actionbar {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 24px;
+}
+.routepage-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1.5px solid #d3dbe4;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s, border 0.2s;
+}
+.routepage-action-btn:hover {
+  background: #f5faff;
+  border: 1.5px solid #b3d0f7;
+}
+.routepage-table-container {
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
+}
+.routepage-table {
+  min-width: 1000px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  border: none;
+}
+.routepage-table th {
+  background: #d3e6f8;
+  color: #1a3557;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+}
+.routepage-table th:first-child {
+  border-top-left-radius: 12px;
+}
+.routepage-table th:last-child {
+  border-top-right-radius: 12px;
+}
+.routepage-table tr {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+.routepage-table td {
+  padding: 10px;
+  text-align: left;
+  border: none;
+}
+.routepage-status {
+  display: inline-block;
+  border-radius: 16px;
+  padding: 4px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+}
+.routepage-status.active {
+  background: #43a047;
+}
+.routepage-status.inactive {
+  background: #b71c1c;
+}
+.routepage-table td:last-child {
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+@media (max-width: 1200px) {
+  .routepage-container {
+    padding: 0 16px;
+  }
+  .routepage-card {
+    padding: 32px 12px 32px 12px;
+  }
+}
+@media (max-width: 900px) {
+  .routepage-outer {
+    padding: 16px 0;
+  }
+  .routepage-container {
+    padding: 0 8px;
+  }
+  .routepage-card {
+    padding: 16px 4px 12px 4px;
+    border-radius: 12px;
+    max-width: none;
+  }
+  .routepage-title {
+    font-size: 24px;
+  }
+  .routepage-table-container, .routepage-searchbar, .routepage-actionbar {
+    max-width: 100%;
+  }
+  .routepage-searchbar {
+    flex-direction: column;
+    gap: 4px;
+    align-items: stretch;
+  }
+  .routepage-input {
+    width: 100%;
+  }
+  .routepage-actionbar {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+  .routepage-table {
+    min-width: 600px;
+  }
+}
+@media (max-width: 600px) {
+  .routepage-outer {
+    padding: 8px 0;
+  }
+  .routepage-container {
+    padding: 0 2px;
+  }
+  .routepage-card {
+    padding: 8px 0 4px 0;
+    border-radius: 8px;
+  }
+  .routepage-table {
+    min-width: 400px;
+  }
+  .routepage-title {
+    font-size: 18px;
+  }
+  .routepage-input {
+    width: 60px;
+    font-size: 14px;
+  }
+  .routepage-action-btn {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+  .routepage-table-container, .routepage-searchbar, .routepage-actionbar {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+} 

@@ -1,11 +1,15 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import './Admin.css';
-import { FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaWrench } from 'react-icons/fa';
+import { FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaWrench, FaMapMarkerAlt } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import Sidebar from '../../components/Sidebar';
+import { useState } from 'react';
 
 function Admin() {
+  const [openPathway, setOpenPathway] = useState(false);
+  const location = useLocation();
+  const isPathwayActive = location.pathname.startsWith('/admin/pathways');
   return (
     <div className="admin-container">
       {/* Sidebar */}
@@ -25,10 +29,24 @@ function Admin() {
           <span>Flight</span>
         </NavLink>
 
-        <NavLink to="/admin/pathways" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+        {/* Pathway Dropdown */}
+        <div className={isPathwayActive ? 'sidebar-item active' : 'sidebar-item'} style={{cursor:'pointer'}} onClick={() => setOpenPathway(v => !v)}>
           <FaRoute className="sidebar-icon" />
           <span>Pathway</span>
-        </NavLink>
+          <span style={{marginLeft:'auto', fontSize:'1.1em'}}>{openPathway ? '▲' : '▼'}</span>
+        </div>
+        {openPathway && (
+          <div className="sidebar-submenu">
+            <NavLink to="/admin/pathways/routes" className={({ isActive }) => isActive ? 'sidebar-item-sub active' : 'sidebar-item-sub'}>
+              <FaRoute className="icon" />
+              Route
+            </NavLink>
+            <NavLink to="/admin/pathways/airports" className={({ isActive }) => isActive ? 'sidebar-item-sub active' : 'sidebar-item-sub'}>
+              <FaMapMarkerAlt className="icon" />
+              Airport
+            </NavLink>
+          </div>
+        )}
 
         <NavLink to="/admin/aircrafts" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
           <FaPlane className="sidebar-icon" />

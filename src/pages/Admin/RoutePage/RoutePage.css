@@ -178,15 +178,87 @@ body, .routepage-bg {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border-radius: 12px;
-  border: none;
+  border-radius: 16px;
+  border: 1px solid rgba(229, 234, 242, 0.8);
+  background: white;
+  box-shadow: 
+    0 4px 24px 0 rgba(59, 130, 246, 0.08),
+    0 1px 2px rgba(59, 130, 246, 0.02);
+  overflow: hidden;
 }
 .routepage-table th {
-  background: #d3e6f8;
-  color: #1a3557;
+  background: #f1f5f9;
+  color: #0f172a;
   font-weight: 600;
-  padding: 12px;
-  border: none;
+  padding: 18px 24px;
+  text-align: left;
+  border-bottom: 1px solid rgba(229, 234, 242, 0.8);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+}
+.routepage-table td {
+  padding: 20px 24px;
+  color: #334155;
+  border-bottom: 1px solid rgba(229, 234, 242, 0.6);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.routepage-table tr {
+  transition: all 0.2s ease;
+}
+.routepage-table tr:hover {
+  background: rgba(241, 245, 249, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+.routepage-table tr:hover td {
+  color: #0f172a;
+}
+.routepage-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.routepage-status::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.routepage-status:hover::before {
+  transform: translateX(100%);
+}
+.routepage-status.active {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #15803d;
+  box-shadow: 
+    0 2px 4px rgba(22, 101, 52, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.routepage-status.inactive {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+  box-shadow: 
+    0 2px 4px rgba(153, 27, 27, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.routepage-table tr:last-child td {
+  border-bottom: none;
 }
 .routepage-table th:first-child {
   border-top-left-radius: 12px;
@@ -194,28 +266,11 @@ body, .routepage-bg {
 .routepage-table th:last-child {
   border-top-right-radius: 12px;
 }
-.routepage-table tr {
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
+.routepage-table tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
 }
-.routepage-table td {
-  padding: 10px;
-  text-align: left;
-  border: none;
-}
-.routepage-status {
-  display: inline-block;
-  border-radius: 16px;
-  padding: 4px 16px;
-  font-weight: 500;
-  font-size: 14px;
-  color: #fff;
-}
-.routepage-status.active {
-  background: #43a047;
-}
-.routepage-status.inactive {
-  background: #b71c1c;
+.routepage-table tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
 }
 .routepage-table td:last-child {
   text-align: center;
@@ -273,6 +328,41 @@ body, .routepage-bg {
   font-weight: 600;
   position: relative;
 }
+.routepage-table td:nth-child(1) {
+  width: 120px;
+}
+.routepage-table td:nth-child(2) {
+  width: 80px;
+  text-align: center;
+  font-weight: 600;
+  color: #1e40af;
+}
+.routepage-table td:nth-child(3), 
+.routepage-table td:nth-child(4) {
+  width: 180px;
+}
+.routepage-table td:nth-child(5) {
+  width: 140px;
+  font-family: monospace;
+  font-size: 15px;
+  color: #475569;
+  text-align: left;
+}
+.routepage-table tr:nth-child(even) {
+  background: rgba(241, 245, 249, 0.3);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.routepage-table tbody tr {
+  animation: fadeIn 0.3s ease backwards;
+}
+.routepage-table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+.routepage-table tbody tr:nth-child(2) { animation-delay: 0.15s; }
+.routepage-table tbody tr:nth-child(3) { animation-delay: 0.2s; }
+.routepage-table tbody tr:nth-child(4) { animation-delay: 0.25s; }
+.routepage-table tbody tr:nth-child(5) { animation-delay: 0.3s; }
 @media (max-width: 1200px) {
   .routepage-container {
     padding: 0 16px;
@@ -436,5 +526,125 @@ body, .routepage-bg {
   .routepage-table-container, .routepage-searchbar, .routepage-actionbar {
     padding-left: 2px;
     padding-right: 2px;
+  }
+}
+
+/* Pagination Styles */
+.routepage-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 20px 24px;
+  background: white;
+  border-top: 1px solid rgba(229, 234, 242, 0.6);
+}
+
+.routepage-pagination-entries {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.routepage-pagination-entries select {
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #1e293b;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.routepage-pagination-entries select:hover {
+  border-color: #94a3b8;
+}
+
+.routepage-pagination-entries select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.routepage-pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.routepage-pagination-button {
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  color: #1e293b;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.routepage-pagination-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.routepage-pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+.routepage-pagination-button.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.routepage-pagination-button.active:hover {
+  background: #2563eb;
+}
+
+.routepage-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.routepage-pagination-info {
+  color: #64748b;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .routepage-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .routepage-pagination-entries {
+    margin-right: 0;
+    justify-content: center;
+  }
+
+  .routepage-pagination-nav {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .routepage-pagination-button {
+    padding: 4px 8px;
+    font-size: 13px;
   }
 } 

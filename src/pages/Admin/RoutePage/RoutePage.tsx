@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMapMarkerAlt, FaExchangeAlt, FaFilter, FaSort, FaPlus } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaExchangeAlt, FaFilter, FaSort, FaPlus, FaSearch } from 'react-icons/fa';
 import './RoutePage.css';
 
 // mock data
@@ -14,12 +14,18 @@ const mockRoutes = [
 ];
 
 const RoutePage: React.FC = () => {
+  const [routeId, setRouteId] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
 
   const handleSwap = () => {
     setFrom(to);
     setTo(from);
+  };
+
+  const handleSearch = () => {
+    // mockup: ใส่ logic ค้นหาตามต้องการ
+    console.log('ค้นหา', { routeId, from, to });
   };
 
   return (
@@ -30,28 +36,42 @@ const RoutePage: React.FC = () => {
         <div className="routepage-card">
           <div className="routepage-searchbar">
             <div className="routepage-input-group">
+              <FaMapMarkerAlt className="routepage-icon" />
+              <input
+                type="text"
+                placeholder="Route ID"
+                value={routeId}
+                onChange={e => setRouteId(e.target.value)}
+                className="routepage-input routepage-input-bordered"
+              />
+            </div>
+            <div className="routepage-input-group">
+              <FaMapMarkerAlt className="routepage-icon" />
               <input
                 type="text"
                 placeholder="From"
                 value={from}
                 onChange={e => setFrom(e.target.value)}
-                className="routepage-input"
+                className="routepage-input routepage-input-bordered"
               />
-              <FaMapMarkerAlt style={{ marginLeft: 8, color: '#1976d2' }} />
             </div>
-            <button onClick={handleSwap} className="routepage-swap-btn">
-              <FaExchangeAlt style={{ color: '#1976d2' }} />
+            <button onClick={handleSwap} className="routepage-swap-btn" aria-label="Swap">
+              <FaExchangeAlt className="routepage-icon" />
             </button>
             <div className="routepage-input-group">
+              <FaMapMarkerAlt className="routepage-icon" />
               <input
                 type="text"
                 placeholder="To"
                 value={to}
                 onChange={e => setTo(e.target.value)}
-                className="routepage-input"
+                className="routepage-input routepage-input-bordered"
               />
-              <FaMapMarkerAlt style={{ marginLeft: 8, color: '#1976d2' }} />
             </div>
+            <button className="routepage-search-btn" onClick={handleSearch} aria-label="Search">
+              <FaSearch />
+              <span className="routepage-search-btn-text">Search</span>
+            </button>
           </div>
 
           <div className="routepage-actionbar">

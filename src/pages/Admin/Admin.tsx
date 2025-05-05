@@ -30,10 +30,14 @@ function Admin() {
         </NavLink>
 
         {/* Pathway Dropdown */}
-        <div className={isPathwayActive ? 'sidebar-item active' : 'sidebar-item'} style={{cursor:'pointer'}} onClick={() => setOpenPathway(v => !v)}>
+        <div 
+          className={isPathwayActive ? 'sidebar-item pathway-item active' : 'sidebar-item pathway-item'} 
+          style={{cursor:'pointer'}} 
+          onClick={() => setOpenPathway(v => !v)}
+        >
           <FaRoute className="sidebar-icon" />
           <span>Pathway</span>
-          <span style={{marginLeft:'auto', fontSize:'1.1em'}}>{openPathway ? '▲' : '▼'}</span>
+          <span className="dropdown-arrow">{openPathway ? '▲' : '▼'}</span>
         </div>
         {openPathway && (
           <div className="sidebar-submenu">

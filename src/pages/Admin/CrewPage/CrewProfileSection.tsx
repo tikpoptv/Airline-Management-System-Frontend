@@ -83,19 +83,23 @@ const CrewProfileSection = ({
     }
   };
 
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
+    // Keep the format as is, just ensuring it's handled properly
+    return dateString;
+  };
+
   return (
     <div className="profile-wrapper">
       <div className="form-container">
-        {/* Profile Avatar Section */}
-        <div className="avatar-section">
-          <div className="profile-avatar">
-            <img src={avatarImg} alt="avatar" />
+        {/* Left Column - Avatar and Work Section */}
+        <div className="left-column">
+          <div className="avatar-section">
+            <div className="profile-avatar">
+              <img src={avatarImg} alt="avatar" />
+            </div>
           </div>
-        </div>
 
-        {/* Main Content Layout */}
-        <div className="profile-content">
-          {/* Work Section */}
           <div className="section work-section">
             <h2>Work</h2>
             <div className="field-group">
@@ -140,7 +144,10 @@ const CrewProfileSection = ({
               )}
             </div>
           </div>
+        </div>
 
+        {/* Right Column - Information and Contact Sections */}
+        <div className="right-column">
           {/* Information Section */}
           <div className="section information-section">
             <h2>Information</h2>
@@ -199,7 +206,7 @@ const CrewProfileSection = ({
                     onChange={(e) => handleChange('license_expiry_date', e.target.value)}
                   />
                 ) : (
-                  <div className="read-only-field">{editData.license_expiry_date}</div>
+                  <div className="read-only-field">{formatDate(editData.license_expiry_date)}</div>
                 )}
               </div>
             </div>
@@ -227,7 +234,7 @@ const CrewProfileSection = ({
                     onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
                   />
                 ) : (
-                  <div className="read-only-field">{editData.passport_expiry_date}</div>
+                  <div className="read-only-field">{formatDate(editData.passport_expiry_date)}</div>
                 )}
               </div>
             </div>
@@ -264,6 +271,13 @@ const CrewProfileSection = ({
           )}
         </div>
       </div>
+
+      {/* Creation date (shown at bottom right in goal image) */}
+      {!isEditMode && (
+        <div className="created-date">
+          Created at {new Date().toISOString().split('T')[0]}
+        </div>
+      )}
 
       {/* Modals */}
       {showConfirmModal && (

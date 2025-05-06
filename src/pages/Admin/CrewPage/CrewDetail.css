@@ -469,8 +469,4 @@
     .save-button-container {
       grid-column: 1;
     }
-    .created-at {
-        grid-column: 1;
-        grid-row: 4;
-      }
   }

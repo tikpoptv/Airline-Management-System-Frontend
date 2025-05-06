@@ -647,4 +647,130 @@ body, .routepage-bg {
     padding: 4px 8px;
     font-size: 13px;
   }
-} 
+}
+
+.routepage-action-menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.routepage-action-menu-btn:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+.routepage-action-menu-btn.active {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.routepage-dropdown-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.routepage-action-dropdown {
+  position: absolute;
+  right: 0;
+  min-width: 180px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 2px;
+  animation: fadeIn 0.2s ease;
+  top: calc(100% + 4px);
+}
+
+/* For the last 2 rows, show dropdown above */
+tr:nth-last-child(-n+2) .routepage-action-dropdown {
+  bottom: calc(100% + 4px);
+  top: auto;
+}
+
+.routepage-action-dropdown-item {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border-radius: 8px;
+}
+
+.routepage-action-dropdown-item:hover {
+  background: #f8fafc;
+  color: #2563eb;
+}
+
+.routepage-action-dropdown-item:active {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+/* Prevent table hover effects when dropdown is open */
+.routepage-table.has-dropdown-open tbody tr:hover {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Style for the active row with dropdown */
+.routepage-table.has-dropdown-open tbody tr.active-dropdown {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+/* Add overlay when dropdown is open */
+.routepage-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 999;
+}
+
+/* Ensure the dropdown container takes full height of the cell */
+.routepage-table td:last-child {
+  position: relative;
+  height: 100%;
+  padding: 12px 24px;
+}
+
+/* Animation for dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

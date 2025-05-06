@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaExchangeAlt, FaFilter, FaSort, FaPlus, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { FaMapMarkerAlt, FaExchangeAlt, FaFilter, FaSort, FaPlus, FaSearch, FaChevronLeft, FaChevronRight, FaEllipsisV } from 'react-icons/fa';
 import './RoutePage.css';
 import { getRouteList } from '../../../services/route/routeService';
 import { Route } from '../../../types/route';
@@ -16,6 +16,9 @@ const RoutePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
+
+  const [menuOpenIdx, setMenuOpenIdx] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -65,8 +68,32 @@ const RoutePage: React.FC = () => {
     pageNumbers.push(i);
   }
 
+  const handleMenuClick = (e: React.MouseEvent, idx: number) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setMenuOpenIdx(menuOpenIdx === idx ? null : idx);
+  };
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpenIdx(null);
+      }
+    };
+
+    if (menuOpenIdx !== null) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpenIdx]);
+
   return (
     <div className="routepage-outer">
+      {menuOpenIdx !== null && <div className="routepage-overlay" onClick={() => setMenuOpenIdx(null)} />}
+      
       <div className="routepage-container">
         <div className="routepage-subtitle">Route</div>
         <h1 className="routepage-title">Route management</h1>
@@ -130,7 +157,7 @@ const RoutePage: React.FC = () => {
               <div style={{ color: 'red', textAlign: 'center', padding: '32px 0' }}>{error}</div>
             ) : (
               <>
-                <table className="routepage-table">
+                <table className={`routepage-table ${menuOpenIdx !== null ? 'has-dropdown-open' : ''}`}>
                   <thead>
                     <tr>
                       <th>Status</th>
@@ -138,11 +165,15 @@ const RoutePage: React.FC = () => {
                       <th>From</th>
                       <th>To</th>
                       <th>Duration</th>
+                      <th style={{ width: '48px' }}></th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentEntries.map((route, idx) => (
-                      <tr key={route.route_id || idx}>
+                      <tr 
+                        key={route.route_id || idx}
+                        className={menuOpenIdx === idx ? 'active-dropdown' : ''}
+                      >
                         <td>
                           <span className={`routepage-status ${route.status}`}>
                             {route.status.charAt(0).toUpperCase() + route.status.slice(1)}
@@ -152,6 +183,27 @@ const RoutePage: React.FC = () => {
                         <td>{route.from_airport.city}, {route.from_airport.iata_code}</td>
                         <td>{route.to_airport.city}, {route.to_airport.iata_code}</td>
                         <td>{route.estimated_duration}</td>
+                        <td style={{ textAlign: 'center', position: 'relative' }}>
+                          <div className="routepage-dropdown-container">
+                            <button
+                              className="routepage-action-menu-btn"
+                              aria-label="More actions"
+                              onClick={(e) => handleMenuClick(e, idx)}
+                            >
+                              <FaEllipsisV />
+                            </button>
+                            {menuOpenIdx === idx && (
+                              <div 
+                                className="routepage-action-dropdown"
+                                ref={menuRef}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <button className="routepage-action-dropdown-item">View Detail</button>
+                                <button className="routepage-action-dropdown-item">Edit Detail</button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

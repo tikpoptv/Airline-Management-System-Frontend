@@ -3,6 +3,7 @@ import { FaMapMarkerAlt, FaExchangeAlt, FaFilter, FaSort, FaPlus, FaSearch, FaCh
 import './RoutePage.css';
 import { getRouteList } from '../../../services/route/routeService';
 import { Route } from '../../../types/route';
+import { useNavigate } from 'react-router-dom';
 
 const RoutePage: React.FC = () => {
   const [routeId, setRouteId] = useState('');
@@ -19,6 +20,7 @@ const RoutePage: React.FC = () => {
 
   const [menuOpenIdx, setMenuOpenIdx] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -89,6 +91,10 @@ const RoutePage: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [menuOpenIdx]);
+
+  const handleViewDetail = (routeId: number) => {
+    navigate(`/admin/pathways/routes/detail/${routeId}`);
+  };
 
   return (
     <div className="routepage-outer">
@@ -198,8 +204,15 @@ const RoutePage: React.FC = () => {
                                 ref={menuRef}
                                 onClick={(e) => e.stopPropagation()}
                               >
-                                <button className="routepage-action-dropdown-item">View Detail</button>
-                                <button className="routepage-action-dropdown-item">Edit Detail</button>
+                                <button 
+                                  className="routepage-action-dropdown-item"
+                                  onClick={() => handleViewDetail(route.route_id)}
+                                >
+                                  View Detail
+                                </button>
+                                <button className="routepage-action-dropdown-item">
+                                  Edit Detail
+                                </button>
                               </div>
                             )}
                           </div>

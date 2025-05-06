@@ -11,6 +11,7 @@ import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
 import FlightPage from "./pages/Admin/FlightPage/FlightPage";
 import RoutePage from "./pages/Admin/RoutePage/RoutePage";
+import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="crew/:id" element={<AircraftDetailPage />} />
             <Route path="aircraft/create" element={<CreateAircraftPage />} />
             <Route path="pathways/routes" element={<RoutePage />} />
+            <Route path="pathways/routes/detail/:id" element={<RouteDetailPage />} />
           </Route>
 
           <Route

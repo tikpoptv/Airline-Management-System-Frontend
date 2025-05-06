@@ -4,6 +4,9 @@ export interface Airport {
   name: string;
   city: string;
   country: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
 }
 
 export interface Route {
@@ -13,4 +16,11 @@ export interface Route {
   distance: number;
   estimated_duration: string;
   status: 'active' | 'inactive';
+}
+
+export interface RouteResponse {
+  data: Route[];
+  total: number;
+  page: number;
+  limit: number;
 } 

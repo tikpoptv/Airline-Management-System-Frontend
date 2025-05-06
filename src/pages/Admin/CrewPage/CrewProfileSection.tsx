@@ -272,12 +272,7 @@ const CrewProfileSection = ({
         </div>
       </div>
 
-      {/* Creation date (shown at bottom right in goal image) */}
-      {!isEditMode && (
-        <div className="created-date">
-          Created at {new Date().toISOString().split('T')[0]}
-        </div>
-      )}
+      
 
       {/* Modals */}
       {showConfirmModal && (

@@ -174,11 +174,18 @@ const RouteDetailPage: React.FC = () => {
                   <span className="route-detail__airport-separator">•</span>
                   <span>{route.from_airport.country}</span>
                 </div>
+                <div className="route-detail__airport-timezone">
+                  เขตเวลา: {route.from_airport.timezone}
+                </div>
+                <div className="route-detail__airport-coordinates">
+                  พิกัด: {route.from_airport.latitude.toFixed(4)}, {route.from_airport.longitude.toFixed(4)}
+                </div>
               </div>
             </div>
 
-            {/* Flight info */}
-            <div className="route-detail__flight-info">
+            {/* Flight info (floating) */}
+            <div className="route-detail__flight-info route-detail__flight-info--floating">
+              <div className="route-detail__flight-icon">✈️</div>
               <div className="route-detail__duration">
                 <div className="route-detail__info-label">ระยะเวลาบิน</div>
                 <div className="route-detail__info-value">
@@ -206,6 +213,12 @@ const RouteDetailPage: React.FC = () => {
                   <span>{route.to_airport.city}</span>
                   <span className="route-detail__airport-separator">•</span>
                   <span>{route.to_airport.country}</span>
+                </div>
+                <div className="route-detail__airport-timezone">
+                  เขตเวลา: {route.to_airport.timezone}
+                </div>
+                <div className="route-detail__airport-coordinates">
+                  พิกัด: {route.to_airport.latitude.toFixed(4)}, {route.to_airport.longitude.toFixed(4)}
                 </div>
               </div>
             </div>

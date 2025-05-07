@@ -26,7 +26,7 @@ const RouteDetailPage: React.FC = () => {
     // IIFE with void to ensure `useEffect` callback returns `void`
     void (async () => {
       if (!id) {
-        setError({ message: 'ไม่พบรหัสเส้นทางการบิน', code: 400 });
+        setError({ message: 'Route ID not found', code: 400 });
         setLoading(false);
         return;
       }
@@ -34,7 +34,7 @@ const RouteDetailPage: React.FC = () => {
       try {
         const routeId = parseInt(id, 10);
         if (Number.isNaN(routeId)) {
-          throw new Error('รหัสเส้นทางการบินไม่ถูกต้อง');
+          throw new Error('Invalid Route ID');
         }
 
         const routeData = await getRouteById(routeId);
@@ -42,14 +42,14 @@ const RouteDetailPage: React.FC = () => {
         if (routeData) {
           setRoute(routeData);
         } else {
-          setError({ message: 'ไม่พบข้อมูลเส้นทางการบิน', code: 404 });
+          setError({ message: 'Route data not found', code: 404 });
         }
       } catch (err) {
         setError({
           message:
             err instanceof Error
               ? err.message
-              : 'ไม่สามารถโหลดข้อมูลเส้นทางการบินได้',
+              : 'Could not load route data',
           code: 500
         });
       } finally {
@@ -65,11 +65,20 @@ const RouteDetailPage: React.FC = () => {
 
   const formatDuration = (duration: string): string => {
     const [h, m] = duration.split(':');
-    return `${parseInt(h, 10)} ชั่วโมง ${parseInt(m, 10)} นาที`;
+    const hours = parseInt(h, 10);
+    const minutes = parseInt(m, 10);
+    let result = '';
+    if (hours > 0) {
+      result += `${hours} hour${hours > 1 ? 's' : ''} `;
+    }
+    if (minutes > 0) {
+      result += `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
+    return result.trim() || '0 minutes';
   };
 
   const formatDistance = (d: number): string =>
-    new Intl.NumberFormat('th-TH', { maximumFractionDigits: 0 }).format(d);
+    new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(d);
 
   /* ---------- render states ---------- */
   if (loading) {
@@ -77,7 +86,7 @@ const RouteDetailPage: React.FC = () => {
       <div className="route-detail-loading">
         <div className="route-detail-loading__spinner" />
         <div className="route-detail-loading__text">
-          กำลังโหลดข้อมูลเส้นทางการบิน...
+          Loading route details...
         </div>
       </div>
     );
@@ -89,7 +98,7 @@ const RouteDetailPage: React.FC = () => {
         <div className="route-detail-error__icon">⚠️</div>
         <div className="route-detail-error__message">{error.message}</div>
         <button className="route-detail-error__button" onClick={handleBack}>
-          กลับไปหน้าเส้นทางการบิน
+          Back to Routes List
         </button>
       </div>
     );
@@ -100,10 +109,10 @@ const RouteDetailPage: React.FC = () => {
       <div className="route-detail-error">
         <div className="route-detail-error__icon">🔍</div>
         <div className="route-detail-error__message">
-          ไม่พบข้อมูลเส้นทางการบิน
+          Route data not found
         </div>
         <button className="route-detail-error__button" onClick={handleBack}>
-          กลับไปหน้าเส้นทางการบิน
+          Back to Routes List
         </button>
       </div>
     );
@@ -132,17 +141,17 @@ const RouteDetailPage: React.FC = () => {
           <button className="route-detail__back-btn" onClick={handleBack}>
             ←
           </button>
-          <span>เส้นทางการบิน</span>
+          <span>Routes</span>
           <span className="route-detail__breadcrumb-separator">/</span>
-          <span>รายละเอียด</span>
+          <span>Details</span>
         </div>
 
         <div className="route-detail__title">
-          <h1>เส้นทางการบิน #{route.route_id}</h1>
+          <h1>Route #{route.route_id}</h1>
           <div
             className={`route-detail__status route-detail__status--${route.status.toLowerCase()}`}
           >
-            {route.status === 'active' ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
+            {route.status === 'active' ? 'Active' : 'Inactive'}
           </div>
         </div>
       </div>
@@ -175,10 +184,10 @@ const RouteDetailPage: React.FC = () => {
                   <span>{route.from_airport.country}</span>
                 </div>
                 <div className="route-detail__airport-timezone">
-                  เขตเวลา: {route.from_airport.timezone}
+                  Timezone: {route.from_airport.timezone}
                 </div>
                 <div className="route-detail__airport-coordinates">
-                  พิกัด: {route.from_airport.latitude.toFixed(4)}, {route.from_airport.longitude.toFixed(4)}
+                  Coordinates: {route.from_airport.latitude.toFixed(4)}, {route.from_airport.longitude.toFixed(4)}
                 </div>
               </div>
             </div>
@@ -187,15 +196,15 @@ const RouteDetailPage: React.FC = () => {
             <div className="route-detail__flight-info route-detail__flight-info--floating">
               <div className="route-detail__flight-icon">✈️</div>
               <div className="route-detail__duration">
-                <div className="route-detail__info-label">ระยะเวลาบิน</div>
+                <div className="route-detail__info-label">Duration</div>
                 <div className="route-detail__info-value">
                   {formatDuration(route.estimated_duration)}
                 </div>
               </div>
               <div className="route-detail__distance">
-                <div className="route-detail__info-label">ระยะทาง</div>
+                <div className="route-detail__info-label">Distance</div>
                 <div className="route-detail__info-value">
-                  {formatDistance(route.distance)} กิโลเมตร
+                  {formatDistance(route.distance)} km
                 </div>
               </div>
             </div>
@@ -215,10 +224,10 @@ const RouteDetailPage: React.FC = () => {
                   <span>{route.to_airport.country}</span>
                 </div>
                 <div className="route-detail__airport-timezone">
-                  เขตเวลา: {route.to_airport.timezone}
+                  Timezone: {route.to_airport.timezone}
                 </div>
                 <div className="route-detail__airport-coordinates">
-                  พิกัด: {route.to_airport.latitude.toFixed(4)}, {route.to_airport.longitude.toFixed(4)}
+                  Coordinates: {route.to_airport.latitude.toFixed(4)}, {route.to_airport.longitude.toFixed(4)}
                 </div>
               </div>
             </div>

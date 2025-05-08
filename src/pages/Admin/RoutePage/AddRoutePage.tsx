@@ -13,6 +13,9 @@ import { FaPlane } from 'react-icons/fa'; // Assuming FaPlane is suitable
 import './AddRoutePage.css';
 import { getAirportList } from '../../../services/airportService'; // Import airport service
 import { Airport } from '../../../types/airport'; // Import Airport type
+import GlobeMapModal from './components/GlobeMapModal/GlobeMapModal';
+import GlobeMap, { Airport as GlobeAirport } from './components/GlobeMap/GlobeMap';
+import { addRoute, RouteCreateData } from '../../../services/route/routeService';
 
 interface AirportInputState {
   airport_id: number | null; // Store selected airport ID
@@ -45,6 +48,21 @@ const AddRoutePage: React.FC = () => {
   const [airportOptions, setAirportOptions] = useState<AirportOptionType[]>([]);
   const [loadingAirports, setLoadingAirports] = useState(true);
   const [airportFetchError, setAirportFetchError] = useState<string | null>(null);
+  
+  // State for form validation and submission
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  
+  // State for GlobeMap modal
+  const [showGlobeMap, setShowGlobeMap] = useState(false);
+  const [mapFromAirport, setMapFromAirport] = useState<GlobeAirport | null>(null);
+  const [mapToAirport, setMapToAirport] = useState<GlobeAirport | null>(null);
+  
+  // State for confirmation and result modals
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [apiResponse, setApiResponse] = useState<Record<string, unknown> | null>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const fetchAirportsAndSetOptions = async () => {
@@ -165,28 +183,198 @@ const AddRoutePage: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // Format the duration as "HH:MM:SS" for API submission
-    const formattedHours = durationHours.padStart(2, '0');
-    const formattedMinutes = durationMinutes.padStart(2, '0');
-    const formattedSeconds = durationSeconds.padStart(2, '0'); // Added seconds formatting
-    const formattedDuration = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`; // Updated format
+    // Reset validation errors
+    setValidationErrors([]);
+    
+    // Validate required fields
+    const errors: string[] = [];
+    
+    if (!distance || parseFloat(distance) <= 0) {
+      errors.push('Please specify a valid distance (must be greater than 0)');
+    }
+    
+    // ตรวจสอบว่ามีการกรอกเวลาอย่างน้อย HH:MM
+    if (!durationHours || !durationMinutes) {
+      errors.push('Please specify travel duration (hours and minutes)');
+    }
+    
+    if (!fromInput.airport_id) {
+      errors.push('Please select a departure airport');
+    }
+    
+    if (!toInput.airport_id) {
+      errors.push('Please select an arrival airport');
+    }
+    
+    if (fromInput.airport_id && toInput.airport_id && fromInput.airport_id === toInput.airport_id) {
+      errors.push('Departure and arrival airports must not be the same');
+    }
+    
+    if (status !== 'active' && status !== 'inactive') {
+      errors.push('Invalid status (must be active or inactive)');
+    }
+    
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+    
+    // Prepare map data for route calculation page
+    prepareMapData();
+    
+    // Show route calculation window instead of confirmation screen immediately
+    setShowGlobeMap(true);
+  };
+  
+  // Separate map data preparation function to be called from multiple places
+  const prepareMapData = () => {
+    const fromAirport = airportOptions.find(opt => opt.value === fromInput.airport_id)?.airport;
+    const toAirport = airportOptions.find(opt => opt.value === toInput.airport_id)?.airport;
+    
+    if (fromAirport?.latitude && fromAirport?.longitude && toAirport?.latitude && toAirport?.longitude) {
+      // Create map data
+      const fromAirportForMap: GlobeAirport = {
+        iata_code: fromInput.iata_code,
+        name: fromInput.airport_name,
+        lat: fromAirport.latitude,
+        lon: fromAirport.longitude,
+        city: fromInput.city,
+        country: fromInput.country
+      };
+
+      const toAirportForMap: GlobeAirport = {
+        iata_code: toInput.iata_code,
+        name: toInput.airport_name,
+        lat: toAirport.latitude,
+        lon: toAirport.longitude,
+        city: toInput.city,
+        country: toInput.country
+      };
+      
+      setMapFromAirport(fromAirportForMap);
+      setMapToAirport(toAirportForMap);
+      return true;
+    }
+    
+    return false;
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmModal(false);
+    setIsSubmitting(true);
+    
+    // Format the duration as "HH:mm:ss" for API submission
+    const formattedHours = (durationHours || '0').padStart(2, '0');
+    const formattedMinutes = (durationMinutes || '0').padStart(2, '0');
+    const formattedSeconds = (durationSeconds || '0').padStart(2, '0');
+    const formattedDuration = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     
     // Convert distance to number for API
     const numericDistance = distance ? parseFloat(distance) : 0;
     
-    console.log('Submitting Route:', {
+    if (!fromInput.airport_id || !toInput.airport_id) {
+      return; // Safety check
+    }
+    
+    const routeData: RouteCreateData = {
       distance: numericDistance,
-      duration: formattedDuration, // Use the formatted duration string
+      estimated_duration: formattedDuration,
       status,
       from_airport_id: fromInput.airport_id,
       to_airport_id: toInput.airport_id,
-      // Include other details if your POST API expects them, e.g., full fromInput/toInput objects
-    });
-    // navigate('/admin/pathways/routes'); 
+    };
+    
+    try {
+      const response = await addRoute(routeData);
+      console.log('Route created successfully:', response);
+      
+      // Set success state and response data
+      setApiResponse(response as unknown as Record<string, unknown>);
+      setIsSuccess(true);
+      
+      // Show result modal
+      setShowResultModal(true);
+    } catch (error) {
+      console.error('Failed to add route:', error);
+      
+      // Set error state and response data
+      let errorMessage = 'An error occurred while saving data. Please try again.';
+      let errorData = null;
+      
+      if (error instanceof Error) {
+        errorMessage = error.message || errorMessage;
+        errorData = { error: error.message };
+      }
+      
+      setApiResponse(errorData || { error: errorMessage });
+      setIsSuccess(false);
+      
+      // Show result modal for error
+      setShowResultModal(true);
+      
+      // Also set validation errors to show on the form
+      setValidationErrors([errorMessage]);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleExit = () => {
-    navigate('/admin/pathways/routes');
+  const handleResultClose = () => {
+    setShowResultModal(false);
+    
+    // If successful, navigate to routes page
+    if (isSuccess) {
+      navigate('/admin/pathways/routes');
+    }
+  };
+
+  // GlobeMap modal functions
+  const openGlobeMap = () => {
+    if (!fromInput.airport_id || !toInput.airport_id) {
+      // Notify user to select airports before viewing map
+      setValidationErrors(['Please select departure and arrival airports before viewing the map']);
+      return;
+    }
+    
+    // Use the map data preparation function
+    if (!prepareMapData()) {
+      setValidationErrors(['Error: Airport coordinate data not found. Please contact system administrator']);
+      return;
+    }
+    
+    // Show map
+    setShowGlobeMap(true);
+  };
+
+  // Function for when Proceed is clicked from route calculation page
+  const handleProceedFromMap = () => {
+    // Close map window
+    setShowGlobeMap(false);
+    // Show confirmation screen
+    setShowConfirmModal(true);
+  };
+
+  const closeGlobeMap = () => {
+    setShowGlobeMap(false);
+  };
+
+  const handleCalculateDistance = (calculatedDistance: number) => {
+    setDistance(calculatedDistance.toString());
+    
+    // Estimate duration based on distance
+    // Assuming an average speed of 850 km/h
+    const speed = 850; // km/h
+    const timeHours = calculatedDistance / speed;
+    
+    const hours = Math.floor(timeHours);
+    const minutes = Math.floor((timeHours - hours) * 60);
+    const seconds = Math.floor(((timeHours - hours) * 60 - minutes) * 60);
+    
+    setDurationHours(hours.toString());
+    setDurationMinutes(minutes.toString());
+    setDurationSeconds(seconds.toString());
+    
+    closeGlobeMap();
   };
 
   // Custom styles for React Select to make it blend with existing form styles
@@ -366,6 +554,142 @@ const AddRoutePage: React.FC = () => {
     }),
   };
 
+  // ConfirmModal Component
+  interface ConfirmModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    routeData: {
+      fromAirport: string;
+      toAirport: string;
+      distance: string;
+      duration: string;
+      status: string;
+    };
+    fromAirportMap: GlobeAirport | null;
+    toAirportMap: GlobeAirport | null;
+  }
+
+  const ConfirmModal: React.FC<ConfirmModalProps> = ({ 
+    isOpen, 
+    onClose, 
+    onConfirm, 
+    routeData,
+    fromAirportMap,
+    toAirportMap
+  }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-container confirm-container">
+          <div className="modal-header">
+            <h3>Confirm New Route Creation</h3>
+            <button className="modal-close" onClick={onClose}>&times;</button>
+          </div>
+          <div className="modal-body">
+            <p>Do you want to create a flight route with the following details?</p>
+            
+            {/* Display GlobeMap when both airports have data */}
+            {fromAirportMap && toAirportMap && (
+              <div className="confirm-globe-map">
+                <GlobeMap 
+                  fromAirport={fromAirportMap}
+                  toAirport={toAirportMap}
+                />
+              </div>
+            )}
+            
+            <div className="confirm-details">
+              <div className="confirm-detail-item">
+                <span className="confirm-label">Departure Airport:</span>
+                <span className="confirm-value">{routeData.fromAirport}</span>
+              </div>
+              <div className="confirm-detail-item">
+                <span className="confirm-label">Arrival Airport:</span>
+                <span className="confirm-value">{routeData.toAirport}</span>
+              </div>
+              <div className="confirm-detail-item">
+                <span className="confirm-label">Distance:</span>
+                <span className="confirm-value">{routeData.distance} km</span>
+              </div>
+              <div className="confirm-detail-item">
+                <span className="confirm-label">Duration:</span>
+                <span className="confirm-value">{routeData.duration}</span>
+              </div>
+              <div className="confirm-detail-item">
+                <span className="confirm-label">Status:</span>
+                <span className="confirm-value">{routeData.status === 'active' ? 'Active' : 'Inactive'}</span>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button className="btn btn-confirm" onClick={onConfirm}>Confirm</button>
+            <button className="btn btn-cancel" onClick={onClose}>Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ResultModal Component
+  interface ResultModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    isSuccess: boolean;
+    responseData?: Record<string, unknown> | null;
+  }
+
+  const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose, isSuccess, responseData }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-container">
+          <div className="modal-header">
+            <h3>{isSuccess ? 'Operation Successful' : 'Error Occurred'}</h3>
+            <button className="modal-close" onClick={onClose}>&times;</button>
+          </div>
+          <div className="modal-body">
+            {isSuccess ? (
+              <>
+                <div className="success-icon">✓</div>
+                <p>Flight route created successfully!</p>
+                
+                {responseData && (
+                  <div className="response-data">
+                    <h4>Created Route Details:</h4>
+                    <pre>{JSON.stringify(responseData, null, 2)}</pre>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="error-icon">✗</div>
+                <p>An error occurred while creating the flight route</p>
+                
+                {responseData && (
+                  <div className="response-data error">
+                    <h4>Error Details:</h4>
+                    <pre>{JSON.stringify(responseData, null, 2)}</pre>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <div className="modal-footer">
+            <button 
+              className="btn btn-primary" 
+              onClick={onClose}
+            >
+              {isSuccess ? 'Go to Routes List' : 'Try Again'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="add-route-page">
       <div className="add-route-container">
@@ -374,6 +698,66 @@ const AddRoutePage: React.FC = () => {
         {/* Consider adding loading/error state for airport data here */}
         {loadingAirports && <p>Loading airport data...</p>}
         {airportFetchError && <p style={{ color: 'red' }}>Error loading airports: {airportFetchError}</p>}
+        
+        {/* Display validation errors */}
+        {validationErrors.length > 0 && (
+          <div className="validation-errors" style={{
+            backgroundColor: '#fff8f8',
+            border: '1px solid #f5c6cb',
+            borderRadius: '8px',
+            padding: '15px',
+            marginBottom: '20px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+          }}>
+            <p style={{ 
+              color: '#cc0033', 
+              fontWeight: 'bold', 
+              marginBottom: '10px',
+              fontSize: '1rem'
+            }}>Please fix the following errors:</p>
+            <ul style={{ 
+              marginLeft: '20px', 
+              color: '#cc0033'
+            }}>
+              {validationErrors.map((error, index) => (
+                <li key={index} style={{ marginBottom: '5px' }}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Show loading state during submission */}
+        {isSubmitting && (
+          <div style={{
+            backgroundColor: '#e8f4ff',
+            border: '1px solid #b8daff',
+            borderRadius: '8px',
+            padding: '15px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            columnGap: '10px'
+          }}>
+            <div style={{ 
+              width: '20px', 
+              height: '20px', 
+              border: '3px solid #0077e6',
+              borderTop: '3px solid transparent',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }} />
+            <p style={{ color: '#0077e6', margin: 0 }}>Saving route data...</p>
+          </div>
+        )}
+          
+        {/* Add animation keyframes to the page's style */}
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
 
         <div className="form-section top-section">
           <div className="form-group">
@@ -494,8 +878,9 @@ const AddRoutePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="plane-icon-container">
+          <div className="plane-icon-container" onClick={openGlobeMap} style={{cursor: 'pointer'}}>
             <FaPlane className="plane-icon" />
+            <div className="plane-icon-tooltip">Click to view map and calculate distance/time automatically</div>
           </div>
 
           <div className="airport-details-group to-group">
@@ -526,9 +911,68 @@ const AddRoutePage: React.FC = () => {
         </div>
 
         <div className="form-actions">
-          <button type="button" className="btn btn-done" onClick={handleSubmit}>DONE</button>
-          <button type="button" className="btn btn-exit" onClick={handleExit}>EXIT</button>
+          <button 
+            type="button" 
+            className="btn btn-done" 
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'กำลังบันทึก...' : 'DONE'}
+          </button>
+          <button 
+            type="button" 
+            className="btn btn-exit" 
+            onClick={() => navigate('/admin/pathways/routes')}
+            disabled={isSubmitting}
+          >
+            EXIT
+          </button>
         </div>
+
+        {/* Add GlobeMapModal component */}
+        <GlobeMapModal
+          isOpen={showGlobeMap}
+          onClose={closeGlobeMap}
+          fromAirport={mapFromAirport}
+          toAirport={mapToAirport}
+          onCalculateDistance={handleCalculateDistance}
+          onProceed={handleProceedFromMap}
+          isRoutePlanning={true}
+          manualDistance={distance}
+          manualDuration={{
+            hours: durationHours || '0',
+            minutes: durationMinutes || '0',
+            seconds: durationSeconds || '0'
+          }}
+        />
+
+        {/* Add ConfirmModal component */}
+        <ConfirmModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={handleConfirmSubmit}
+          routeData={{
+            fromAirport: fromInput.airport_id 
+              ? `${fromInput.iata_code} - ${fromInput.airport_name} (${fromInput.city}, ${fromInput.country})` 
+              : '',
+            toAirport: toInput.airport_id 
+              ? `${toInput.iata_code} - ${toInput.airport_name} (${toInput.city}, ${toInput.country})` 
+              : '',
+            distance: distance,
+            duration: `${(durationHours || '0').padStart(2, '0')}:${(durationMinutes || '0').padStart(2, '0')}:${(durationSeconds || '0').padStart(2, '0')}`,
+            status: status,
+          }}
+          fromAirportMap={mapFromAirport}
+          toAirportMap={mapToAirport}
+        />
+
+        {/* Add ResultModal component */}
+        <ResultModal
+          isOpen={showResultModal}
+          onClose={handleResultClose}
+          isSuccess={isSuccess}
+          responseData={apiResponse}
+        />
       </div>
     </div>
   );

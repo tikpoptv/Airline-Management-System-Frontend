@@ -9,4 +9,16 @@ export const getRouteList = async (): Promise<Route[]> => {
 export const getRouteById = async (id: number): Promise<Route | undefined> => {
   const routes = await getRouteList();
   return routes.find(route => route.route_id === id);
+};
+
+export interface RouteCreateData {
+  distance: number;
+  estimated_duration: string;
+  status: string;
+  from_airport_id: number;
+  to_airport_id: number;
+}
+
+export const addRoute = async (routeData: RouteCreateData): Promise<Route> => {
+  return await api.post('/api/routes', routeData);
 }; 

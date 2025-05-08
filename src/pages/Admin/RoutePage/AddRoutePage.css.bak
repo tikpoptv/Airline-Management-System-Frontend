@@ -1,0 +1,410 @@
+/* AddRoutePage.css - Beautifully enhanced */
+
+.add-route-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 60px); 
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  box-sizing: border-box;
+}
+
+.add-route-container {
+  background: white;
+  padding: 35px 40px;
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.03),
+    0 5px 10px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  max-width: 960px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.add-route-title {
+  font-size: 1.8em;
+  color: #334155;
+  margin-bottom: 35px;
+  text-align: left;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.add-route-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: #3b82f6;
+  border-radius: 3px;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.top-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* เพิ่ม class สำหรับช่อง status เพื่อให้ dropdown มีขนาดกว้างขึ้น */
+.status-group {
+  min-width: 200px;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  height: 45px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.custom-select-wrapper:hover {
+  border-color: #94a3b8;
+}
+
+.custom-select-selected {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 40px 0 20px;
+  color: #334155;
+  font-size: 1em;
+  position: relative;
+  font-weight: normal;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-select-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #64748b;
+  border-bottom: 2px solid #64748b;
+  transform: rotate(45deg) translateY(-50%);
+}
+
+.custom-select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.custom-select-option {
+  padding: 12px 14px;
+  color: #334155;
+  transition: all 0.15s ease;
+}
+
+.custom-select-option:hover {
+  background-color: #f1f5f9;
+}
+
+.custom-select-option.selected {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  font-weight: 500;
+}
+
+/* แก้ไขเพิ่มเติมสำหรับ Firefox */
+@-moz-document url-prefix() {
+  .custom-select-wrapper select {
+    text-indent: 0;
+    padding-left: 10px;
+  }
+}
+
+/* สำหรับ Safari และ Chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .custom-select-wrapper select {
+    padding-left: 10px;
+  }
+}
+
+.status-group select option {
+  padding: 8px 10px;
+}
+
+/* Placeholder text color */
+.form-group input[type="text"]::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* ReadOnly fields */
+.form-group input[readonly] {
+  background-color: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Duration inputs styling - Beautiful yet cohesive */
+.duration-group {
+  margin-bottom: 20px;
+}
+
+.duration-group label {
+  display: block;
+  font-size: 0.9em;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.duration-group:focus-within label {
+  color: #3b82f6;
+}
+
+.duration-inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 14px;
+  height: 45px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.middle-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+  gap: 30px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.airport-details-group {
+  flex: 1;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: rgba(248, 250, 252, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.airport-details-group:hover {
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.airport-details-group h2 {
+  font-size: 1.4em;
+  color: #334155;
+  margin-bottom: 20px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.plane-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  align-self: center;
+  margin-top: 80px;
+  flex-shrink: 0;
+}
+
+.plane-icon {
+  font-size: 2.8em;
+  color: #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.middle-section:hover .plane-icon {
+  transform: translateY(-5px);
+  color: #2563eb;
+}
+
+/* Form elements styling */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9em;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.form-group:focus-within label {
+  color: #3b82f6;
+}
+
+/* Common input styling for all inputs */
+.form-control-base {
+  width: 100%;
+  height: 45px;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 1em;
+  color: #334155;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  min-width: 120px; /* Ensure minimal width for dropdowns */
+}
+
+.form-control-base:focus {
+  border-color: #3b82f6;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.form-control-base:hover:not(:focus) {
+  border-color: #94a3b8;
+}
+
+/* Apply base styles to standard inputs and select */
+.form-group input[type="text"],
+.form-group select {
+  composes: form-control-base;
+}
+
+/* Select specific styling */
+.form-group select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3e%3cpath fill="none" stroke="%2364748b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 5l6 6 6-6"/%3e%3c/svg%3e');
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  padding: 0 40px 0 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 45px;
+  height: 45px;
+  text-indent: 0;
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #e2e8f0;
+  position: relative;
+}
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
+.btn-done {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.btn-done:hover {
+  background-color: #2563eb;
+  box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25);
+}
+
+.btn-exit {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-exit:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+/* React Select Custom Styling */
+/* This will be applied through the selectCustomStyles in the component */
+
+/* Responsive adjustments */
+@media (max-width: 820px) {
+  .top-section {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .middle-section {
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-route-container {
+    padding: 25px 20px;
+  }
+  .top-section {
+    grid-template-columns: 1fr; 
+  }
+  .middle-section {
+    flex-direction: column;
+    align-items: center; 
+  }
+  .airport-details-group {
+    width: 100%; 
+  }
+  .plane-icon-container {
+    margin: 15px 0;
+    transform: rotate(90deg); 
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn {
+    width: 100%;
+  }
+}

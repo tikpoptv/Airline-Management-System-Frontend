@@ -151,7 +151,10 @@ const RoutePage: React.FC = () => {
             <button className="routepage-action-btn">
               <FaFilter /> Filter by
             </button>
-            <button className="routepage-action-btn">
+            <button 
+              className="routepage-action-btn"
+              onClick={() => navigate('/admin/pathways/routes/add')}
+            >
               <FaPlus /> Add New
             </button>
           </div>

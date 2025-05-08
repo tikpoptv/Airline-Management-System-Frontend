@@ -12,6 +12,7 @@ import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
 import FlightPage from "./pages/Admin/FlightPage/FlightPage";
 import RoutePage from "./pages/Admin/RoutePage/RoutePage";
 import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
+import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="aircraft/create" element={<CreateAircraftPage />} />
             <Route path="pathways/routes" element={<RoutePage />} />
             <Route path="pathways/routes/detail/:id" element={<RouteDetailPage />} />
+            <Route path="pathways/routes/add" element={<AddRoutePage />} />
           </Route>
 
           <Route

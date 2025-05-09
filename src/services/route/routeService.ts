@@ -21,4 +21,12 @@ export interface RouteCreateData {
 
 export const addRoute = async (routeData: RouteCreateData): Promise<Route> => {
   return await api.post('/api/routes', routeData);
+};
+
+export interface RouteUpdateStatusData {
+  status: 'active' | 'inactive';
+}
+
+export const updateRouteStatus = async (id: number, statusData: RouteUpdateStatusData): Promise<Route> => {
+  return await api.put(`/api/routes/${id}/status`, statusData);
 }; 

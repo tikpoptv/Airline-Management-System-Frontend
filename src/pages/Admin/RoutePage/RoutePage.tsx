@@ -96,6 +96,10 @@ const RoutePage: React.FC = () => {
     navigate(`/admin/pathways/routes/detail/${routeId}`);
   };
 
+  const handleEditRoute = (routeId: number) => {
+    navigate(`/admin/pathways/routes/edit/${routeId}`);
+  };
+
   return (
     <div className="routepage-outer">
       {menuOpenIdx !== null && <div className="routepage-overlay" onClick={() => setMenuOpenIdx(null)} />}
@@ -213,7 +217,10 @@ const RoutePage: React.FC = () => {
                                 >
                                   View Detail
                                 </button>
-                                <button className="routepage-action-dropdown-item">
+                                <button 
+                                  className="routepage-action-dropdown-item"
+                                  onClick={() => handleEditRoute(route.route_id)}
+                                >
                                   Edit Detail
                                 </button>
                               </div>

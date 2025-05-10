@@ -28,13 +28,19 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
     }
 
     if (!response.ok) {
-      const msg = await response.text();
-      throw new Error(msg || 'Request failed');
+      const errorText = await response.text();
+      console.error('[DEBUG] API Error Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      throw new Error(errorText || `Request failed with status ${response.status}`);
     }
 
     return response;
   } catch (error) {
-    if (error instanceof Error && error.message === 'Session expired') {
+    console.error('[DEBUG] Network Error:', error);
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Network error');

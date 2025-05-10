@@ -23,6 +23,8 @@ import MaintenanceDetail from "./pages/Admin/MaintenancePage/MaintenanceDetail";
 import EditMaintenance from "./pages/Admin/MaintenancePage/EditMaintenance";
 import CreateMaintenance from "./pages/Admin/MaintenancePage/CreateMaintenance";
 import CrewDetailPage from './pages/Admin/CrewPage/CrewDetailPage';
+import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
+import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
 
 function App() {
   return (
@@ -47,6 +49,8 @@ function App() {
             <Route path="aircrafts/:id" element={<AircraftDetailPage />} />
             <Route path="crew" element={<CrewPage />} />
             <Route path="crew/:id" element={<CrewDetailPage />} />
+            <Route path="crew/edit/:id" element={<EditCrewPage />} />
+            <Route path="crew/create" element={<CreateCrewPage />} />
             <Route path="aircraft/create" element={<CreateAircraftPage />} />
             <Route path="pathways/routes" element={<RoutePage />} />
             <Route path="pathways/routes/detail/:id" element={<RouteDetailPage />} />

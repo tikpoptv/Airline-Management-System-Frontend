@@ -101,7 +101,7 @@ const CrewList = ({
 
           <div className="button-group">
             {isEditing && (
-              <button className="add-button" onClick={() => window.location.href = '/admin/crew/new'}>
+              <button className="add-button" onClick={() => window.location.href = '/admin/crew/create'}>
                 Add New
               </button>
             )}

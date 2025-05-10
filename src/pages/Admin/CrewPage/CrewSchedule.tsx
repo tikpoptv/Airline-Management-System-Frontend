@@ -25,7 +25,11 @@ const CrewSchedule = ({ crewId }: Props) => {
         setSchedules(response);
         setError(null);
       } catch (err) {
-        setError('Unable to load flight schedule');
+        if (err instanceof Error && err.message.includes('no flight assignments found')) {
+          setError('No flight schedule available');
+        } else {
+          setError('Unable to load flight schedule. Please try again.');
+        }
         console.error('Error fetching schedule:', err);
       } finally {
         setLoading(false);
@@ -100,15 +104,19 @@ const CrewSchedule = ({ crewId }: Props) => {
 
   if (error) {
     return (
-      <div className="schedule-container">
-        <div className="text-red-500 py-4 text-center">
-          <p>{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Try Again
-          </button>
+      <div className="schedule-container h-full w-full flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
+          <p className={error.includes('No flight schedule') ? 'text-gray-500 text-xl font-medium' : 'text-red-500 text-xl font-medium'}>
+            {error}
+          </p>
+          {!error.includes('No flight schedule') && (
+            <button 
+              onClick={() => window.location.reload()} 
+              className="mt-6 px-8 py-3 bg-blue-500 text-white text-base font-medium rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Try Again
+            </button>
+          )}
         </div>
       </div>
     );
@@ -148,7 +156,9 @@ const CrewSchedule = ({ crewId }: Props) => {
       </div>
 
       {loading ? (
-        <Loading message="Loading flight schedule..." />
+        <div className="flex items-center justify-center min-h-[400px] w-full">
+          <Loading message="Loading flight schedule..." />
+        </div>
       ) : (
         <div className="schedule-table-container">
           <table className="schedule-table">
@@ -191,7 +201,9 @@ const CrewSchedule = ({ crewId }: Props) => {
               ) : (
                 <tr>
                   <td colSpan={5} className="empty-message">
-                    No flight schedule found
+                    <div className="flex items-center justify-center min-h-[400px] w-full">
+                      <p className="text-gray-500 text-xl font-medium">No flight schedule found</p>
+                    </div>
                   </td>
                 </tr>
               )}

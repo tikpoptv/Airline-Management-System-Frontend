@@ -21,6 +21,26 @@ export const getAirportById = async (id: number): Promise<Airport | undefined> =
   }
 };
 
+export interface UpdateAirportData {
+  name: string;
+  city: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  status: 'active' | 'inactive';
+}
+
+export const updateAirport = async (id: number, data: UpdateAirportData): Promise<Airport> => {
+  try {
+    const response = await api.put(`/api/airports/${id}`, data);
+    return response as Airport;
+  } catch (error) {
+    console.error('Error updating airport:', error);
+    throw error;
+  }
+};
+
 export const searchAirports = async (
   searchParams: {
     airportId?: string;

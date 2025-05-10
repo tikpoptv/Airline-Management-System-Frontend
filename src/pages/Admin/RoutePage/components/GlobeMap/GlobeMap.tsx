@@ -17,6 +17,7 @@ export interface Airport {
 interface GlobeMapProps {
   fromAirport: Airport;
   toAirport: Airport;
+  onLocationClick?: (lat: number, lon: number) => void;
 }
 
 interface AirplaneData {
@@ -115,7 +116,7 @@ const getPointAndBearingOnGreatCircle = (
 const ARC_LAYER_GET_HEIGHT_RATIO = 0.08;
 const VISUAL_ALTITUDE_MULTIPLIER = 0.6;
 
-const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport }) => {
+const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick }) => {
   console.log('GlobeMap rendering with:', { fromAirport, toAirport });
   
   const INITIAL_VIEW_STATE = {
@@ -225,6 +226,13 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport }) => {
     },
   });
 
+  const handleClick = (event: any) => {
+    if (onLocationClick) {
+      const { lat, lng } = event.coordinate || event.lngLat;
+      onLocationClick(lat, lng);
+    }
+  };
+
   return (
     <div className="globe-map-container">
       <DeckGL
@@ -233,6 +241,7 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport }) => {
         layers={[airportLayer, arcLayer, airplaneTextLayer]}
         width="100%"
         height="500px"
+        onClick={handleClick}
         getTooltip={({ object, layer }) => {
           if (object && layer && layer.id === 'airport-layer') {
             const airport = object as Airport;

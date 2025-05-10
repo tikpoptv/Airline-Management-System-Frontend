@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import Map, { Marker } from 'react-map-gl';
+import React, { useState, useCallback } from 'react';
+import ReactMapGL, { Marker, ViewportProps, MapEvent } from 'react-map-gl';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { CircularProgress } from '@mui/material';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './AirportGlobeMap.css';
+
+const MAPBOX_TOKEN = "pk.eyJ1IjoiamVkc2FkYXBvcm4iLCJhIjoiY2xzOWdqcWp2MDNvMjJrbXVnOWYwc2wzNyJ9.uMuDq7UhTkwNZO5-QKOEng";
 
 interface AirportGlobeMapProps {
   latitude: number;
@@ -15,42 +18,71 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
   longitude,
   onLocationChange
 }) => {
-  const [viewState, setViewState] = useState({
-    longitude,
+  const [viewport, setViewport] = useState<ViewportProps>({
     latitude,
-    zoom: 10
+    longitude,
+    zoom: 10,
+    bearing: 0,
+    pitch: 0
   });
 
-  const onClick = (event: any) => {
-    const { lat, lng } = event.lngLat;
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleMapClick = useCallback((event: MapEvent) => {
+    const [lng, lat] = event.lngLat as [number, number];
     onLocationChange(lat, lng);
-    setViewState(prev => ({
+    setViewport(prev => ({
       ...prev,
       latitude: lat,
       longitude: lng
     }));
-  };
+  }, [onLocationChange]);
+
+  const handleViewportChange = useCallback((newViewport: ViewportProps) => {
+    setViewport(prev => ({
+      ...prev,
+      ...newViewport
+    }));
+  }, []);
+
+  if (error) {
+    return (
+      <div className="airport-globe-map-error">
+        <FaMapMarkerAlt />
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="airport-globe-map-container">
       <div className="airport-globe-map">
-        <Map
-          {...viewState}
-          onMove={evt => setViewState(evt.viewState)}
-          onClick={onClick}
+        {isLoading && (
+          <div className="airport-globe-map-loading">
+            <CircularProgress />
+          </div>
+        )}
+        <ReactMapGL
+          {...viewport}
+          onViewportChange={handleViewportChange}
+          onClick={handleMapClick}
           mapStyle="mapbox://styles/mapbox/dark-v11"
-          mapboxAccessToken="pk.eyJ1IjoiamVkc2FkYXBvcm4iLCJhIjoiY2xzOWdqcWp2MDNvMjJrbXVnOWYwc2wzNyJ9.uMuDq7UhTkwNZO5-QKOEng"
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          onLoad={() => setIsLoading(false)}
+          onError={() => setError("Failed to load map")}
         >
-          <Marker
-            latitude={latitude}
+          <Marker 
+            latitude={latitude} 
             longitude={longitude}
-            anchor="center"
+            offsetLeft={-12}
+            offsetTop={-24}
           >
             <div className="airport-marker">
               <FaMapMarkerAlt size={24} />
             </div>
           </Marker>
-        </Map>
+        </ReactMapGL>
       </div>
       <div className="airport-globe-map-info">
         <div className="airport-globe-map-coordinates">
@@ -60,7 +92,7 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
           </span>
         </div>
         <div className="airport-globe-map-hint">
-          Click anywhere on the map to update coordinates
+          คลิกที่ใดก็ได้บนแผนที่เพื่ออัปเดตพิกัด
         </div>
       </div>
     </div>

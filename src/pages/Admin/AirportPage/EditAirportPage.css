@@ -655,4 +655,169 @@ body, .airport-detail-page {
   margin-top: 24px;
   border-top: 1px solid #f1f5f9;
   padding-top: 24px;
+}
+
+.edit-airport-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.edit-airport-page h1 {
+  margin-bottom: 24px;
+  color: #1e293b;
+}
+
+.edit-airport-form {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.map-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.map-section h2 {
+  margin-bottom: 16px;
+  color: #1e293b;
+}
+
+.coordinates-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.globe-map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.form-actions button:first-child {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.form-actions button:first-child:hover {
+  background: #e2e8f0;
+}
+
+.form-actions button:last-child {
+  background: #3b82f6;
+  border: none;
+  color: white;
+}
+
+.form-actions button:last-child:hover {
+  background: #2563eb;
+}
+
+.airport-detail-loading {
+  text-align: center;
+  padding: 48px;
+  color: #64748b;
+}
+
+.airport-detail-error {
+  text-align: center;
+  padding: 48px;
+  color: #ef4444;
+}
+
+.confirm-dialog-content {
+  min-width: 400px;
+  padding: 8px 0;
+}
+
+.changes-list {
+  margin-top: 16px;
+}
+
+.change-item {
+  margin: 12px 0;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.change-item span {
+  font-weight: 500;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.change-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 8px;
+}
+
+.old-value {
+  color: #d32f2f;
+  text-decoration: line-through;
+  font-family: monospace;
+}
+
+.new-value {
+  color: #2e7d32;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.arrow {
+  color: #666;
+  font-size: 1.2rem;
 } 

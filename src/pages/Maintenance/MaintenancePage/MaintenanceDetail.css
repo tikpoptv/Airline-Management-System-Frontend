@@ -1,14 +1,13 @@
-/* Crew Details Page */
-.crew-detail {
+/* Maintenance Details Page */
+.maintenance-detail {
   background: white;
   margin: -1.5rem;
   padding: 0;
   width: 100%;
 }
 
-
 /* Page Header */
- .page-header-row {
+.page-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,7 +17,7 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
- .page-heading-left {
+.page-heading-left {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -46,19 +45,19 @@
   font-weight: 500;
 }
 
-.crew-detail .breadcrumb-arrow {
+.maintenance-detail .breadcrumb-arrow {
   color: #cbd5e1;
   font-size: 0.813rem;
 }
 
-.crew-detail .breadcrumb-current {
+.maintenance-detail .breadcrumb-current {
   color: #64748b;
   font-size: 0.813rem;
   font-weight: 600;
 }
 
 /* Back Button */
-.crew-detail .back-button {
+.maintenance-detail .back-button {
   color: #64748b;
   font-size: 0.875rem;
   font-weight: 500;
@@ -71,7 +70,7 @@
   margin-left: auto;
 }
 
-.crew-detail .back-button:hover {
+.maintenance-detail .back-button:hover {
   background: #f1f5f9;
 }
 
@@ -91,6 +90,7 @@
   gap: 0.5rem;
   min-width: 80px;
   justify-content: center;
+  margin-right: 43px;
 }
 
 .edit-button:hover {
@@ -100,7 +100,7 @@
 }
 
 /* Section Headers */
-.crew-detail .section-title {
+.maintenance-detail .section-title {
   font-size: 1.35rem;
   font-weight: 600;
   color: #1e293b;
@@ -109,7 +109,7 @@
   position: relative;
 }
 
-.crew-detail .section-title::after {
+.maintenance-detail .section-title::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -121,7 +121,7 @@
 }
 
 /* Profile Section */
-.crew-detail .profile-wrapper {
+.maintenance-detail .profile-wrapper {
   padding: 24px;
   width: 100%;
   background: linear-gradient(to bottom, #ffffff, #f8fafc);
@@ -133,7 +133,7 @@
 }
 
 /* Form Layout */
-.crew-detail .form-grid {
+.maintenance-detail .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 0.5rem;
@@ -146,8 +146,25 @@
   gap: 24px;
 }
 
+/* Left Column - Avatar + Work Section */
+.left-column {
+  flex: 0 0 auto;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Right Column - Information + Contact Sections */
+.right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 /* Avatar */
-.crew-detail .avatar-cell {
+.maintenance-detail .avatar-cell {
   grid-row: 1 / 3;
   display: flex;
   justify-content: center;
@@ -162,10 +179,12 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
+
 .avatar-section {
   flex: 0 0 auto;
   padding: 1rem;
 }
+
 /* Main Content Layout */
 .profile-content {
   flex: 1;
@@ -178,11 +197,9 @@
 /* Section Styling */
 .section {
   padding: 16px;
-  background-color: #ffffff;
+  background-color: transparent;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 1rem;
-
 }
 
 .work-section {
@@ -205,12 +222,23 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
-  color: #333;
+  color: #1e293b;
   position: relative;
+  padding-bottom: 8px;
 }
 
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(to right, #3b82f6, transparent);
+  border-radius: 1px;
+}
 
-.crew-detail .avatar-cell img {
+.maintenance-detail .avatar-cell img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -218,12 +246,12 @@
   transition: transform 0.3s ease;
 }
 
-.crew-detail .avatar-cell:hover img {
+.maintenance-detail .avatar-cell:hover img {
   transform: scale(1.02);
 }
 
 /* Input Groups */
-.crew-detail .input-group {
+.maintenance-detail .input-group {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -233,7 +261,7 @@
   gap: 0.25rem;
 }
 
-.crew-detail .input-group label {
+.maintenance-detail .input-group label {
   font-size: 0.7rem;
   color: #64748b;
   font-weight: 500;
@@ -241,7 +269,7 @@
   letter-spacing: 0.02em;
 }
 
-.crew-detail .read-only-field {
+.maintenance-detail .read-only-field {
   width: 100%;
   padding: 0.5rem 0.75rem;
   background-color: #ffffff !important;
@@ -256,86 +284,91 @@
   transition: all 0.2s ease;
 }
 
-.crew-detail .read-only-field:hover {
+.maintenance-detail .read-only-field:hover {
   border-color: #cbd5e1;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.crew-detail.is-edit-mode .read-only-field {
+.maintenance-detail.is-edit-mode .read-only-field {
   background-color: #37393b !important;
   color: #64748b;
 }
 
-.crew-detail.is-edit-mode .read-only-field:hover {
+.maintenance-detail.is-edit-mode .read-only-field:hover {
   background: #e2e8f0 !important;
   border-color: #cbd5e1;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* Crew Status Badges */
-.crew-detail .status-badge {
+/* Maintenance Status Badges */
+.maintenance-detail .status-badge {
   display: inline-block;
   align-items: center;
   gap: 0.35rem;
   border-radius: 999px;
   padding: 0.25rem 0.75rem;
-  /* border-radius: 1rem; */
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.crew-detail .status-badge.Active {
-  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-  color: #166534;
-  border: 1px solid #86efac;
-}
-
-.crew-detail .status-badge.On-Leave {
+.maintenance-detail .status-badge.Pending {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   color: #92400e;
   border: 1px solid #fcd34d;
 }
 
-.crew-detail .status-badge.Retired {
+.maintenance-detail .status-badge.In-Progress {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+.maintenance-detail .status-badge.Completed {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.maintenance-detail .status-badge.Cancelled {
   background: linear-gradient(135deg, #fee2e2, #fecaca);
   color: #991b1b;
   border: 1px solid #fca5a5;
 }
 
 /* Grid Positioning */
-.crew-detail .crew-id-group {
+.maintenance-detail .log-id-group {
   grid-column: 2 / -1;
 }
 
-.crew-detail .name-group {
+.maintenance-detail .aircraft-group {
   grid-column: 2;
 }
 
-.crew-detail .status-group {
+.maintenance-detail .status-group {
   grid-column: 3;
 }
 
-.crew-detail .position-group {
+.maintenance-detail .location-group {
   grid-column: 2;
 }
 
-.crew-detail .flight-hours-group {
+.maintenance-detail .date-group {
   grid-column: 2;
 }
 
-.crew-detail .license-year-group {
+.maintenance-detail .details-group {
   grid-column: 3;
 }
 
 /* History / Notes */
-.crew-detail .crew-history {
+.maintenance-detail .maintenance-history {
   grid-column: 1 / -1;
   margin-top: 0.5rem;
 }
 
-.crew-detail .crew-history .read-only-field {
+.maintenance-detail .maintenance-history .read-only-field {
   min-height: 50px;
   line-height: 1.4;
   white-space: pre-wrap;
@@ -346,36 +379,41 @@
 }
 
 /* Editable Fields */
-.crew-detail .input-group input,
-.crew-detail .input-group select,
-.crew-detail .input-group textarea {
+.maintenance-detail .input-group input,
+.maintenance-detail .input-group select,
+.maintenance-detail .input-group textarea {
   padding: 0.75rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 1.0625rem;
   color: #1f1f4e;
-  background-color:#f9fafe;
+  background-color: #f9fafe;
   transition: all 0.2s ease;
+  width: 100%;
 }
 
-.crew-detail .input-group input:hover,
-.crew-detail .input-group select:hover,
-.crew-detail .input-group textarea:hover {
+.maintenance-detail .input-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.maintenance-detail .input-group input:hover,
+.maintenance-detail .input-group select:hover,
+.maintenance-detail .input-group textarea:hover {
   border-color: #cbd5e1;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
 }
 
-.crew-detail .input-group input:focus,
-.crew-detail .input-group select:focus,
-.crew-detail .input-group textarea:focus {
+.maintenance-detail .input-group input:focus,
+.maintenance-detail .input-group select:focus,
+.maintenance-detail .input-group textarea:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Save Button */
-.save-button-container{
+.save-button-container {
   grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
@@ -395,13 +433,13 @@
   cursor: pointer;
 }
 
-.crew-detail .save-button:hover {
+.maintenance-detail .save-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 }
 
 /* Delete Button */
-.crew-detail .delete-button {
+.maintenance-detail .delete-button {
   padding: 0.375rem;
   border-radius: 0.375rem;
   background-color: #ef4444;
@@ -411,7 +449,7 @@
   box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
 }
 
-.crew-detail .delete-button:hover {
+.maintenance-detail .delete-button:hover {
   background-color: #dc2626;
 }
 
@@ -469,8 +507,9 @@
   .save-button-container {
     grid-column: 1;
   }
+  
   .created-at {
-      grid-column: 1;
-      grid-row: 4;
-    }
+    grid-column: 1;
+    grid-row: 4;
+  }
 }

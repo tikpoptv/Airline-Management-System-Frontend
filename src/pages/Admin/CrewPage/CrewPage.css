@@ -625,7 +625,6 @@ button:focus {
 .profile-avatar {
   width: 180px;
   height: 180px;
-  border-radius: 50%;
   background-color: white;
   overflow: hidden;
   border: 1px solid #e2e8f0;

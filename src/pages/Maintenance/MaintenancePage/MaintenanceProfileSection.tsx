@@ -3,7 +3,8 @@ import { FaTrash } from 'react-icons/fa';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { updateMaintenanceLog, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import { useNavigate } from 'react-router-dom';
-import avatarImg from "../../../assets/images/profile_web.webp"
+import avatarImg from "../../../assets/images/maintenance.webp"
+
 interface Props {
   editData: MaintenanceLog;
   originalData: MaintenanceLog;
@@ -76,16 +77,14 @@ const MaintenanceProfileSection = ({
   return (
     <div className="profile-wrapper">
       <div className="form-container">
-        {/* Profile Avatar Section */}
-        <div className="avatar-section">
-          <div className="profile-avatar">
-            <img src={avatarImg} alt="avatar" />
+        {/* Left Column - Avatar and Work Section */}
+        <div className="left-column">
+          <div className="avatar-section">
+            <div className="profile-avatar">
+              <img src={avatarImg} alt="avatar" />
+            </div>
           </div>
-        </div>
 
-        {/* Main Content Layout */}
-        <div className="profile-content">
-          {/* Work Section */}
           <div className="section work-section">
             <h2>Maintenance Details</h2>
             <div className="field-group">
@@ -130,7 +129,10 @@ const MaintenanceProfileSection = ({
               )}
             </div>
           </div>
+        </div>
 
+        {/* Right Column - Information and Contact Sections */}
+        <div className="right-column">
           {/* Information Section */}
           <div className="section information-section">
             <h2>Information</h2>
@@ -162,22 +164,18 @@ const MaintenanceProfileSection = ({
               </div>
             </div>
 
-            <div className="field-group full-width">
-              <label>Details</label>
-              {isEditMode ? (
-                <textarea
-                  value={editData.details}
-                  onChange={(e) => handleChange('details', e.target.value)}
-                />
-              ) : (
-                <div className="read-only-field">{editData.details}</div>
-              )}
+            <div className="field-row">
+              <div className="field-group">
+                <label>Aircraft ID</label>
+                <div className="read-only-field">{editData.aircraft_id}</div>
+              </div>
+              
+              <div className="field-group">
+                <label>Aircraft Model</label>
+                <div className="read-only-field">{editData.aircraft?.model || 'N/A'}</div>
+              </div>
             </div>
-          </div>
 
-          {/* Assigned User Section */}
-          <div className="section contact-section">
-            <h2>Assigned User</h2>
             <div className="field-row">
               <div className="field-group">
                 <label>User ID</label>
@@ -188,6 +186,23 @@ const MaintenanceProfileSection = ({
                 <label>Username</label>
                 <div className="read-only-field">{editData.assigned_user?.username || 'N/A'}</div>
               </div>
+            </div>
+
+          </div>
+
+          {/* Assigned User Section */}
+          <div className="section contact-section">
+            <h2>Description</h2>
+            <div className="field-group full-width">
+              <label>Details</label>
+              {isEditMode ? (
+                <textarea
+                  value={editData.details}
+                  onChange={(e) => handleChange('details', e.target.value)}
+                />
+              ) : (
+                <div className="read-only-field">{editData.details}</div>
+              )}
             </div>
           </div>
 

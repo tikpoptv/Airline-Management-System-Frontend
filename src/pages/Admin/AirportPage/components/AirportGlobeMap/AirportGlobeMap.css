@@ -1,0 +1,70 @@
+.airport-globe-map-container {
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.airport-globe-map {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.airport-marker {
+  color: #3b82f6;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.airport-marker:hover {
+  color: #2563eb;
+  transform: scale(1.1);
+}
+
+.airport-globe-map-info {
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.airport-globe-map-coordinates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.airport-globe-map-coordinates svg {
+  color: #3b82f6;
+}
+
+.airport-globe-map-hint {
+  color: #64748b;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Override mapbox controls style */
+.mapboxgl-ctrl-top-right {
+  top: 12px;
+  right: 12px;
+}
+
+.mapboxgl-ctrl-group {
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mapboxgl-ctrl-group button {
+  width: 32px !important;
+  height: 32px !important;
+} 

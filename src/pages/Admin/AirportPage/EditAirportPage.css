@@ -1,0 +1,658 @@
+.editairportpage-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.editairportpage-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.editairportpage-back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  background: #f1f5f9;
+  color: #1a3557;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.editairportpage-back-button:hover {
+  background: #e2e8f0;
+}
+
+.editairportpage-form {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.editairportpage-form-group {
+  margin-bottom: 24px;
+}
+
+.editairportpage-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1a3557;
+}
+
+.editairportpage-form-group input,
+.editairportpage-form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1a3557;
+  transition: all 0.2s ease;
+}
+
+.editairportpage-form-group input:focus,
+.editairportpage-form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.editairportpage-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.editairportpage-form-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editairportpage-form-actions button[type="button"] {
+  background: #f1f5f9;
+  color: #1a3557;
+}
+
+.editairportpage-form-actions button[type="submit"] {
+  background: #3b82f6;
+  color: white;
+}
+
+.editairportpage-form-actions button:hover {
+  transform: translateY(-1px);
+}
+
+.editairportpage-form-actions button[type="button"]:hover {
+  background: #e2e8f0;
+}
+
+.editairportpage-form-actions button[type="submit"]:hover {
+  background: #2563eb;
+}
+
+.editairportpage-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.editairportpage-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.editairportpage-modal-content h2 {
+  margin-bottom: 24px;
+  color: #1a3557;
+}
+
+.editairportpage-changes {
+  margin-bottom: 24px;
+}
+
+.editairportpage-change-item {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.editairportpage-change-values {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.editairportpage-old-value {
+  color: #64748b;
+  text-decoration: line-through;
+}
+
+.editairportpage-arrow {
+  color: #64748b;
+}
+
+.editairportpage-new-value {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.editairportpage-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.editairportpage-modal-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editairportpage-modal-actions button:first-child {
+  background: #f1f5f9;
+  color: #1a3557;
+}
+
+.editairportpage-modal-actions button:last-child {
+  background: #3b82f6;
+  color: white;
+}
+
+.editairportpage-modal-actions button:hover {
+  transform: translateY(-1px);
+}
+
+.editairportpage-modal-actions button:first-child:hover {
+  background: #e2e8f0;
+}
+
+.editairportpage-modal-actions button:last-child:hover {
+  background: #2563eb;
+}
+
+.editairportpage-loading,
+.editairportpage-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-size: 18px;
+  color: #1a3557;
+}
+
+.editairportpage-error {
+  color: #ef4444;
+}
+
+.edit-input {
+  width: 100%;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #1e293b;
+  font-weight: 500;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.04);
+  backdrop-filter: blur(2px);
+}
+.edit-input:focus {
+  border: 1.5px solid #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.13);
+  outline: none;
+  animation: inputFocusPop 0.18s cubic-bezier(.4,2,.6,1) 1;
+}
+@keyframes inputFocusPop {
+  0% { transform: scale(1); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+.edit-label {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 2px;
+  margin-top: 8px;
+  display: block;
+  letter-spacing: 0.01em;
+}
+.edit-select {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  background: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m6 9 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+  padding-right: 42px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.edit-select:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+.edit-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.edit-select option {
+  padding: 12px;
+  font-size: 14px;
+  color: #1e293b;
+  background: white;
+}
+.edit-btn-save, .edit-btn-cancel {
+  min-width: 120px;
+  border-radius: 12px;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.edit-btn-save {
+  background: linear-gradient(90deg, #10b981 60%, #22d3ee 100%);
+  color: #fff;
+  border: none;
+}
+.edit-btn-save:hover {
+  background: linear-gradient(90deg, #059669 60%, #0ea5e9 100%);
+  box-shadow: 0 4px 16px rgba(16,185,129,0.13);
+  transform: translateY(-2px);
+}
+.edit-btn-cancel {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: none;
+}
+.edit-btn-cancel:hover {
+  background: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(148,163,184,0.13);
+  transform: translateY(-2px);
+}
+
+.airport-detail-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  border: 1.5px solid #e2e8f0;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.08), 0 2px 8px rgba(16,185,129,0.04);
+  backdrop-filter: blur(4px);
+}
+
+.airport-detail-info-grid {
+  gap: 32px;
+}
+
+body, .airport-detail-page {
+  background: linear-gradient(120deg, #f4f7fa 60%, #e0f2fe 100%);
+  min-height: 100vh;
+  backdrop-filter: blur(2px);
+}
+
+.airport-detail-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+  padding: 24px;
+}
+
+.airport-detail-header {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.airport-detail-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.airport-detail-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  background: #f8fafc;
+  color: #64748b;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.airport-detail-back-btn:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.airport-detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.airport-detail-breadcrumb-separator {
+  color: #cbd5e1;
+}
+
+.airport-detail-title-section {
+  padding: 24px;
+  background: white;
+}
+
+.airport-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.airport-detail-name {
+  font-size: 32px;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.airport-detail-iata {
+  font-size: 28px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.airport-detail-content {
+  padding: 0 12px;
+}
+
+.airport-detail-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.airport-detail-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+  padding: 24px;
+  margin: 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.airport-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  padding: 24px;
+}
+
+.airport-detail-info-item {
+  margin: 0;
+}
+
+.airport-detail-info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.airport-detail-info-label {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.airport-detail-info-value {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.airport-detail-info-value.highlight {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.edit-input:hover {
+  border-color: #cbd5e1;
+  background: white;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-label {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.edit-select {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #1e293b;
+  background: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m6 9 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+  padding-right: 42px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.edit-select:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+.edit-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.edit-select option {
+  padding: 12px;
+  font-size: 14px;
+  color: #1e293b;
+  background: white;
+}
+
+/* สร้าง custom option styles */
+.edit-select option[value="active"] {
+  color: #059669;
+  font-weight: 500;
+}
+
+.edit-select option[value="inactive"] {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ปรับ label สำหรับ select */
+.edit-label {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* container สำหรับ select */
+.airport-detail-info-item {
+  position: relative;
+}
+
+/* เพิ่ม focus ring animation */
+.edit-select:focus {
+  animation: focusRing 0.3s ease-in-out;
+}
+
+@keyframes focusRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+}
+
+/* สร้าง custom arrow animation */
+.edit-select:hover {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231e293b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m6 9 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.airport-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.edit-btn-cancel, .edit-btn-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn-save {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.edit-btn-save:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.edit-btn-cancel {
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+}
+
+.edit-btn-cancel:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* เพิ่ม style สำหรับ label ของ select ด้วย */
+.airport-detail-info-item label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ปรับขนาดของ container สำหรับ select */
+.airport-detail-info-item {
+  margin-bottom: 16px;
+}
+
+.airport-detail-map-section {
+  padding: 24px;
+}
+
+.airport-detail-map-section .airport-detail-info-grid {
+  margin-top: 24px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 24px;
+} 

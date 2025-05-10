@@ -29,4 +29,16 @@ export interface RouteUpdateStatusData {
 
 export const updateRouteStatus = async (id: number, statusData: RouteUpdateStatusData): Promise<Route> => {
   return await api.put(`/api/routes/${id}/status`, statusData);
+};
+
+export const countRoutesByAirportId = async (airportId: number): Promise<number> => {
+  try {
+    const routes = await getRouteList();
+    return routes.filter(
+      route => route.from_airport.airport_id === airportId || route.to_airport.airport_id === airportId
+    ).length;
+  } catch (error) {
+    console.error('Error counting routes for airport:', error);
+    throw error;
+  }
 }; 

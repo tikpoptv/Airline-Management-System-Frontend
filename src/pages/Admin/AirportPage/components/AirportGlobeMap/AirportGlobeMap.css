@@ -1,0 +1,130 @@
+.airport-globe-map-container {
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.airport-globe-map {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+.airport-globe-map-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
+}
+
+.airport-globe-map-loading p {
+  color: #475569;
+  font-size: 14px;
+  margin: 0;
+}
+
+.airport-globe-map-error {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 24px;
+  text-align: center;
+}
+
+.airport-globe-map-error svg {
+  font-size: 32px;
+}
+
+.airport-globe-map-error p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.retry-button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+  background: #b91c1c;
+}
+
+.airport-marker {
+  color: #3b82f6;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.airport-marker:hover {
+  color: #2563eb;
+  transform: scale(1.1);
+}
+
+.airport-globe-map-info {
+  padding: 16px 24px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+}
+
+.airport-globe-map-coordinates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.airport-globe-map-coordinates svg {
+  color: #3b82f6;
+}
+
+.airport-globe-map-hint {
+  color: #64748b;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Override mapbox controls style */
+.mapboxgl-ctrl-top-right {
+  top: 12px;
+  right: 12px;
+}
+
+.mapboxgl-ctrl-group {
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mapboxgl-ctrl-group button {
+  width: 32px !important;
+  height: 32px !important;
+} 

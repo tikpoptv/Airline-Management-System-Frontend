@@ -16,7 +16,7 @@ import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
 import EditRoutePage from "./pages/Admin/RoutePage/EditRoutePage";
 import Dashboard from './pages/Maintenance/DashboardPage/Dashboard';
 import MaintenancePage from './pages/Maintenance/MaintenancePage/MaintenancePage';
-import MaintenanceDetail from './pages/Maintenance/MaintenancePage/MaintenanceDetail';
+import MaintenanceDetailPage from './pages/Maintenance/MaintenancePage/MaintenanceDetailPage';
 import CreateMaintenance from './pages/Maintenance/MaintenancePage/CreateMaintenance';
 
 
@@ -62,7 +62,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="maintenance" element={<MaintenancePage />} />
               <Route path="maintenance/create" element={<CreateMaintenance />} />
-              <Route path=":id" element={<MaintenanceDetail />} />
+              <Route path="maintenance/detail/:id" element={<MaintenanceDetailPage />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

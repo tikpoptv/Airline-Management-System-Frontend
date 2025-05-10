@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogs, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import MaintenanceLogList from './MaintenanceList';
-import { useNavigate } from 'react-router-dom';
+import MaintenanceDetail from './MaintenanceDetail';
 
 const MaintenancePage = () => {
   const [maintenanceList, setMaintenanceList] = useState<MaintenanceLog[]>([]);
@@ -12,17 +12,14 @@ const MaintenancePage = () => {
   const [selectedLogIds, setSelectedLogIds] = useState<number[]>([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteStatus, setDeleteStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [selectedMaintenanceLog, setSelectedMaintenanceLog] = useState<MaintenanceLog | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // Toast state
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
-
-  const navigate = useNavigate();
-
-  
 
   const fetchMaintenanceLogs = async () => {
     setLoading(true);
@@ -42,18 +39,16 @@ const MaintenancePage = () => {
   }, []);
 
   const handleSelectMaintenanceLog = (log: MaintenanceLog) => {
-    navigate(`/admin/maintenance/${log.log_id}`);
+    setSelectedMaintenanceLog(log);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
-    setDeleteStatus('idle');
 
     try {
       for (const id of selectedLogIds) {
         await cancelMaintenanceLog(id);
       }
-      setDeleteStatus('success');
       setSelectedLogIds([]);
       setShowConfirmModal(false);
       fetchMaintenanceLogs();
@@ -64,7 +59,6 @@ const MaintenancePage = () => {
       setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
       console.error(error);
-      setDeleteStatus('error');
       setToastMessage('Failed to cancel maintenance log.');
       setToastType('error');
       setShowToast(true);
@@ -78,46 +72,52 @@ const MaintenancePage = () => {
     <div className="maintenance-page">
       {error && <div className="error-message">{error}</div>}
 
-      <MaintenanceLogList
-        maintenanceList={maintenanceList}
-        isEditing={isEditing}
-        setIsEditing={(v) => {
-          setIsEditing(v);
-          if (!v) setSelectedLogIds([]);
-        }}
-        setSelectedMaintenanceLog={handleSelectMaintenanceLog}
-        loading={loading}
-        selectedLogIds={selectedLogIds}
-        setSelectedLogIds={setSelectedLogIds}
-        onDelete={() => setShowConfirmModal(true)}
-      />
+      {selectedMaintenanceLog ? (
+        <>
+          <div className="page-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+            <button className="edit-button" onClick={() => setIsEditMode((prev) => !prev)}>
+              {isEditMode ? 'Done' : 'Edit'}
+            </button>
+          </div>
+          <MaintenanceDetail
+            maintenanceLog={selectedMaintenanceLog}
+            onBack={() => setSelectedMaintenanceLog(null)}
+            isEditMode={isEditMode}
+          />
+        </>
+      ) : (
+        <MaintenanceLogList
+          maintenanceList={maintenanceList}
+          isEditing={isEditing}
+          setIsEditing={(v) => {
+            setIsEditing(v);
+            if (!v) setSelectedLogIds([]);
+          }}
+          setSelectedMaintenanceLog={handleSelectMaintenanceLog}
+          loading={loading}
+          selectedLogIds={selectedLogIds}
+          setSelectedLogIds={setSelectedLogIds}
+          onDelete={() => setShowConfirmModal(true)}
+        />
+      )}
 
       {showConfirmModal && (
         <div className="modal-backdrop">
           <div className="modal-content">
-            <h3>Confirm To Cancel Maintenance Log</h3>
-            <p>Cancelling Maintenance Log ID(s): {selectedLogIds.join(', ')}</p>
-
-            {isDeleting && <p>Cancelling...</p>}
-            {!isDeleting && deleteStatus === 'success' && <p style={{ color: 'green' }}>Cancelled successfully ✅</p>}
-            {!isDeleting && deleteStatus === 'error' && <p style={{ color: 'red' }}>Cancel failed ❌</p>}
-
+            <h3>Confirm Cancel Maintenance Logs</h3>
+            <p>Are you sure you want to cancel {selectedLogIds.length} maintenance log(s)?</p>
             <div className="modal-actions">
               <button
                 className="confirm-button"
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
               >
-                Confirm
+                {isDeleting ? 'Cancelling...' : 'Confirm'}
               </button>
               <button
                 className="cancel-button"
-                onClick={() => {
-                  if (!isDeleting) {
-                    setShowConfirmModal(false);
-                    setDeleteStatus('idle');
-                  }
-                }}
+                onClick={() => setShowConfirmModal(false)}
+                disabled={isDeleting}
               >
                 Back
               </button>
@@ -137,10 +137,8 @@ const MaintenancePage = () => {
             color: 'white',
             padding: '12px 24px',
             borderRadius: '8px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
             zIndex: 9999,
             fontSize: '1rem',
-            transition: 'opacity 0.3s ease',
           }}
         >
           {toastMessage}

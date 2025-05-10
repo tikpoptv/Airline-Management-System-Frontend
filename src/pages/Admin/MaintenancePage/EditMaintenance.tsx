@@ -5,10 +5,11 @@ import './EditMaintenance.css';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogDetail, updateMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
-import { Select, Input, message } from 'antd';
+import { Select, Input, message, Modal, Typography } from 'antd';
 
 const { Option } = Select;
 const { TextArea } = Input;
+const { Text } = Typography;
 
 type MaintenanceStatus = 'Pending' | 'In Progress' | 'Completed';
 
@@ -32,6 +33,14 @@ const EditMaintenance: React.FC = () => {
   const [assignedTo, setAssignedTo] = useState<number | null>(null);
   const [details, setDetails] = useState<string>('');
 
+  // Original values for comparison
+  const [originalValues, setOriginalValues] = useState({
+    status: '',
+    location: '',
+    assignedTo: null as number | null,
+    details: ''
+  });
+
   useEffect(() => {
     const fetchMaintenanceDetail = async () => {
       if (!id) return;
@@ -42,11 +51,23 @@ const EditMaintenance: React.FC = () => {
         const data = await getMaintenanceLogDetail(id);
         setMaintenance(data);
         
-        // Initialize form values
-        setStatus(data.status as MaintenanceStatus);
-        setLocation(data.maintenance_location);
-        setAssignedTo(data.assigned_user?.user_id || null);
-        setDetails(data.details || '');
+        // Initialize form values and original values
+        const initialStatus = data.status as MaintenanceStatus;
+        const initialLocation = data.maintenance_location;
+        const initialAssignedTo = data.assigned_user?.user_id || null;
+        const initialDetails = data.details || '';
+
+        setStatus(initialStatus);
+        setLocation(initialLocation);
+        setAssignedTo(initialAssignedTo);
+        setDetails(initialDetails);
+
+        setOriginalValues({
+          status: initialStatus,
+          location: initialLocation,
+          assignedTo: initialAssignedTo,
+          details: initialDetails
+        });
       } catch (err) {
         console.error('Error fetching maintenance detail:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch maintenance detail');
@@ -58,30 +79,94 @@ const EditMaintenance: React.FC = () => {
     fetchMaintenanceDetail();
   }, [id]);
 
-  const handleSave = async () => {
-    if (!id) return;
+  const getChangedFields = () => {
+    const changes: { field: string; from: string; to: string }[] = [];
 
-    try {
-      setSaving(true);
-      setError(null);
-
-      const updateData = {
-        status: status as MaintenanceStatus,
-        maintenance_location: location,
-        details: details,
-        ...(assignedTo && { assigned_to: assignedTo })
-      };
-
-      await updateMaintenanceLog(id, updateData);
-      message.success('Maintenance log updated successfully');
-      navigate(`/admin/maintenance/${id}`);
-    } catch (err) {
-      console.error('Error updating maintenance:', err);
-      setError(err instanceof Error ? err.message : 'Failed to update maintenance log');
-      message.error('Failed to update maintenance log');
-    } finally {
-      setSaving(false);
+    if (status !== originalValues.status) {
+      changes.push({ field: 'Status', from: originalValues.status, to: status });
     }
+    if (location !== originalValues.location) {
+      changes.push({ field: 'Location', from: originalValues.location, to: location });
+    }
+    if (assignedTo !== originalValues.assignedTo) {
+      changes.push({ 
+        field: 'Assigned To', 
+        from: originalValues.assignedTo?.toString() || 'None', 
+        to: assignedTo?.toString() || 'None' 
+      });
+    }
+    if (details !== originalValues.details) {
+      changes.push({ 
+        field: 'Details', 
+        from: originalValues.details || 'None',
+        to: details || 'None'
+      });
+    }
+
+    return changes;
+  };
+
+  const handleSave = async () => {
+    const changes = getChangedFields();
+    
+    if (changes.length === 0) {
+      message.info('No changes to save');
+      return;
+    }
+
+    Modal.confirm({
+      title: 'Confirm Changes',
+      content: (
+        <div className="changes-confirmation">
+          <Text>The following changes will be made:</Text>
+          <div className="changes-list">
+            {changes.map((change, index) => (
+              <div key={index} className="change-item">
+                <Text strong>{change.field}:</Text>
+                <div className="change-values">
+                  <Text delete type="danger">{change.from}</Text>
+                  <Text type="success">{change.to}</Text>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+      okText: 'Save Changes',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        try {
+          setSaving(true);
+          setError(null);
+
+          const updateData = {
+            status: status as MaintenanceStatus,
+            maintenance_location: location,
+            details: details,
+            ...(assignedTo && { assigned_to: assignedTo })
+          };
+
+          await updateMaintenanceLog(id!, updateData);
+          
+          Modal.success({
+            title: 'Success',
+            content: 'Maintenance log updated successfully',
+            onOk: () => navigate(`/admin/maintenance/${id}`)
+          });
+        } catch (err) {
+          console.error('Error updating maintenance:', err);
+          const errorMessage = err instanceof Error ? err.message : 'Failed to update maintenance log';
+          setError(errorMessage);
+          
+          Modal.error({
+            title: 'Error',
+            content: errorMessage
+          });
+        } finally {
+          setSaving(false);
+        }
+      }
+    });
   };
 
   const formatDate = (dateString: string) => {
@@ -118,7 +203,7 @@ const EditMaintenance: React.FC = () => {
         <h1>Edit Maintenance Log</h1>
         <div className="header-actions">
           <button 
-            className="maintenance-detail-back-btn"
+            className="back-button"
             onClick={() => navigate(`/admin/maintenance/${id}`)}
           >
             <FaArrowLeft /> Back to Details
@@ -128,7 +213,7 @@ const EditMaintenance: React.FC = () => {
             onClick={handleSave}
             disabled={saving}
           >
-            <FaSave /> {saving ? 'Saving...' : 'Save Changes'}
+            <FaSave /> Save Changes
           </button>
         </div>
       </div>
@@ -139,14 +224,14 @@ const EditMaintenance: React.FC = () => {
             <h2><FaInfoCircle /> Basic Information</h2>
             <div className="detail-item">
               <span className="detail-label">Log ID</span>
-              <span className="detail-value">{maintenance.log_id}</span>
+              <span className="detail-value">{maintenance?.log_id}</span>
             </div>
             <div className="detail-item">
               <span className="detail-label">
                 <FaClock /> Date
               </span>
               <span className="detail-value">
-                {formatDate(maintenance.date_of_maintenance)}
+                {maintenance?.date_of_maintenance ? formatDate(maintenance.date_of_maintenance) : ''}
               </span>
             </div>
             <div className="detail-item">
@@ -167,11 +252,11 @@ const EditMaintenance: React.FC = () => {
             <h2><FaPlane /> Aircraft Information</h2>
             <div className="detail-item">
               <span className="detail-label">Aircraft ID</span>
-              <span className="detail-value">{maintenance.aircraft?.aircraft_id}</span>
+              <span className="detail-value">{maintenance?.aircraft?.aircraft_id}</span>
             </div>
             <div className="detail-item">
               <span className="detail-label">Model</span>
-              <span className="detail-value">{maintenance.aircraft?.model || 'N/A'}</span>
+              <span className="detail-value">{maintenance?.aircraft?.model || 'N/A'}</span>
             </div>
             <button 
               className="view-details-button"
@@ -212,17 +297,17 @@ const EditMaintenance: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="maintenance-details">
-            <h2><FaTools /> Maintenance Details</h2>
-            <div className="detail-value editable">
-              <TextArea
-                value={details}
-                onChange={e => setDetails(e.target.value)}
-                placeholder="Enter maintenance details"
-                autoSize={{ minRows: 3, maxRows: 6 }}
-              />
-            </div>
+        <div className="maintenance-details-section">
+          <h2><FaTools /> Maintenance Details</h2>
+          <div className="detail-value editable">
+            <TextArea
+              value={details}
+              onChange={e => setDetails(e.target.value)}
+              placeholder="Enter maintenance details"
+              autoSize={{ minRows: 3, maxRows: 6 }}
+            />
           </div>
         </div>
       </div>

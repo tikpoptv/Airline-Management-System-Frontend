@@ -1,50 +1,63 @@
 .maintenance-detail-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 24px;
+  margin: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .maintenance-detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  padding: 0 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.maintenance-detail-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
 }
 
 .header-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
-.maintenance-detail-back-btn,
+.back-button,
 .save-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  border-radius: 4px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 500;
+  font-size: 14px;
   transition: all 0.3s ease;
 }
 
-.maintenance-detail-back-btn {
-  background-color: #f0f0f0;
-  color: #333;
+.back-button {
+  background-color: #f5f5f5;
+  color: #595959;
 }
 
-.maintenance-detail-back-btn:hover {
-  background-color: #e0e0e0;
+.back-button:hover {
+  background-color: #e8e8e8;
 }
 
 .save-button {
-  background-color: #1890ff;
+  background-color: #1677ff;
   color: white;
 }
 
 .save-button:hover {
-  background-color: #096dd9;
+  background-color: #4096ff;
 }
 
 .save-button:disabled {
@@ -53,82 +66,135 @@
 }
 
 .maintenance-detail-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 24px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .maintenance-detail-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 24px;
+  margin-bottom: 24px;
 }
 
 .detail-section {
-  padding: 16px;
-  border-radius: 4px;
-  background-color: #fafafa;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
 }
 
 .detail-section h2 {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
-  color: #333;
-  font-size: 1.2rem;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .detail-item {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .detail-label {
   display: block;
-  color: #666;
-  margin-bottom: 4px;
-  font-weight: 500;
+  color: #8c8c8c;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .detail-value {
-  color: #333;
+  color: #1a1a1a;
+  font-size: 15px;
 }
 
 .detail-value.editable {
-  margin-top: 4px;
+  margin-top: 8px;
+}
+
+.detail-value.editable .ant-input,
+.detail-value.editable .ant-select {
+  width: 100%;
+}
+
+.ant-input,
+.ant-select-selector {
+  height: 40px !important;
+  border-radius: 6px !important;
+}
+
+.ant-select-selector {
+  padding: 4px 11px !important;
 }
 
 .view-details-button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid #1890ff;
-  border-radius: 4px;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+  border: 1px solid #1677ff;
+  border-radius: 6px;
   background-color: transparent;
-  color: #1890ff;
+  color: #1677ff;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
 }
 
-.view-details-button:hover {
-  background-color: #1890ff;
+.view-details-button:hover:not(:disabled) {
+  background-color: #1677ff;
   color: white;
 }
 
 .view-details-button:disabled {
-  background-color: #f5f5f5;
+  background-color: #fafafa;
   border-color: #d9d9d9;
   color: #d9d9d9;
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
-.view-details-button:disabled:hover {
-  background-color: #f5f5f5;
-  color: #d9d9d9;
-  border-color: #d9d9d9;
+.maintenance-details-section {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  width: 100%;
+}
+
+.maintenance-details-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.maintenance-details-section .ant-input {
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+  padding: 12px;
+}
+
+.maintenance-details-section .ant-input:hover {
+  border-color: #4096ff;
+}
+
+.maintenance-details-section .ant-input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
 }
 
 .maintenance-detail-error {
@@ -141,34 +207,32 @@
   margin-bottom: 16px;
 }
 
-.maintenance-details {
-  margin-top: 24px;
-  padding: 16px;
+.changes-confirmation {
+  padding: 16px 0;
+}
+
+.changes-list {
+  margin-top: 16px;
+}
+
+.change-item {
+  margin-bottom: 12px;
+  padding: 8px;
   background-color: #fafafa;
   border-radius: 4px;
 }
 
-.maintenance-details h2 {
+.change-values {
+  margin-top: 4px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-  color: #333;
-  font-size: 1.2rem;
+  gap: 12px;
 }
 
-.maintenance-details .ant-input {
-  background-color: white;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
+.change-values .ant-typography-danger {
+  color: #ff4d4f;
 }
 
-.maintenance-details .ant-input:hover {
-  border-color: #40a9ff;
-}
-
-.maintenance-details .ant-input:focus {
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+.change-values .ant-typography-success {
+  color: #52c41a;
 } 

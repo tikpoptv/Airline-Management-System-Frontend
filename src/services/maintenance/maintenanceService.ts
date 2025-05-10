@@ -8,6 +8,15 @@ interface UpdateMaintenanceLogPayload {
   details?: string;
 }
 
+interface CreateMaintenanceLogPayload {
+  aircraft_id: number;
+  date_of_maintenance: string;
+  details: string;
+  maintenance_location: string;
+  status?: 'Pending' | 'In Progress' | 'Completed';
+  assigned_to?: number;
+}
+
 /**
  * Fetches maintenance logs with optional filters
  * @param params Optional search parameters
@@ -75,6 +84,16 @@ export const updateMaintenanceLog = async (id: string | number, data: UpdateMain
     return response.data;
   } catch (error) {
     console.error(`Error updating maintenance log ${id}:`, error);
+    throw error;
+  }
+};
+
+export const createMaintenanceLog = async (data: CreateMaintenanceLogPayload): Promise<MaintenanceLog> => {
+  try {
+    const response = await api.post('/api/maintenance-logs', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating maintenance log:', error);
     throw error;
   }
 }; 

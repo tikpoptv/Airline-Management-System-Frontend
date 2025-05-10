@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaClock, FaMapMarkerAlt, FaPlane, FaUser, FaInfoCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaClock, FaMapMarkerAlt, FaPlane, FaUser, FaInfoCircle, FaEdit, FaTools } from 'react-icons/fa';
 import './MaintenanceDetail.css';
 import { MaintenanceLog } from '../../../types/maintenance';
-import { getMaintenanceLogs } from '../../../services/maintenance/maintenanceService';
+import { getMaintenanceLogDetail } from '../../../services/maintenance/maintenanceService';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const MaintenanceDetail: React.FC = () => {
@@ -15,17 +15,13 @@ const MaintenanceDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchMaintenanceDetail = async () => {
+      if (!id) return;
+      
       try {
         setLoading(true);
         setError(null);
-        const data = await getMaintenanceLogs();
-        const maintenanceLog = data.find(log => log.log_id.toString() === id);
-        
-        if (maintenanceLog) {
-          setMaintenance(maintenanceLog);
-        } else {
-          setError('Maintenance log not found');
-        }
+        const data = await getMaintenanceLogDetail(id);
+        setMaintenance(data);
       } catch (err) {
         console.error('Error fetching maintenance detail:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch maintenance detail');
@@ -46,6 +42,10 @@ const MaintenanceDetail: React.FC = () => {
     });
   };
 
+  const handleEdit = () => {
+    navigate(`/admin/maintenance/${id}/edit`);
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -55,7 +55,10 @@ const MaintenanceDetail: React.FC = () => {
       <div className="maintenance-detail-error">
         <h2>Error</h2>
         <p>{error || 'Maintenance log not found'}</p>
-        <button onClick={() => navigate('/admin/maintenance')}>
+        <button 
+          className="back-to-list-button"
+          onClick={() => navigate('/admin/maintenance')}
+        >
           <FaArrowLeft /> Back to Maintenance List
         </button>
       </div>
@@ -65,13 +68,21 @@ const MaintenanceDetail: React.FC = () => {
   return (
     <div className="maintenance-detail-container">
       <div className="maintenance-detail-header">
-        <button 
-          className="maintenance-detail-back-btn"
-          onClick={() => navigate('/admin/maintenance')}
-        >
-          <FaArrowLeft /> Back to List
-        </button>
         <h1>Maintenance Log Details</h1>
+        <div className="header-actions">
+          <button 
+            className="maintenance-detail-back-btn"
+            onClick={() => navigate('/admin/maintenance')}
+          >
+            <FaArrowLeft /> Back to List
+          </button>
+          <button 
+            className="edit-button"
+            onClick={handleEdit}
+          >
+            <FaEdit /> Edit
+          </button>
+        </div>
       </div>
 
       <div className="maintenance-detail-card">
@@ -108,12 +119,20 @@ const MaintenanceDetail: React.FC = () => {
             <h2><FaPlane /> Aircraft Information</h2>
             <div className="detail-item">
               <span className="detail-label">Aircraft ID</span>
-              <span className="detail-value">{maintenance.aircraft_id}</span>
+              <span className="detail-value">{maintenance.aircraft?.aircraft_id}</span>
             </div>
             <div className="detail-item">
               <span className="detail-label">Model</span>
               <span className="detail-value">{maintenance.aircraft?.model || 'N/A'}</span>
             </div>
+            <button 
+              className="view-details-button"
+              onClick={() => navigate(`/admin/aircrafts/${maintenance.aircraft?.aircraft_id}`)}
+              disabled={!maintenance.aircraft?.aircraft_id}
+              title={!maintenance.aircraft?.aircraft_id ? 'No aircraft information available' : ''}
+            >
+              <FaPlane /> View Aircraft Details
+            </button>
           </div>
 
           <div className="detail-section">
@@ -126,11 +145,19 @@ const MaintenanceDetail: React.FC = () => {
               <span className="detail-label">User ID</span>
               <span className="detail-value">{maintenance.assigned_user?.user_id || 'N/A'}</span>
             </div>
+            <button 
+              className="view-details-button view-crew-button"
+              onClick={() => navigate(`/admin/crew/${maintenance.assigned_user?.user_id}`)}
+              disabled={!maintenance.assigned_user?.user_id}
+              title={!maintenance.assigned_user?.user_id ? 'No crew member assigned' : ''}
+            >
+              <FaUser /> View Crew Details
+            </button>
           </div>
         </div>
 
         <div className="maintenance-details">
-          <h2>Maintenance Details</h2>
+          <h2><FaTools /> Maintenance Details</h2>
           <p className="detail-text">{maintenance.details || 'No details provided'}</p>
         </div>
       </div>

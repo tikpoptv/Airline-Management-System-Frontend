@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+// import { FaTrash } from 'react-icons/fa';
 import { Crew } from '../../../types/crew';
 import avatarImg from '../../../assets/images/profile_web.webp';
 import { updateCrewById, deleteCrewById } from '../../../services/crew/crewService';
@@ -17,6 +17,7 @@ const CrewProfileSection = ({
   originalData,
   isEditMode,
   handleChange,
+  
 }: Props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -29,12 +30,14 @@ const CrewProfileSection = ({
   const [firstName, setFirstName] = useState(() => editData.name.split(' ')[0] || '');
   const [lastName, setLastName] = useState(() => editData.name.split(' ').slice(1).join(' ') || '');
 
+  
   useEffect(() => {
     const fullName = `${firstName} ${lastName}`.trim();
     handleChange('name', fullName);
-  }, [firstName, handleChange, lastName]);
+  }, [firstName, lastName]);
 
   const navigate = useNavigate();
+  {console.log("Edit mode:", isEditMode)}
 
   const triggerToast = (message: string, type: 'success' | 'error') => {
     setToastMessage(message);
@@ -83,19 +86,23 @@ const CrewProfileSection = ({
     }
   };
 
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
+    // Keep the format as is, just ensuring it's handled properly
+    return dateString;
+  };
+
   return (
     <div className="profile-wrapper">
       <div className="form-container">
-        {/* Profile Avatar Section */}
-        <div className="avatar-section">
-          <div className="profile-avatar">
-            <img src={avatarImg} alt="avatar" />
+        {/* Left Column - Avatar and Work Section */}
+        <div className="left-column">
+          <div className="avatar-section">
+            <div className="profile-avatar">
+              <img src={avatarImg} alt="avatar" />
+            </div>
           </div>
-        </div>
 
-        {/* Main Content Layout */}
-        <div className="profile-content">
-          {/* Work Section */}
           <div className="section work-section">
             <h2>Work</h2>
             <div className="field-group">
@@ -118,12 +125,14 @@ const CrewProfileSection = ({
             <div className="field-group">
               <label>Crew ID</label>
               <div className="input-with-icon">
-                <div className="read-only-field">{editData.crew_id}</div>
-                {isEditMode && (
+              <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.crew_id}
+                </div>
+                                {/* {isEditMode && (
                   <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
                     <FaTrash />
                   </button>
-                )}
+                )} */}
               </div>
             </div>
 
@@ -140,7 +149,10 @@ const CrewProfileSection = ({
               )}
             </div>
           </div>
+        </div>
 
+        {/* Right Column - Information and Contact Sections */}
+        <div className="right-column">
           {/* Information Section */}
           <div className="section information-section">
             <h2>Information</h2>
@@ -192,44 +204,26 @@ const CrewProfileSection = ({
               
               <div className="field-group">
                 <label>License expire date</label>
-                {isEditMode ? (
-                  <input
-                    type="date"
-                    value={editData.license_expiry_date}
-                    onChange={(e) => handleChange('license_expiry_date', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{editData.license_expiry_date}</div>
-                )}
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {formatDate(editData.license_expiry_date)}
+                    </div>
               </div>
+            
             </div>
 
             <div className="field-row">
               <div className="field-group">
                 <label>Passport number</label>
-                {isEditMode ? (
-                  <input
-                    type="text"
-                    value={editData.passport_number}
-                    onChange={(e) => handleChange('passport_number', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{editData.passport_number}</div>
-                )}
-              </div>
-              
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {editData.passport_number}
+                    </div>
+                </div>
               <div className="field-group">
                 <label>Passport expire date</label>
-                {isEditMode ? (
-                  <input
-                    type="date"
-                    value={editData.passport_expiry_date}
-                    onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{editData.passport_expiry_date}</div>
-                )}
-              </div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {formatDate(editData.passport_expiry_date)}
+                    </div>               
+             </div>
             </div>
           </div>
 
@@ -239,18 +233,24 @@ const CrewProfileSection = ({
             <div className="field-row">
               <div className="field-group">
                 <label>User ID</label>
-                <div className="read-only-field">{editData.user?.user_id || 'N/A'}</div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.user_id || 'N/A'}
+                </div>
               </div>
               
               <div className="field-group">
                 <label>Username</label>
-                <div className="read-only-field">{editData.user?.username || 'N/A'}</div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.username || 'N/A'}
+                </div>
               </div>
             </div>
 
             <div className="field-group full-width">
               <label>Email</label>
-              <div className="read-only-field">{editData.user?.email || 'N/A'}</div>
+              <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.email || 'N/A'}
+                </div>
             </div>
           </div>
 
@@ -264,6 +264,8 @@ const CrewProfileSection = ({
           )}
         </div>
       </div>
+
+      
 
       {/* Modals */}
       {showConfirmModal && (
@@ -341,5 +343,6 @@ const CrewProfileSection = ({
     </div>
   );
 };
+
 
 export default CrewProfileSection;

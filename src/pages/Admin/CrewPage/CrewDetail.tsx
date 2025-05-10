@@ -31,6 +31,7 @@ const CrewDetail = ({
 }: Props) => {
   const [editData, setEditData] = useState<Crew>(crew);
   const [originalData, setOriginalData] = useState<Crew>(crew);
+  
 
   useEffect(() => {
     setEditData(crew);

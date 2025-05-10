@@ -78,7 +78,7 @@
   /* Edit Button */
   .edit-button {
     padding: 0.5rem 1rem;
-    background-color: #22c55e;
+    background-color: #16a34a !important;
     color: white;
     border: none;
     border-radius: 0.375rem;
@@ -91,10 +91,11 @@
     gap: 0.5rem;
     min-width: 80px;
     justify-content: center;
+    margin-right: 43px;
   }
   
   .edit-button:hover {
-    background-color: #16a34a;
+    background-color: #16a34a!important;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
@@ -121,7 +122,7 @@
   }
   
   /* Profile Section */
-  .crew-detail .profile-wrapper {
+  .profile-wrapper {
     padding: 24px;
     width: 100%;
     background: linear-gradient(to bottom, #ffffff, #f8fafc);
@@ -130,6 +131,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.9);
     margin: 0 1.5rem 2rem;
     border: 1px solid rgba(226, 232, 240, 0.8);
+    position: relative;
   }
   
   /* Form Layout */
@@ -145,26 +147,46 @@
     display: flex;
     gap: 24px;
   }
+  /* Left Column - Avatar + Work Section */
+.left-column {
+    flex: 0 0 auto;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Right Column - Information + Contact Sections */
+  .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
   
   /* Avatar */
-  .crew-detail .avatar-cell {
+  .avatar-cell {
     grid-row: 1 / 3;
+    grid-column: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    grid-column: 1;
     width: 100%;
-    aspect-ratio: 7/3;
+    height: 120px;
     overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    border: none;
     background: linear-gradient(135deg, #f1f5f9, #f8fafc);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     overflow: hidden;
   }
   .avatar-section {
-    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
     padding: 1rem;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
   }
   /* Main Content Layout */
   .profile-content {
@@ -175,14 +197,31 @@
     gap: 24px;
   }
 
+  .profile-avatar {
+    margin-top: 20px;
+    width: 400px;
+    height: 210px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    background: white;
+    max-width: 100%;
+  }
+  
+  .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+
   /* Section Styling */
 .section {
     padding: 16px;
-    background-color: #ffffff;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
+    border: none;
+    box-shadow: none;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 1rem;
-
   }
   
   .work-section {
@@ -206,7 +245,7 @@
     font-weight: 600;
     margin-bottom: 16px;
     color: #333;
-    position: relative;
+
   }
 
   
@@ -223,17 +262,16 @@
   }
   
   /* Input Groups */
-  .crew-detail .input-group {
+  .field-group {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
     margin-bottom: 0.5rem;
     width: 100%;
     display: flex;
-    gap: 0.25rem;
   }
   
-  .crew-detail .input-group label {
+  .field-groupp label {
     font-size: 0.7rem;
     color: #64748b;
     font-weight: 500;
@@ -241,12 +279,12 @@
     letter-spacing: 0.02em;
   }
   
-  .crew-detail .read-only-field {
+  .read-only-field {
     width: 100%;
-    padding: 0.5rem 0.75rem;
-    background-color: #ffffff !important;
+    padding: 8px 12px;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
     border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
+    border-radius: 4px;
     color: #1e293b;
     font-size: 0.875rem;
     font-weight: 500;
@@ -255,25 +293,34 @@
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
     transition: all 0.2s ease;
   }
+ 
   
-  .crew-detail .read-only-field:hover {
+
+  
+  /* Input with icon (for delete button) */
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .read-only-field:hover {
     border-color: #cbd5e1;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
   }
   
-  .crew-detail.is-edit-mode .read-only-field {
-    background-color: #37393b !important;
+  .is-edit-mode .read-only-field {
+    background-color: #df13df72 !important;
     color: #64748b;
   }
   
-  .crew-detail.is-edit-mode .read-only-field:hover {
+  .is-edit-mode .read-only-field:hover {
     background: #e2e8f0 !important;
     border-color: #cbd5e1;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
   }
   
   /* Crew Status Badges */
-  .crew-detail .status-badge {
+  .status-badge {
     display: inline-block;
     align-items: center;
     gap: 0.35rem;
@@ -286,51 +333,51 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
   
-  .crew-detail .status-badge.Active {
+  .status-badge.Active {
     background: linear-gradient(135deg, #dcfce7, #bbf7d0);
     color: #166534;
     border: 1px solid #86efac;
   }
   
-  .crew-detail .status-badge.On-Leave {
+  .status-badge.On-Leave {
     background: linear-gradient(135deg, #fef3c7, #fde68a);
     color: #92400e;
     border: 1px solid #fcd34d;
   }
   
-  .crew-detail .status-badge.Retired {
+  .status-badge.Retired {
     background: linear-gradient(135deg, #fee2e2, #fecaca);
     color: #991b1b;
     border: 1px solid #fca5a5;
   }
   
-  /* Grid Positioning */
-  .crew-detail .crew-id-group {
+  /* Grid Positioning
+  .crew-id-group {
     grid-column: 2 / -1;
   }
   
-  .crew-detail .name-group {
+   .name-group {
     grid-column: 2;
   }
   
-  .crew-detail .status-group {
+  .status-group {
     grid-column: 3;
   }
   
-  .crew-detail .position-group {
+   .position-group {
     grid-column: 2;
   }
   
-  .crew-detail .flight-hours-group {
+   .flight-hours-group {
     grid-column: 2;
   }
   
-  .crew-detail .license-year-group {
+   .license-year-group {
     grid-column: 3;
-  }
+  } */
   
   /* History / Notes */
-  .crew-detail .crew-history {
+  .crew-history {
     grid-column: 1 / -1;
     margin-top: 0.5rem;
   }
@@ -376,18 +423,16 @@
   
   /* Save Button */
   .save-button-container{
-    grid-column: 1 / -1;
     display: flex;
     justify-content: flex-end;
     margin-top: 1.5rem;
-    gap: 1rem;
   }
   
   .save-button {
     padding: 0.75rem 1.5rem;
     background: linear-gradient(45deg, #3b82f6, #2563eb);
     color: white;
-    border-radius: 0.6rem;
+    border-radius: 6px;
     font-weight: 600;
     font-size: 1.0625rem;
     transition: all 0.2s ease;
@@ -401,11 +446,16 @@
   }
   
   /* Delete Button */
-  .crew-detail .delete-button {
-    padding: 0.375rem;
-    border-radius: 0.375rem;
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 4px;
+    border: none;
     background-color: #ef4444;
     color: white;
+    cursor: pointer;
     transition: all 0.2s ease;
     transform: translateY(-1px);
     box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
@@ -441,10 +491,34 @@
     font-weight: 500;
   }
 
-  @media (max-width: 992px) {
+/* background */
+.gray-background {
+    background-color: #817f7f !important; /* light gray */
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
     .form-container {
       flex-direction: column;
     }
+
+    .left-column {
+        width: 100%;
+      }
+
+    .avatar-section {
+        align-items: center;
+    }
+    .profile-avatar {
+        width: 100%;
+        max-width: 400px;
+      }
+      
+    .field-row {
+        flex-direction: column;
+        gap: 12px;
+      }
     
     .profile-content {
       grid-template-columns: 1fr;
@@ -469,8 +543,4 @@
     .save-button-container {
       grid-column: 1;
     }
-    .created-at {
-        grid-column: 1;
-        grid-row: 4;
-      }
   }

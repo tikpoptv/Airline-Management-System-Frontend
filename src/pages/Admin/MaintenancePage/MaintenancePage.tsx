@@ -4,18 +4,7 @@ import './MaintenancePage.css';
 import { useNavigate } from 'react-router-dom';
 import { MaintenanceLog, MaintenanceSearchParams, MaintenanceStatus } from '../../../types/maintenance';
 import { getMaintenanceLogs } from '../../../services/maintenance/maintenanceService';
-
-// Types
-interface Maintenance {
-  log_id: number;
-  aircraft_id: number;
-  model: string;
-  date: string;
-  user_id: number;
-  user_name: string;
-  location: string;
-  status: 'completed' | 'cancelled' | 'pending' | 'in progress';
-}
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 interface SearchFilters {
   logId: string;
@@ -25,6 +14,16 @@ interface SearchFilters {
   status: string;
   location: string;
 }
+
+// เพิ่ม type สำหรับ sort options
+type SortOption = 
+  | 'Date (Newest)' 
+  | 'Date (Oldest)' 
+  | 'Status (Priority)' 
+  | 'Aircraft ID (ASC)' 
+  | 'Aircraft ID (DESC)' 
+  | 'Location (A-Z)' 
+  | 'Location (Z-A)';
 
 const MaintenancePage: React.FC = () => {
   const navigate = useNavigate();
@@ -39,8 +38,7 @@ const MaintenancePage: React.FC = () => {
     location: ''
   });
   const [maintenances, setMaintenances] = useState<MaintenanceLog[]>([]);
-  const [filteredMaintenances, setFilteredMaintenances] = useState<MaintenanceLog[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   
@@ -50,8 +48,21 @@ const MaintenancePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   // Sort states
-  const [sortOption, setSortOption] = useState<string | null>(null);
+  const [sortOption, setSortOption] = useState<SortOption | null>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  // Click outside handler for dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.maintenance-action-btn') && !target.closest('.maintenance-dropdown')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fetch maintenance logs
   const fetchMaintenanceLogs = async (params?: MaintenanceSearchParams) => {
@@ -65,7 +76,6 @@ const MaintenancePage: React.FC = () => {
       
       if (Array.isArray(data)) {
         setMaintenances(data);
-        setFilteredMaintenances(data);
         setTotalPages(Math.ceil(data.length / entriesPerPage));
         console.log('✅ Data set successfully:', { 
           total: data.length,
@@ -112,24 +122,67 @@ const MaintenancePage: React.FC = () => {
     fetchMaintenanceLogs(params);
   };
 
-  const applySort = (dataToProcess: MaintenanceLog[]) => {
+  const applySort = (dataToProcess: MaintenanceLog[], selectedSort: SortOption) => {
     const result = [...dataToProcess];
     
-    if (sortOption) {
-      if (sortOption === 'Date (Newest)') {
+    // Define status priority outside switch statement
+    const statusPriority = {
+      'Pending': 0,
+      'In Progress': 1,
+      'Completed': 2,
+      'Cancelled': 3
+    };
+    
+    switch (selectedSort) {
+      case 'Date (Newest)':
         result.sort((a, b) => 
           new Date(b.date_of_maintenance).getTime() - new Date(a.date_of_maintenance).getTime()
         );
-      } else if (sortOption === 'Date (Oldest)') {
+        break;
+      
+      case 'Date (Oldest)':
         result.sort((a, b) => 
           new Date(a.date_of_maintenance).getTime() - new Date(b.date_of_maintenance).getTime()
         );
-      }
+        break;
+
+      case 'Status (Priority)':
+        result.sort((a, b) => 
+          statusPriority[a.status as keyof typeof statusPriority] - 
+          statusPriority[b.status as keyof typeof statusPriority]
+        );
+        break;
+
+      case 'Aircraft ID (ASC)':
+        result.sort((a, b) => a.aircraft_id - b.aircraft_id);
+        break;
+
+      case 'Aircraft ID (DESC)':
+        result.sort((a, b) => b.aircraft_id - a.aircraft_id);
+        break;
+
+      case 'Location (A-Z)':
+        result.sort((a, b) => 
+          a.maintenance_location.localeCompare(b.maintenance_location)
+        );
+        break;
+
+      case 'Location (Z-A)':
+        result.sort((a, b) => 
+          b.maintenance_location.localeCompare(a.maintenance_location)
+        );
+        break;
     }
     
     setMaintenances(result);
     setTotalPages(Math.ceil(result.length / entriesPerPage));
     setCurrentPage(1);
+  };
+
+  const handleSort = (option: SortOption) => {
+    setSortOption(option);
+    setOpenDropdown(null);
+    applySort(maintenances, option);
   };
 
   // Pagination handlers
@@ -168,17 +221,7 @@ const MaintenancePage: React.FC = () => {
 
   // Return early if loading
   if (loading) {
-    return (
-      <div className="maintenance-outer">
-        <div className="maintenance-container">
-          <div className="maintenance-subtitle">Maintenance</div>
-          <h1 className="maintenance-title">Maintenance Log</h1>
-          <div className="maintenance-card">
-            <div className="maintenance-loading">Loading maintenance logs...</div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   // Return early if error
@@ -294,36 +337,67 @@ const MaintenancePage: React.FC = () => {
           )}
 
           <div className="maintenance-actionbar">
-            <button
-              className="maintenance-action-btn"
-              onClick={() => setOpenDropdown(openDropdown === 'sort' ? null : 'sort')}
-            >
-              <FaSort /> Sort by
-            </button>
-            {openDropdown === 'sort' && (
-              <div className="maintenance-dropdown">
-                <button
-                  className={`maintenance-dropdown-item ${sortOption === 'Date (Newest)' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('Date (Newest)');
-                    setOpenDropdown(null);
-                    applySort(filteredMaintenances);
-                  }}
-                >
-                  Date (Newest)
-                </button>
-                <button
-                  className={`maintenance-dropdown-item ${sortOption === 'Date (Oldest)' ? 'active' : ''}`}
-                  onClick={() => {
-                    setSortOption('Date (Oldest)');
-                    setOpenDropdown(null);
-                    applySort(filteredMaintenances);
-                  }}
-                >
-                  Date (Oldest)
-                </button>
-              </div>
-            )}
+            <div style={{ position: 'relative' }}>
+              <button
+                className={`maintenance-action-btn ${openDropdown === 'sort' ? 'active' : ''}`}
+                onClick={() => setOpenDropdown(openDropdown === 'sort' ? null : 'sort')}
+              >
+                <FaSort /> Sort by {sortOption ? `(${sortOption})` : ''}
+              </button>
+              {openDropdown === 'sort' && (
+                <div className="maintenance-dropdown">
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Date (Newest)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Date (Newest)')}
+                  >
+                    <span>Date (Newest)</span>
+                    <small>Sort by most recent date</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Date (Oldest)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Date (Oldest)')}
+                  >
+                    <span>Date (Oldest)</span>
+                    <small>Sort by oldest date</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Status (Priority)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Status (Priority)')}
+                  >
+                    <span>Status (Priority)</span>
+                    <small>Pending → In Progress → Completed → Cancelled</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Aircraft ID (ASC)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Aircraft ID (ASC)')}
+                  >
+                    <span>Aircraft ID (ASC)</span>
+                    <small>Sort by aircraft ID ascending</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Aircraft ID (DESC)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Aircraft ID (DESC)')}
+                  >
+                    <span>Aircraft ID (DESC)</span>
+                    <small>Sort by aircraft ID descending</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Location (A-Z)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Location (A-Z)')}
+                  >
+                    <span>Location (A-Z)</span>
+                    <small>Sort by location alphabetically</small>
+                  </button>
+                  <button
+                    className={`maintenance-dropdown-item ${sortOption === 'Location (Z-A)' ? 'active' : ''}`}
+                    onClick={() => handleSort('Location (Z-A)')}
+                  >
+                    <span>Location (Z-A)</span>
+                    <small>Sort by location reverse alphabetically</small>
+                  </button>
+                </div>
+              )}
+            </div>
             <button 
               className="maintenance-action-btn" 
               onClick={() => navigate('/admin/maintenance/add')}

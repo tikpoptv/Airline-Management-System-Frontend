@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaPen, FaMapMarkerAlt, FaGlobeAsia, FaClock, FaPlane } from 'react-icons/fa';
+import { FaArrowLeft, FaPen, FaMapMarkerAlt, FaGlobeAsia, FaClock, FaPlane, FaCircle } from 'react-icons/fa';
 import moment from 'moment-timezone';
 import './AirportDetailPage.css';
 import { getAirportById } from '../../../services/airportService';
@@ -20,6 +20,14 @@ const AirportDetailPage: React.FC = () => {
   const getGMTOffset = (timezone: string) => {
     const offset = moment.tz(timezone).format('Z');
     return `GMT${offset}`;
+  };
+
+  const getStatusColor = (status: string) => {
+    return status === 'active' ? '#10B981' : '#EF4444';
+  };
+
+  const getStatusText = (status: string) => {
+    return status === 'active' ? 'Active' : 'Inactive';
   };
 
   useEffect(() => {
@@ -88,10 +96,23 @@ const AirportDetailPage: React.FC = () => {
         </div>
         
         <div className="airport-detail-title-section">
-          <h1 className="airport-detail-title">
-            {airport.name}
-            <span className="airport-detail-iata">({airport.iata_code})</span>
-          </h1>
+          <div className="airport-detail-title-container">
+            <h1 className="airport-detail-title">
+              {airport.name}
+              <span className="airport-detail-iata">({airport.iata_code})</span>
+            </h1>
+            <div 
+              className="airport-detail-status"
+              style={{ 
+                backgroundColor: `${getStatusColor(airport.status)}15`,
+                color: getStatusColor(airport.status),
+                border: `1px solid ${getStatusColor(airport.status)}30`
+              }}
+            >
+              <FaCircle size={8} />
+              <span>{getStatusText(airport.status)}</span>
+            </div>
+          </div>
           <button className="airport-detail-edit-btn" onClick={handleEdit}>
             <FaPen /> Edit Airport
           </button>
@@ -161,6 +182,17 @@ const AirportDetailPage: React.FC = () => {
                 <FaClock className="airport-detail-icon" /> Time Zone
               </div>
               <div className="airport-detail-info-value">{airport.timezone}</div>
+            </div>
+
+            <div className="airport-detail-info-item">
+              <div className="airport-detail-info-label">Status</div>
+              <div 
+                className="airport-detail-info-value status-value"
+                style={{ color: getStatusColor(airport.status) }}
+              >
+                <FaCircle size={8} style={{ marginRight: '6px' }} />
+                {getStatusText(airport.status)}
+              </div>
             </div>
           </div>
         </div>

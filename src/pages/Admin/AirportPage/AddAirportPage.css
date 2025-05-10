@@ -1,0 +1,784 @@
+.add-airport-page {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.add-airport-header {
+  margin-bottom: 32px;
+  animation: fadeIn 0.6s ease;
+}
+
+.add-airport-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.1);
+  border: none;
+  font-size: 18px;
+  color: #3b82f6;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  transform: translateX(-2px);
+}
+
+.separator {
+  color: #94a3b8;
+}
+
+.add-airport-header h1 {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.add-airport-form {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.8s ease;
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section h2 {
+  font-size: 20px;
+  color: #0f172a;
+  margin: 0 0 24px 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-section h2 svg {
+  color: #3b82f6;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  height: 48px;
+  border: 1px solid #e2e8f0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #0f172a;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon,
+.select-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.input-with-icon input {
+  padding-left: 44px;
+}
+
+/* Coordinates Section */
+.coordinates-section {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid #e2e8f0;
+}
+
+.coordinates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* Status and Timezone Section */
+.status-timezone-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.cancel-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.submit-button {
+  background: #3b82f6;
+  border: none;
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.submit-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Error Messages */
+.error-message {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .add-airport-page {
+    padding: 20px;
+  }
+
+  .form-grid,
+  .coordinates-grid,
+  .status-timezone-section {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
+
+/* Select Styling */
+.select__control {
+  min-height: 48px !important;
+  background: #f8f9fa !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.select__control:hover {
+  border-color: #cbd5e1 !important;
+}
+
+.select__control--is-focused {
+  border-color: #3b82f6 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+.select__placeholder {
+  color: #94a3b8 !important;
+}
+
+.select__menu {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.select__option {
+  padding: 10px 12px !important;
+  cursor: pointer !important;
+  font-size: 0.95em !important;
+}
+
+.select__option--is-selected {
+  background: #3b82f6 !important;
+  color: white !important;
+}
+
+.select__option--is-focused:not(.select__option--is-selected) {
+  background: #f1f5f9 !important;
+}
+
+/* Timezone Select Specific Styling */
+.timezone-select .select__control {
+  padding-left: 40px !important;
+}
+
+.timezone-select .select__value-container {
+  padding-left: 0 !important;
+}
+
+.timezone-select .select__menu {
+  min-width: 300px !important;
+}
+
+.timezone-select .select__option {
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+/* Status Select Styling */
+.status-select .select__control {
+  background: #f8fafc !important;
+}
+
+.status-select .select__option--is-selected {
+  background: #10b981 !important;
+}
+
+.status-select .select__option--is-focused:not(.select__option--is-selected) {
+  background: #f1f5f9 !important;
+}
+
+/* Loading States */
+.select__loading-indicator {
+  color: #3b82f6 !important;
+}
+
+.select__loading-message {
+  color: #64748b !important;
+  text-align: center !important;
+  padding: 12px !important;
+}
+
+/* Modal styles - Improved look */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.confirm-details {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+}
+
+.confirm-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.confirm-detail-item:last-child {
+  border-bottom: none;
+}
+
+.confirm-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.confirm-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.confirm-button {
+  padding: 12px 28px;
+  background-color: #3b82f6;
+  background-image: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-image: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+.confirm-button:active {
+  transform: translateY(0);
+}
+
+@keyframes modalSlideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Result Modal Styles */
+.result-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px;
+}
+
+.result-icon.success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.result-icon.error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Add success and error notifications */
+.success-notification, 
+.error-notification {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: slideInNotification 0.3s ease-out;
+}
+
+.success-notification {
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.error-notification {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  animation: slideIn 0.3s ease;
+}
+
+.error-notification .error-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.error-notification p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.success-icon,
+.error-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.success-icon {
+  background-color: #a7f3d0;
+  color: #065f46;
+}
+
+.error-icon {
+  background-color: #fecaca;
+  color: #b91c1c;
+}
+
+.success-notification p,
+.error-notification p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@keyframes slideInNotification {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Global styles to remove blue outline from select elements and inputs */
+.select__control:focus, 
+.select__control:focus-within,
+.select__input:focus,
+.select__value-container:focus,
+.select__single-value:focus,
+input:focus,
+select:focus,
+*:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Remove blue outline in Firefox */
+select:-moz-focusring,
+input:-moz-focusring,
+.select__control:-moz-focusring {
+  color: transparent !important;
+  text-shadow: 0 0 0 #000 !important;
+}
+
+/* Remove blue outline in webkit browsers */
+*:focus-visible {
+  outline: none !important;
+}
+
+/* Directly target react-select elements */
+.select__control {
+  border-color: #e2e8f0 !important;
+}
+
+.select__control--is-focused {
+  border-color: #e2e8f0 !important;
+  box-shadow: none !important;
+}
+
+/* ปรับแต่งขนาดของ dropdown timezone ให้ใหญ่ขึ้น */
+.timezone-group {
+  flex: 3;
+  min-width: 100%;
+}
+
+.timezone-group .select__control,
+.timezone-group .select__menu,
+.timezone-select .select__control,
+.timezone-select .select__menu {
+  width: 100% !important;
+  min-width: 320px !important;
+}
+
+/* กำหนดความกว้างของ dropdown menu ให้สัมพันธ์กับความยาวของข้อความ */
+.timezone-select .select__menu {
+  min-width: 350px !important;
+  width: auto !important;
+  white-space: nowrap;
+}
+
+/* ให้เมนูของ timezone กว้างพอสำหรับข้อความยาว */
+.timezone-select .select__option {
+  white-space: nowrap !important;
+  padding-right: 20px !important;
+}
+
+.form-group:has(.select-icon) .select__control,
+.form-group:has(.select-icon) .select__menu {
+  width: 100% !important;
+  min-width: 300px !important;
+}
+
+/* ขยายความกว้างของ dropdown menu เมื่อเปิด */
+.select__menu {
+  width: auto !important;
+  min-width: 100% !important;
+  max-width: 450px !important;
+}
+
+/* ให้ข้อความใน dropdown แสดงเต็มๆ ไม่ถูกตัด */
+.select__single-value {
+  max-width: 90% !important;
+  white-space: normal !important;
+  line-height: 1.4 !important;
+}
+
+/* เพิ่มพื้นที่ให้ข้อความยาวๆ แสดงได้ */
+.select__option {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+/* ให้ status dropdown ใช้พื้นที่น้อยลง */
+.form-row:has(.timezone-group) .form-group:not(.timezone-group) {
+  flex: 2;
+}
+
+/* ปรับความกว้างเพิ่มเติมสำหรับ timezone dropdown และ menu */
+.timezone-select {
+  width: 100% !important;
+  min-width: 320px !important;
+}
+
+.timezone-select .select__control {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  min-height: 48px !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.timezone-select .select__control:hover {
+  border-color: #cbd5e1 !important;
+}
+
+.timezone-select .select__control--is-focused {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1) !important;
+}
+
+.timezone-select .select__menu {
+  margin-top: 4px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden !important;
+}
+
+.timezone-select .select__option {
+  padding: 10px 12px !important;
+  cursor: pointer !important;
+  font-size: 0.95em !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.timezone-select .select__option--is-selected {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.timezone-select .select__option--is-focused:not(.select__option--is-selected) {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.timezone-select .select__placeholder {
+  color: #94a3b8 !important;
+}
+
+.timezone-select .select__single-value {
+  color: #0f172a !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+.timezone-select .select__indicator-separator {
+  display: none !important;
+}
+
+.timezone-select .select__dropdown-indicator {
+  color: #94a3b8 !important;
+  padding: 0 8px !important;
+}
+
+.timezone-select .select__dropdown-indicator:hover {
+  color: #64748b !important;
+}
+
+.timezone-select .select__clear-indicator {
+  color: #94a3b8 !important;
+  padding: 0 8px !important;
+}
+
+.timezone-select .select__clear-indicator:hover {
+  color: #64748b !important;
+}
+
+.timezone-select .select__menu-list {
+  padding: 6px !important;
+  max-height: 280px !important;
+}
+
+.timezone-select .select__no-options-message {
+  color: #64748b !important;
+  text-align: center !important;
+  padding: 12px !important;
+} 

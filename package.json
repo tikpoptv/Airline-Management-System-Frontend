@@ -18,6 +18,8 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@types/react-select": "^5.0.0",
+    "antd": "^5.25.1",
+    "country-state-city": "^3.2.1",
     "deck.gl": "^9.1.11",
     "eslint-plugin-react-x": "^1.48.3",
     "globe.gl": "^2.41.4",

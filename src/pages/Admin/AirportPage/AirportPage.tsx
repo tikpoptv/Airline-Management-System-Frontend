@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { FaFilter, FaSort, FaPlus, FaSearch, FaChevronLeft, FaChevronRight, FaEllipsisV, FaPlane, FaFont, FaCity, FaGlobe } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { FaFilter, FaPlus, FaSearch, FaChevronLeft, FaChevronRight, FaEllipsisV, FaPlane, FaFont, FaCity, FaGlobe, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import './AirportPage.css'; 
 import { getAirportList, searchAirports } from '../../../services/airportService'; 
 import { Airport } from '../../../types/airport'; 
 import { useNavigate } from 'react-router-dom';
+
+type SortField = 'airport_id' | 'name' | 'city' | 'country' | 'status';
+type SortOrder = 'asc' | 'desc';
+type FilterStatus = 'all' | 'active' | 'inactive';
 
 const AirportPage: React.FC = () => {
   const [airportIdSearch, setAirportIdSearch] = useState('');
   const [nameSearch, setNameSearch] = useState('');
   const [citySearch, setCitySearch] = useState('');
   const [countrySearch, setCountrySearch] = useState('');
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const [airports, setAirports] = useState<Airport[]>([]);
   const [loading, setLoading] = useState(false);
@@ -21,6 +26,17 @@ const AirportPage: React.FC = () => {
 
   const [menuOpenIdx, setMenuOpenIdx] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  // Sorting states
+  const [sortField, setSortField] = useState<SortField>('airport_id');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
+
+  // Filtering states
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const filterMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchAirports = async () => {
@@ -75,7 +91,51 @@ const AirportPage: React.FC = () => {
 
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = airports.slice(indexOfFirstEntry, indexOfLastEntry);
+
+  // Sort function
+  const sortAirports = (airports: Airport[]): Airport[] => {
+    return [...airports].sort((a, b) => {
+      let compareA: string | number = '';
+      let compareB: string | number = '';
+
+      switch (sortField) {
+        case 'airport_id':
+          compareA = a.airport_id;
+          compareB = b.airport_id;
+          break;
+        case 'name':
+          compareA = a.name.toLowerCase();
+          compareB = b.name.toLowerCase();
+          break;
+        case 'city':
+          compareA = a.city.toLowerCase();
+          compareB = b.city.toLowerCase();
+          break;
+        case 'country':
+          compareA = a.country.toLowerCase();
+          compareB = b.country.toLowerCase();
+          break;
+        case 'status':
+          compareA = a.status.toLowerCase();
+          compareB = b.status.toLowerCase();
+          break;
+      }
+
+      if (compareA < compareB) return sortOrder === 'asc' ? -1 : 1;
+      if (compareA > compareB) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+  };
+
+  // Filter function
+  const filterAirports = (airports: Airport[]): Airport[] => {
+    if (filterStatus === 'all') return airports;
+    return airports.filter(airport => airport.status === filterStatus);
+  };
+
+  // Process airports with sort and filter
+  const processedAirports = filterAirports(sortAirports(airports));
+  const currentEntries = processedAirports.slice(indexOfFirstEntry, indexOfLastEntry);
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -101,6 +161,29 @@ const AirportPage: React.FC = () => {
     navigate('/admin/pathways/airport/add');
     console.log("Add new airport");
   };
+
+  // Click outside handlers
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
+        setShowSortMenu(false);
+      }
+      if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+        setShowFilterMenu(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpenIdx(null);
+      }
+    };
+
+    if (showSortMenu || showFilterMenu || menuOpenIdx !== null) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSortMenu, showFilterMenu, menuOpenIdx]);
 
   return (
     <div className="airportpage-outer">
@@ -159,12 +242,107 @@ const AirportPage: React.FC = () => {
           </div>
 
           <div className="airportpage-actionbar">
-            <button className="airportpage-action-btn"> 
-              <FaSort /> Sort by 
-            </button>
-            <button className="airportpage-action-btn"> 
-              <FaFilter /> Filter by
-            </button>
+            <div className="airportpage-sort-container" ref={sortMenuRef}>
+              <button 
+                className={`airportpage-action-btn ${showSortMenu ? 'active' : ''}`}
+                onClick={() => setShowSortMenu(!showSortMenu)}
+              > 
+                {sortOrder === 'asc' ? <FaSortAmountUp /> : <FaSortAmountDown />} Sort by 
+              </button>
+              {showSortMenu && (
+                <div className="airportpage-sort-menu">
+                  <button 
+                    className={`airportpage-sort-item ${sortField === 'airport_id' ? 'active' : ''}`}
+                    onClick={() => {
+                      setSortField('airport_id');
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    Airport ID {sortField === 'airport_id' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  </button>
+                  <button 
+                    className={`airportpage-sort-item ${sortField === 'name' ? 'active' : ''}`}
+                    onClick={() => {
+                      setSortField('name');
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    Name {sortField === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  </button>
+                  <button 
+                    className={`airportpage-sort-item ${sortField === 'city' ? 'active' : ''}`}
+                    onClick={() => {
+                      setSortField('city');
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    City {sortField === 'city' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  </button>
+                  <button 
+                    className={`airportpage-sort-item ${sortField === 'country' ? 'active' : ''}`}
+                    onClick={() => {
+                      setSortField('country');
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    Country {sortField === 'country' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  </button>
+                  <button 
+                    className={`airportpage-sort-item ${sortField === 'status' ? 'active' : ''}`}
+                    onClick={() => {
+                      setSortField('status');
+                      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    Status {sortField === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="airportpage-filter-container" ref={filterMenuRef}>
+              <button 
+                className={`airportpage-action-btn ${showFilterMenu ? 'active' : ''}`}
+                onClick={() => setShowFilterMenu(!showFilterMenu)}
+              > 
+                <FaFilter /> Filter by
+              </button>
+              {showFilterMenu && (
+                <div className="airportpage-filter-menu">
+                  <button 
+                    className={`airportpage-filter-item ${filterStatus === 'all' ? 'active' : ''}`}
+                    onClick={() => {
+                      setFilterStatus('all');
+                      setShowFilterMenu(false);
+                    }}
+                  >
+                    All Airports
+                  </button>
+                  <button 
+                    className={`airportpage-filter-item ${filterStatus === 'active' ? 'active' : ''}`}
+                    onClick={() => {
+                      setFilterStatus('active');
+                      setShowFilterMenu(false);
+                    }}
+                  >
+                    Active Only
+                  </button>
+                  <button 
+                    className={`airportpage-filter-item ${filterStatus === 'inactive' ? 'active' : ''}`}
+                    onClick={() => {
+                      setFilterStatus('inactive');
+                      setShowFilterMenu(false);
+                    }}
+                  >
+                    Inactive Only
+                  </button>
+                </div>
+              )}
+            </div>
             <button 
               className="airportpage-action-btn"
               onClick={handleAddNewAirport}
@@ -183,6 +361,7 @@ const AirportPage: React.FC = () => {
                 <table className={`airportpage-table ${menuOpenIdx !== null ? 'has-dropdown-open' : ''}`}>
                   <thead>
                     <tr>
+                      <th>Status</th>
                       <th>Airport ID</th>
                       <th>Name/iata_code</th>
                       <th>City</th>
@@ -196,6 +375,11 @@ const AirportPage: React.FC = () => {
                         key={airport.airport_id || idx} 
                         className={menuOpenIdx === idx ? 'active-dropdown' : ''}
                       >
+                        <td>
+                          <span className={`airportpage-status ${airport.status}`}>
+                            {airport.status.charAt(0).toUpperCase() + airport.status.slice(1)}
+                          </span>
+                        </td>
                         <td>{airport.airport_id}</td>
                         <td>{airport.name} ({airport.iata_code})</td>
                         <td>{airport.city}</td>
@@ -207,11 +391,13 @@ const AirportPage: React.FC = () => {
                               aria-label="More actions"
                               onClick={(e) => handleMenuClick(e, idx)}
                             >
-                              <FaEllipsisV style={{ fontSize: '16px' }} />
+                              <FaEllipsisV />
                             </button>
                             {menuOpenIdx === idx && (
                               <div 
                                 className="airportpage-action-dropdown"
+                                ref={menuRef}
+                                onClick={(e) => e.stopPropagation()}
                               >
                                 <button 
                                   className="airportpage-action-dropdown-item"

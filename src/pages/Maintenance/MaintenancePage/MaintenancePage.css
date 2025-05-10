@@ -819,8 +819,8 @@ button:focus {
 }
 
 .status-pending {
-  background-color: rgb(240, 181, 151);
-  color: #f17108;
+  background-color: rgb(232, 132, 83);
+  color: #f3e52b;
 }
 
 .status-pending:hover {
@@ -846,12 +846,12 @@ button:focus {
 }
 
 .status-cancelled {
-  background-color: rgba(137, 79, 79, 0.7);
-  color: #992525;
+  background-color: rgba(243, 117, 117, 0.7);
+  color: #cb1a1a;
 }
 
 .status-cancelled:hover {
-  background-color: rgba(254, 226, 226, 0.9);
+  background-color: rgba(230, 96, 96, 0.9);
 }
 
 /* ========== Toast Notification ========== */

@@ -6,7 +6,7 @@ import AircraftPage from "./pages/Admin/AircraftPage/AircraftPage";
 import AircraftDetailPage from "./pages/Admin/AircraftPage/AircraftDetailPage";
 import NotFound from "./pages/NotFound/NotFound";
 import ApiStatusChecker from "./components/ApiStatusChecker";
-import Maintenance from "./pages/Maintenance/MaintenancePage/Maintenance";
+import Maintenance from "./pages/Maintenance/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
 import FlightPage from "./pages/Admin/FlightPage/FlightPage";

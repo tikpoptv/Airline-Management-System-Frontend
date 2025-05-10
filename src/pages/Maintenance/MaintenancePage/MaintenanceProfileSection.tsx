@@ -63,7 +63,7 @@ const MaintenanceProfileSection = ({
     try {
       await cancelMaintenanceLog(editData.log_id);
       triggerToast("✅ Maintenance log cancelled successfully!", 'success');
-      navigate('/admin/maintenance');
+      navigate('/maintenance/maintenance');
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Unknown error occurred';
@@ -77,6 +77,13 @@ const MaintenanceProfileSection = ({
   return (
     <div className="profile-wrapper">
       <div className="form-container">
+        {/* Status Badge */}
+        <div className="status-badge-container">
+          <div className={`status-badge ${editData.status.replace(/\s+/g, '-')}`}>
+            {editData.status}
+          </div>
+        </div>
+
         {/* Left Column - Avatar and Work Section */}
         <div className="left-column">
           <div className="avatar-section">
@@ -93,6 +100,7 @@ const MaintenanceProfileSection = ({
                 <select
                   value={editData.status}
                   onChange={(e) => handleChange('status', e.target.value as MaintenanceLog['status'])}
+                  className={`status-select ${editData.status.replace(/\s+/g, '-')}`}
                 >
                   <option value="Pending">Pending</option>
                   <option value="In Progress">In Progress</option>
@@ -100,7 +108,9 @@ const MaintenanceProfileSection = ({
                   <option value="Cancelled">Cancelled</option>
                 </select>
               ) : (
-                <div className="read-only-field">{editData.status}</div>
+                <div className={`read-only-field status-field ${editData.status.replace(/\s+/g, '-')}`}>
+                  {editData.status}
+                </div>
               )}
             </div>
 

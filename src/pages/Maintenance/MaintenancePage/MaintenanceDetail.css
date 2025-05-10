@@ -142,6 +142,7 @@
 }
 
 .form-container {
+  position: relative;
   display: flex;
   gap: 24px;
 }
@@ -300,41 +301,82 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* Maintenance Status Badges */
-.maintenance-detail .status-badge {
-  display: inline-block;
-  align-items: center;
-  gap: 0.35rem;
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+/* Status Badge Container */
+.status-badge-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
 }
 
-.maintenance-detail .status-badge.Pending {
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Colors */
+.status-badge.Pending,
+.status-select.Pending,
+.status-field.Pending {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   color: #92400e;
   border: 1px solid #fcd34d;
 }
 
-.maintenance-detail .status-badge.In-Progress {
+.status-badge.In-Progress,
+.status-select.In-Progress,
+.status-field.In-Progress {
   background: linear-gradient(135deg, #dbeafe, #bfdbfe);
   color: #1e40af;
   border: 1px solid #93c5fd;
 }
 
-.maintenance-detail .status-badge.Completed {
+.status-badge.Completed,
+.status-select.Completed,
+.status-field.Completed {
   background: linear-gradient(135deg, #dcfce7, #bbf7d0);
   color: #166534;
   border: 1px solid #86efac;
 }
 
-.maintenance-detail .status-badge.Cancelled {
+.status-badge.Cancelled,
+.status-select.Cancelled,
+.status-field.Cancelled {
   background: linear-gradient(135deg, #fee2e2, #fecaca);
   color: #991b1b;
   border: 1px solid #fca5a5;
+}
+
+/* Status Select Styling */
+.status-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.status-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Status Field Styling */
+.status-field {
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Grid Positioning */

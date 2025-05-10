@@ -104,7 +104,7 @@ const MaintenanceLogList = ({
 
           <div className="button-group">
             {isEditing && (
-              <button className="add-button" onClick={() => navigate('/admin/maintenance/create')}>
+              <button className="add-button" onClick={() => navigate('/maintenance/maintenance/create')}>
                 <FaPlus /> Add New
               </button>
             )}

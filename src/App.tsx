@@ -18,6 +18,10 @@ import AirportPage from "./pages/Admin/AirportPage/AirportPage";
 import AirportDetailPage from "./pages/Admin/AirportPage/AirportDetailPage";
 import EditAirportPage from './pages/Admin/AirportPage/EditAirportPage';
 import AddAirportPage from './pages/Admin/AirportPage/AddAirportPage';
+import MaintenancePage from "./pages/Admin/MaintenancePage/MaintenancePage";
+import MaintenanceDetail from "./pages/Admin/MaintenancePage/MaintenanceDetail";
+import EditMaintenance from "./pages/Admin/MaintenancePage/EditMaintenance";
+import CreateMaintenance from "./pages/Admin/MaintenancePage/CreateMaintenance";
 
 function App() {
   return (
@@ -51,6 +55,10 @@ function App() {
             <Route path="pathways/airport/detail/:id" element={<AirportDetailPage />} />
             <Route path="pathways/airport/edit/:id" element={<EditAirportPage />} />
             <Route path="pathways/airport/add" element={<AddAirportPage />} />
+            <Route path="maintenance" element={<MaintenancePage />} />
+            <Route path="maintenance/add" element={<CreateMaintenance />} />
+            <Route path="maintenance/:id" element={<MaintenanceDetail />} />
+            <Route path="maintenance/edit/:id" element={<EditMaintenance />} />
           </Route>
 
           <Route
@@ -63,9 +71,9 @@ function App() {
           >
             <Route index element={<div>Helloworld Maintenance</div>} />
           </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
-        
       </Router>
     </>
   );

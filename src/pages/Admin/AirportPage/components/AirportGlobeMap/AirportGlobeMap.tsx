@@ -5,6 +5,7 @@ import { CircularProgress } from '@mui/material';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './AirportGlobeMap.css';
 
+// Fallback to default token if environment variable is not set
 const MAPBOX_TOKEN = "pk.eyJ1IjoiamVkc2FkYXBvcm4iLCJhIjoiY2xzOWdqcWp2MDNvMjJrbXVnOWYwc2wzNyJ9.uMuDq7UhTkwNZO5-QKOEng";
 
 interface AirportGlobeMapProps {
@@ -23,10 +24,12 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
     longitude,
     zoom: 10,
     bearing: 0,
-    pitch: 0
+    pitch: 0,
+    width: 800,
+    height: 400
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const handleMapClick = useCallback((event: MapEvent) => {
@@ -46,11 +49,26 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
     }));
   }, []);
 
+  const handleMapError = () => {
+    console.error('Map loading error');
+    setError("Failed to load map. Please check your internet connection and try again.");
+    setIsLoading(false);
+  };
+
   if (error) {
     return (
       <div className="airport-globe-map-error">
         <FaMapMarkerAlt />
         <p>{error}</p>
+        <button 
+          className="retry-button"
+          onClick={() => {
+            setError(null);
+            setIsLoading(true);
+          }}
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -61,6 +79,7 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
         {isLoading && (
           <div className="airport-globe-map-loading">
             <CircularProgress />
+            <p>Loading map...</p>
           </div>
         )}
         <ReactMapGL
@@ -70,7 +89,7 @@ const AirportGlobeMap: React.FC<AirportGlobeMapProps> = ({
           mapStyle="mapbox://styles/mapbox/dark-v11"
           mapboxApiAccessToken={MAPBOX_TOKEN}
           onLoad={() => setIsLoading(false)}
-          onError={() => setError("Failed to load map")}
+          onError={handleMapError}
         >
           <Marker 
             latitude={latitude} 

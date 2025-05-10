@@ -6,6 +6,7 @@ import './AirportDetailPage.css';
 import { getAirportById } from '../../../services/airportService';
 import { countRoutesByAirportId } from '../../../services/route/routeService';
 import { Airport } from '../../../types/airport';
+import GlobeMap, { Airport as GlobeAirport } from '../RoutePage/components/GlobeMap/GlobeMap';
 
 const AirportDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +15,7 @@ const AirportDetailPage: React.FC = () => {
   const [routeCount, setRouteCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mapAirport, setMapAirport] = useState<GlobeAirport | null>(null);
 
   const getGMTOffset = (timezone: string) => {
     const offset = moment.tz(timezone).format('Z');
@@ -32,6 +34,16 @@ const AirportDetailPage: React.FC = () => {
           throw new Error('Airport not found');
         }
         setAirport(airportData);
+
+        // Set map airport data
+        setMapAirport({
+          iata_code: airportData.iata_code,
+          name: airportData.name,
+          lat: airportData.latitude,
+          lon: airportData.longitude,
+          city: airportData.city,
+          country: airportData.country
+        });
 
         // Fetch route count
         const count = await countRoutesByAirportId(parseInt(id));
@@ -56,29 +68,9 @@ const AirportDetailPage: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="airport-detail-page">
-        <div className="airport-detail-loading">Loading...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="airport-detail-page">
-        <div className="airport-detail-error">{error}</div>
-      </div>
-    );
-  }
-
-  if (!airport) {
-    return (
-      <div className="airport-detail-page">
-        <div className="airport-detail-error">Airport not found</div>
-      </div>
-    );
-  }
+  if (loading) return <div className="airport-detail-loading">Loading...</div>;
+  if (error) return <div className="airport-detail-error">{error}</div>;
+  if (!airport) return <div className="airport-detail-error">Airport not found</div>;
 
   return (
     <div className="airport-detail-page">
@@ -108,6 +100,19 @@ const AirportDetailPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="airport-detail-content">
+        {/* Map Card */}
+        <div className="airport-detail-card map-card">
+          <h2 className="airport-detail-card-title">Location Map</h2>
+          <div className="airport-detail-map-container">
+            {mapAirport && (
+              <GlobeMap
+                fromAirport={mapAirport}
+                toAirport={mapAirport}
+              />
+            )}
+          </div>
+        </div>
+
         {/* Basic Information Card */}
         <div className="airport-detail-card">
           <h2 className="airport-detail-card-title">Airport Information</h2>

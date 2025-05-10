@@ -197,18 +197,11 @@ const CrewProfileSection = ({
                 )}
               </div>
               
-              <div className={`field-group ${isEditMode ? 'is-edit-mode' : ''}`}>
-                <label>Last name</label>
-                {isEditMode ? (
-                    <input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    />
-                ) : (
-                    <div className="read-only-field">{lastName}</div>
-                )}
-                </div>
+              <div className="field-group">
+                <label>License expire date</label>
+                <div className="read-only-field">{formatDate(editData.license_expiry_date)}</div>
+              </div>
+            
             </div>
 
             <div className="field-row">

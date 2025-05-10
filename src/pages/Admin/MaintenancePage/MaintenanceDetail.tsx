@@ -43,7 +43,7 @@ const MaintenanceDetail: React.FC = () => {
   };
 
   const handleEdit = () => {
-    navigate(`/admin/maintenance/${id}/edit`);
+    navigate(`/admin/maintenance/edit/${id}`);
   };
 
   if (loading) {

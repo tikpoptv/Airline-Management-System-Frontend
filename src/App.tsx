@@ -20,6 +20,7 @@ import EditAirportPage from './pages/Admin/AirportPage/EditAirportPage';
 import AddAirportPage from './pages/Admin/AirportPage/AddAirportPage';
 import MaintenancePage from "./pages/Admin/MaintenancePage/MaintenancePage";
 import MaintenanceDetail from "./pages/Admin/MaintenancePage/MaintenanceDetail";
+import EditMaintenance from "./pages/Admin/MaintenancePage/EditMaintenance";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             <Route path="pathways/airport/add" element={<AddAirportPage />} />
             <Route path="maintenance" element={<MaintenancePage />} />
             <Route path="maintenance/:id" element={<MaintenanceDetail />} />
+            <Route path="maintenance/edit/:id" element={<EditMaintenance />} />
           </Route>
 
           <Route

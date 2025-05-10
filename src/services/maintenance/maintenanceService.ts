@@ -1,6 +1,13 @@
 import { api } from '../../api';
 import { MaintenanceLog, MaintenanceSearchParams } from '../../types/maintenance';
 
+interface UpdateMaintenanceLogPayload {
+  status?: 'Pending' | 'In Progress' | 'Completed';
+  maintenance_location?: string;
+  assigned_to?: number;
+  details?: string;
+}
+
 /**
  * Fetches maintenance logs with optional filters
  * @param params Optional search parameters
@@ -59,5 +66,15 @@ export const getMaintenanceLogDetail = async (id: string | number): Promise<Main
   } catch (error) {
     console.error(`Error fetching maintenance log ${id}:`, error);
     throw error; // Re-throw to handle in component
+  }
+};
+
+export const updateMaintenanceLog = async (id: string | number, data: UpdateMaintenanceLogPayload): Promise<{ message: string }> => {
+  try {
+    const response = await api.put(`/api/maintenance-logs/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating maintenance log ${id}:`, error);
+    throw error;
   }
 }; 

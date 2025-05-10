@@ -18,14 +18,14 @@ function Maintenance() {
           <div className="airline-name">Airline name</div>
         </div>
 
-        <NavLink to="/Maintenance" end className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+        <NavLink to="/maintenance" end className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
           <TbLayoutDashboardFilled className="sidebar-icon" />
           <span>Dashboard</span>
         </NavLink>
 
         
 
-        <NavLink to="/Maintenance/Maintenance" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
+        <NavLink to="/maintenance/maintenance" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
           <FaWrench className="sidebar-icon" />
           <span>Maintenance</span>
         </NavLink>

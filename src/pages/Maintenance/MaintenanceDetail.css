@@ -1,0 +1,123 @@
+/* MaintenanceDetail.css */
+
+.maintenance-detail-container {
+    background-color: #f0f6ff;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 900px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .maintenance-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .maintenance-detail-header h2 {
+    font-size: 2rem;
+    color: #183152;
+  }
+  
+  .status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .status.Pending {
+    background-color: orange;
+  }
+  
+  .status.Completed {
+    background-color: green;
+  }
+  
+  .status.InProgress {
+    background-color: blue;
+  }
+  
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .detail-item label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .detail-item p {
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .detail-item.full-width {
+    grid-column: span 2;
+  }
+  
+  .edit-button {
+    background-color: #183152;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .edit-button:hover {
+    background-color: #1e3b6f;
+  }
+
+  .back-button {
+    background-color: transparent;
+    color: #183152;
+    border: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .back-button:hover {
+    color: #1e3b6f;
+    text-decoration: underline;
+  }
+
+  .cancel {
+    background-color: #aaa;
+  }
+  
+  .cancel:hover {
+    background-color: #888;
+  }
+  
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  

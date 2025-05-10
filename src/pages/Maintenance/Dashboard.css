@@ -1,0 +1,96 @@
+.dashboard-container {
+  padding: 1rem;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Ajustement pour espacer correctement */
+.task-and-list-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  max-width: 100%; /* Prend toute la largeur disponible */
+  padding: 0 1rem; /* Ajoute un peu de padding */
+}
+
+.task-box {
+  background-color: #f0f4ff;
+  padding: 1rem;
+  border-radius: 10px;
+  width: fit-content;
+  text-align: center;
+}
+
+.task-count {
+  font-size: 2rem;
+  color: #183152;
+  font-weight: bold;
+}
+
+.aircraft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: auto; /* Pousse la liste à droite */
+}
+
+.aircraft-id {
+  background-color: #d9e6f2;
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.history-section {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.history-header input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.history-header button {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #183152;
+  color: white;
+  cursor: pointer;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th, .history-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.completed { color: green; }
+.status.cancelled { color: red; }
+.status.pending { color: orange; }
+.status.progress { color: blue; }

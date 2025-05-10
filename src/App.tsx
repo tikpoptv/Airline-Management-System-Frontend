@@ -14,14 +14,21 @@ import RoutePage from "./pages/Admin/RoutePage/RoutePage";
 import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
 import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
 import EditRoutePage from "./pages/Admin/RoutePage/EditRoutePage";
+import Dashboard from './pages/Maintenance/Dashboard';
+import MaintenancePage from './pages/Maintenance/MaintenancePage';
+import MaintenanceDetail from './pages/Maintenance/MaintenanceDetail';
+import CreateMaintenance from './pages/Maintenance/CreateMaintenance';
+
+import { MaintenanceProvider } from './pages/Maintenance/context/MaintenanceContext';
 
 function App() {
   return (
     <>
       <ApiStatusChecker />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
+      <MaintenanceProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
 
           <Route
             path="/admin"
@@ -45,20 +52,24 @@ function App() {
             <Route path="pathways/routes/edit/:id" element={<EditRoutePage />} />
           </Route>
 
-          <Route
-            path="/Maintenance"
-            element={
-              <ProtectedRoute allowedRole="admin">
-                <Maintenance />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<div>Helloworld Maintenance</div>} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        
-      </Router>
+            <Route
+              path="/maintenance"
+              element={
+                <ProtectedRoute allowedRole="admin">
+                  <Maintenance />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="maintenance" element={<MaintenancePage />} />
+              <Route path="maintenance/create" element={<CreateMaintenance />} />
+              <Route path=":id" element={<MaintenanceDetail />} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </MaintenanceProvider>
     </>
   );
 }

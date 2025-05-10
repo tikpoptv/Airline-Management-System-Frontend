@@ -1,0 +1,476 @@
+/* Crew Details Page */
+.crew-detail {
+    background: white;
+    margin: -1.5rem;
+    padding: 0;
+    width: 100%;
+  }
+  
+  
+  /* Page Header */
+   .page-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: white;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+   .page-heading-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.2;
+    margin: 0;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding-left: 0.15rem;
+  }
+  
+  .breadcrumb-section {
+    color: #94a3b8;
+    font-size: 0.813rem;
+    font-weight: 500;
+  }
+  
+  .crew-detail .breadcrumb-arrow {
+    color: #cbd5e1;
+    font-size: 0.813rem;
+  }
+  
+  .crew-detail .breadcrumb-current {
+    color: #64748b;
+    font-size: 0.813rem;
+    font-weight: 600;
+  }
+  
+  /* Back Button */
+  .crew-detail .back-button {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+    margin-left: auto;
+  }
+  
+  .crew-detail .back-button:hover {
+    background: #f1f5f9;
+  }
+  
+  /* Edit Button */
+  .edit-button {
+    padding: 0.5rem 1rem;
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
+    justify-content: center;
+  }
+  
+  .edit-button:hover {
+    background-color: #16a34a;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Section Headers */
+  .crew-detail .section-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    padding: 1rem 1.5rem 0.75rem;
+    position: relative;
+  }
+  
+  .crew-detail .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.5rem;
+    width: 3rem;
+    height: 2.5px;
+    background: linear-gradient(to right, #3b82f6, transparent);
+    border-radius: 1px;
+  }
+  
+  /* Profile Section */
+  .crew-detail .profile-wrapper {
+    padding: 24px;
+    width: 100%;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    margin: 0 1.5rem 2rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+  
+  /* Form Layout */
+  .crew-detail .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.5rem;
+    align-items: start;
+    padding: 0.5rem;
+  }
+
+  .form-container {
+    display: flex;
+    gap: 24px;
+  }
+  
+  /* Avatar */
+  .crew-detail .avatar-cell {
+    grid-row: 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1;
+    width: 100%;
+    aspect-ratio: 7/3;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #f1f5f9, #f8fafc);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  .avatar-section {
+    flex: 0 0 auto;
+    padding: 1rem;
+  }
+  /* Main Content Layout */
+  .profile-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 24px;
+  }
+
+  /* Section Styling */
+.section {
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+
+  }
+  
+  .work-section {
+    grid-column: 1;
+    grid-row: 2 / span 3;
+  }
+  
+  .information-section {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+  }
+  
+  .contact-section {
+    grid-column: 2;
+    grid-row: 5;
+    position: relative;
+  }
+  
+  .section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #333;
+    position: relative;
+  }
+
+  
+  .crew-detail .avatar-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .crew-detail .avatar-cell:hover img {
+    transform: scale(1.02);
+  }
+  
+  /* Input Groups */
+  .crew-detail .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    display: flex;
+    gap: 0.25rem;
+  }
+  
+  .crew-detail .input-group label {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  
+  .crew-detail .read-only-field {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    color: #1e293b;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+  }
+  
+  .crew-detail .read-only-field:hover {
+    border-color: #cbd5e1;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+  
+  .crew-detail.is-edit-mode .read-only-field {
+    background-color: #37393b !important;
+    color: #64748b;
+  }
+  
+  .crew-detail.is-edit-mode .read-only-field:hover {
+    background: #e2e8f0 !important;
+    border-color: #cbd5e1;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Crew Status Badges */
+  .crew-detail .status-badge {
+    display: inline-block;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    /* border-radius: 1rem; */
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  
+  .crew-detail .status-badge.Active {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #166534;
+    border: 1px solid #86efac;
+  }
+  
+  .crew-detail .status-badge.On-Leave {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+    border: 1px solid #fcd34d;
+  }
+  
+  .crew-detail .status-badge.Retired {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+  }
+  
+  /* Grid Positioning */
+  .crew-detail .crew-id-group {
+    grid-column: 2 / -1;
+  }
+  
+  .crew-detail .name-group {
+    grid-column: 2;
+  }
+  
+  .crew-detail .status-group {
+    grid-column: 3;
+  }
+  
+  .crew-detail .position-group {
+    grid-column: 2;
+  }
+  
+  .crew-detail .flight-hours-group {
+    grid-column: 2;
+  }
+  
+  .crew-detail .license-year-group {
+    grid-column: 3;
+  }
+  
+  /* History / Notes */
+  .crew-detail .crew-history {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+  }
+  
+  .crew-detail .crew-history .read-only-field {
+    min-height: 50px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient(to bottom right, #f8fafc, #ffffff);
+    font-style: italic;
+    color: #475569;
+  }
+  
+  /* Editable Fields */
+  .crew-detail .input-group input,
+  .crew-detail .input-group select,
+  .crew-detail .input-group textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1.0625rem;
+    color: #1f1f4e;
+    background-color:#f9fafe;
+    transition: all 0.2s ease;
+  }
+  
+  .crew-detail .input-group input:hover,
+  .crew-detail .input-group select:hover,
+  .crew-detail .input-group textarea:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+  
+  .crew-detail .input-group input:focus,
+  .crew-detail .input-group select:focus,
+  .crew-detail .input-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Save Button */
+  .save-button-container{
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .save-button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    color: white;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .crew-detail .save-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+  }
+  
+  /* Delete Button */
+  .crew-detail .delete-button {
+    padding: 0.375rem;
+    border-radius: 0.375rem;
+    background-color: #ef4444;
+    color: white;
+    transition: all 0.2s ease;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
+  }
+  
+  .crew-detail .delete-button:hover {
+    background-color: #dc2626;
+  }
+
+/* Field Groups */
+.field-group {
+    margin-bottom: 16px;
+  }
+  
+  .field-row {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .field-row .field-group {
+    flex: 1;
+  }
+  
+  .field-group.full-width {
+    width: 100%;
+  }
+  
+  .field-group label {
+    display: block;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 992px) {
+    .form-container {
+      flex-direction: column;
+    }
+    
+    .profile-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .work-section, .information-section, .contact-section {
+      grid-column: 1;
+    }
+    
+    .work-section {
+      grid-row: 1;
+    }
+    
+    .information-section {
+      grid-row: 2;
+    }
+    
+    .contact-section {
+      grid-row: 3;
+    }
+    
+    .save-button-container {
+      grid-column: 1;
+    }
+    .created-at {
+        grid-column: 1;
+        grid-row: 4;
+      }
+  }

@@ -121,39 +121,39 @@ const CrewList = ({
       </div>
 
       {loading ? (
-        <Loading message="Loading crew..." />
-      ) : (
-        <div className="table-wrapper">
-          <table className="crew-table">
-            <thead>
-              <tr>
+    <Loading message="Loading crew..." />
+    ) : (
+    <div className="table-wrapper">
+    <table className="crew-table">
+        <thead>
+        <tr>
                 {isEditing && <th className="checkbox-column" />}
-                <th>Crew ID</th>
+            <th>Crew ID</th>
                 <th>Status</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Email</th>
-                <th>Passport Number</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Passport Number</th>
                 <th>Flight Hours</th>
                 <th className="action-column" />
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCrew.map((crew) => (
-                <tr
-                  key={crew.crew_id}
-                  onClick={() => handleRowClick(crew)}
-                  className="crew-row"
-                >
-                  {isEditing && (
+        </tr>
+        </thead>
+        <tbody>
+        {filteredCrew.map((crew) => (
+            <tr
+            key={crew.crew_id}
+            onClick={() => handleRowClick(crew)}
+            className="crew-row"
+            >
+            {isEditing && (
                     <td className="checkbox-column" onClick={(e) => e.stopPropagation()}>
-                      <input
-                        type="checkbox"
-                        checked={selectedCrewIds.includes(crew.crew_id)}
-                        onChange={() => handleCheckboxChange(crew.crew_id)}
-                      />
-                    </td>
-                  )}
+                <input
+                    type="checkbox"
+                    checked={selectedCrewIds.includes(crew.crew_id)}
+                    onChange={() => handleCheckboxChange(crew.crew_id)}
+                />
+                </td>
+            )}
                   <td className="crew-id">{crew.crew_id}</td>
                   <td>
                     <span className={`status-badge ${getStatusColor(crew.status)}`}>
@@ -174,18 +174,18 @@ const CrewList = ({
                   <td className="action-column" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="view-button"
-                      onClick={() => setSelectedCrew(crew)}
+                onClick={() => setSelectedCrew(crew)}
                       title="View Details"
                     >
                       <FaEye />
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            </td>
+            </tr>
+        ))}
+        </tbody>
+    </table>
+    </div>
+    )}
 
       {/* Search Modal */}
       {showSearchModal && (

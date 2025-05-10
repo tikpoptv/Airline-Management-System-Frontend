@@ -1,24 +1,18 @@
-import { useState } from 'react';
 import { Crew } from '../../../types/crew';
-import { Flight } from '../../../types/flight';
 import CrewSchedule from './CrewSchedule';
-import { FaUser, FaPassport, FaEnvelope, FaArrowLeft } from 'react-icons/fa';
+import { FaUser, FaPassport, FaEnvelope, FaArrowLeft, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './CrewPage.css';
 
 interface Props {
   crew: Crew;
-  flightList: Flight[];
-  loadingFlights: boolean;
 }
 
-const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
-  const [sortOption, setSortOption] = useState<'date' | 'status'>('date');
-  const [flightFilter, setFlightFilter] = useState<'all' | 'today'>('all');
+const CrewProfileSection = ({ crew }: Props) => {
   const navigate = useNavigate();
 
   const getStatusColor = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'active':
         return 'status-active';
       case 'inactive':
@@ -33,7 +27,7 @@ const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
   };
 
   const getStatusText = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'active':
         return 'Active';
       case 'inactive':
@@ -47,6 +41,29 @@ const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid Date';
+    }
+  };
+
+  const getNameParts = (fullName: string) => {
+    const parts = fullName.trim().split(/\s+/);
+    return {
+      firstName: parts[0] || '',
+      lastName: parts.slice(1).join(' ') || ''
+    };
+  };
+
+  const { firstName, lastName } = getNameParts(crew.name);
+
   return (
     <div className="crew-details-page">
       <div className="details-header">
@@ -56,16 +73,21 @@ const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
           <span>View Detail</span>
         </div>
         <h1>Crew Details</h1>
-        <button className="back-button" onClick={() => navigate('/admin/crew')}>
-          <FaArrowLeft /> Back
-        </button>
+        <div className="header-actions">
+          <button className="edit-button" onClick={() => navigate(`/admin/crew/edit/${crew.crew_id}`)}>
+            <FaPen /> Edit
+          </button>
+          <button className="back-button" onClick={() => navigate('/admin/crew')}>
+            <FaArrowLeft /> Back
+          </button>
+        </div>
       </div>
 
       <div className="crew-profile-grid">
         <div className="profile-image-section">
           <img 
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            alt="Crew Member" 
+            alt={`${crew.name}'s profile`}
             className="crew-image" 
           />
           <div className="crew-basic-info">
@@ -95,21 +117,21 @@ const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
             <div className="info-grid">
               <div className="info-item">
                 <label>First Name</label>
-                <span>{crew.name.split(' ')[0]}</span>
+                <span>{firstName}</span>
               </div>
               <div className="info-item">
                 <label>Last Name</label>
-                <span>{crew.name.split(' ').slice(1).join(' ')}</span>
+                <span>{lastName}</span>
               </div>
               <div className="info-item">
                 <label>Role</label>
-                <span className={`role-badge ${crew.role.toLowerCase()}`}>
+                <span className={`role-badge ${crew.role.toUpperCase()}`}>
                   {crew.role}
                 </span>
               </div>
               <div className="info-item">
                 <label>Flight Hours</label>
-                <span>{crew.flight_hours.toFixed(1)} hours</span>
+                <span>{crew.flight_hours.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} hours</span>
               </div>
             </div>
           </div>
@@ -126,45 +148,40 @@ const CrewProfileSection = ({ crew, flightList, loadingFlights }: Props) => {
               </div>
               <div className="info-item">
                 <label>Passport Expiry</label>
-                <span>{new Date(crew.passport_expiry_date).toLocaleDateString()}</span>
+                <span>{formatDate(crew.passport_expiry_date)}</span>
               </div>
               <div className="info-item">
                 <label>License Expiry</label>
-                <span>{new Date(crew.license_expiry_date).toLocaleDateString()}</span>
+                <span>{formatDate(crew.license_expiry_date)}</span>
               </div>
             </div>
           </div>
 
-          <div className="info-section">
-            <div className="section-header">
-              <FaEnvelope className="section-icon" />
-              <h2>Contact Information</h2>
+          {crew.user && (
+            <div className="info-section">
+              <div className="section-header">
+                <FaEnvelope className="section-icon" />
+                <h2>Contact Information</h2>
+              </div>
+              <div className="info-grid">
+                <div className="info-item">
+                  <label>User ID</label>
+                  <span>{crew.user.user_id}</span>
+                </div>
+                <div className="info-item">
+                  <label>Username</label>
+                  <span>{crew.user.username}</span>
+                </div>
+                <div className="info-item">
+                  <label>Email</label>
+                  <span>{crew.user.email}</span>
+                </div>
+              </div>
             </div>
-            <div className="info-grid">
-              <div className="info-item">
-                <label>User ID</label>
-                <span>{crew.user.user_id}</span>
-              </div>
-              <div className="info-item">
-                <label>Username</label>
-                <span>{crew.user.username}</span>
-              </div>
-              <div className="info-item">
-                <label>Email</label>
-                <span>{crew.user.email}</span>
-              </div>
-            </div>
-          </div>
+          )}
 
           <div className="schedule-section">
-            <CrewSchedule
-              flightList={flightList}
-              loading={loadingFlights}
-              sortOption={sortOption}
-              setSortOption={setSortOption}
-              flightFilter={flightFilter}
-              setFlightFilter={setFlightFilter}
-            />
+            <CrewSchedule crewId={crew.crew_id} />
           </div>
         </div>
       </div>

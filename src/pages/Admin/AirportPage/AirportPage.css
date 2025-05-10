@@ -1,0 +1,726 @@
+body, .airportpage-bg {
+  background: #f4f7fa;
+}
+.airportpage-outer {
+  background: #f4f7fa;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+.airportpage-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.airportpage-title {
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 0;
+}
+.airportpage-subtitle {
+  color: #888;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.airportpage-card {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #e5eaf2;
+  box-shadow: 0 4px 24px 0 rgba(59,130,246,0.07);
+  padding: 32px 0;
+  margin-bottom: 32px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.airportpage-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 0 auto 28px auto;
+  max-width: 1000px;
+  min-height: 48px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.airportpage-input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  flex: 1;
+  min-width: 150px;
+}
+.airportpage-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  color: #1a3557;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex: 1;
+  font-weight: 500;
+  padding: 10px 10px 10px 36px;
+  transition: all 0.25s ease;
+}
+.airportpage-input-bordered {
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+}
+.airportpage-input-bordered:focus {
+  border: 1.5px solid #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12), inset 0 1px 2px rgba(0,0,0,0.03);
+  background: #fff;
+}
+.airportpage-input::placeholder {
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+.airportpage-label { /* This class was in original CSS, but not used in RoutePage.tsx. Retaining for potential use. */
+  color: #a3b1c6;
+  font-size: 18px;
+  font-weight: 400;
+  margin-right: 4px;
+}
+.airportpage-icon {
+  color: #64748b;
+  font-size: 15px;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 0.8;
+  transition: all 0.25s ease;
+}
+.airportpage-input-group:focus-within .airportpage-icon {
+  color: #3b82f6;
+  opacity: 1;
+}
+
+/* Swap button not used in AirportPage, so commenting out/removing its styles */
+/*
+.airportpage-swap-btn {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 0 4px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+}
+.airportpage-swap-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.15);
+}
+.airportpage-swap-btn:active {
+  transform: scale(0.95);
+}
+.airportpage-swap-btn .airportpage-icon {
+  position: static;
+  transition: transform 0.3s ease;
+}
+.airportpage-swap-btn:hover .airportpage-icon {
+  transform: rotate(180deg);
+}
+*/
+
+.airportpage-actionbar {
+  display: flex;
+  gap: 12px; /* Slightly reduced gap */
+  justify-content: flex-end;
+  margin-top: 24px; /* Consistent margin */
+  margin-bottom: 24px; /* Consistent margin */
+  padding: 0 24px; /* Add padding to align with table container if needed */
+}
+.airportpage-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #d1d5db; /* Standard border */
+  border-radius: 8px;
+  padding: 9px 18px; /* Slightly adjusted padding */
+  cursor: pointer;
+  font-size: 15px; /* Standardized font size */
+  font-weight: 500;
+  color: #374151; /* Standard text color */
+  transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.airportpage-action-btn:hover {
+  background: #f9fafb; /* Light hover */
+  border-color: #adb5bd;
+  color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+}
+.airportpage-action-btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #3b82f6; /* Focus ring */
+}
+.airportpage-action-btn > svg { /* Icon within button */
+  font-size: 16px;
+}
+
+.airportpage-table-container {
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+}
+.airportpage-table {
+  /* min-width: 1000px; */ /* Let it be more flexible or set based on airport columns */
+  width: 100%;
+  border-collapse: separate; /* Use separate for border-spacing and border-radius on table */
+  border-spacing: 0;
+  border-radius: 12px; /* Consistent border radius */
+  border: 1px solid #e5e7eb; /* Table border */
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03); /* Softer shadow */
+  overflow: hidden; /* For border-radius to apply to children if needed */
+}
+.airportpage-table th {
+  background: #f9fafb; /* Lighter header background */
+  color: #374151; /* Header text color */
+  font-weight: 600;
+  padding: 14px 20px; /* Adjusted padding */
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb; /* Separator line */
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* Adjusted letter spacing */
+  white-space: nowrap;
+}
+.airportpage-table td {
+  padding: 16px 20px; /* Adjusted padding */
+  color: #4b5563; /* Body text color */
+  border-bottom: 1px solid #f3f4f6; /* Lighter row separator */
+  font-size: 14px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+.airportpage-table tr {
+  transition: background-color 0.15s ease;
+}
+.airportpage-table tbody tr:hover {
+  background: #f9fafb; /* Hover for entire row */
+  /* transform: translateY(-1px); */ /* Removed transform for simplicity */
+  /* box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08); */ /* Removed shadow on hover */
+}
+/* .airportpage-table tr:hover td { */
+  /* color: #0f172a; */ /* Darker text on hover if needed */
+/* } */
+
+/* Status styles not directly applicable to Airport table unless a status field is added */
+/*
+.airportpage-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.airportpage-status::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.airportpage-status:hover::before {
+  transform: translateX(100%);
+}
+.airportpage-status.active {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  color: #15803d;
+  box-shadow: 
+    0 2px 4px rgba(22, 101, 52, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+.airportpage-status.inactive {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #b91c1c;
+  box-shadow: 
+    0 2px 4px rgba(153, 27, 27, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+*/
+
+.airportpage-table tr:last-child td {
+  border-bottom: none; /* Remove bottom border for the last row */
+}
+
+/* Specific styling for first/last th/td if needed for rounded corners, though overflow:hidden on table should handle it */
+.airportpage-table th:first-child {
+  border-top-left-radius: 12px; 
+}
+.airportpage-table th:last-child {
+  border-top-right-radius: 12px;
+}
+/* .airportpage-table tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+} 
+.airportpage-table tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+} */
+
+.airportpage-table td:last-child { /* Styling for the actions column */
+  /* text-align: center; */ /* Already set inline in JSX */
+}
+
+.airportpage-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  flex-shrink: 0;
+  height: 42px;
+}
+.airportpage-search-btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+.airportpage-search-btn:active {
+  transform: translateY(0);
+}
+.airportpage-search-btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+.airportpage-search-btn > svg {
+  font-size: 16px;
+}
+.airportpage-search-btn .airportpage-search-btn-text {
+  /* Styles for text if it was separate, but it's part of the button content */
+}
+
+/* Column width examples - adjust as needed */
+/* 
+.airportpage-table td:nth-child(1) { width: 10%; } Airport ID 
+.airportpage-table td:nth-child(2) { width: 35%; } Name/IATA
+.airportpage-table td:nth-child(3) { width: 25%; } City
+.airportpage-table td:nth-child(4) { width: 20%; } Country
+.airportpage-table td:nth-child(5) { width: 10%; text-align: center; } Actions
+*/
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.airportpage-table tbody tr {
+  animation: fadeIn 0.3s ease-out forwards;
+  opacity: 0; /* Start with opacity 0 for animation */
+}
+/* Staggered animation for rows - optional */
+.airportpage-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.airportpage-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.airportpage-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+/* ... add more if needed */
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) {
+  .airportpage-searchbar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    max-width: 100%;
+    padding: 12px;
+  }
+  .airportpage-input-group {
+    min-width: unset; /* Allow them to take full width */
+  }
+  .airportpage-search-btn {
+    width: 100%;
+  }
+  .airportpage-actionbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 0 16px;
+  }
+  .airportpage-action-btn {
+    justify-content: center; 
+  }
+}
+
+@media (max-width: 768px) {
+  .airportpage-container {
+    padding: 0 16px;
+  }
+  .airportpage-card {
+    padding: 24px 0;
+  }
+  .airportpage-title {
+    font-size: 28px;
+  }
+  .airportpage-table-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .airportpage-table th,
+  .airportpage-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  .airportpage-actionbar {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+  .airportpage-pagination-entries, 
+  .airportpage-pagination-nav {
+    font-size: 13px;
+  }
+  .airportpage-pagination-button {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .airportpage-title {
+    font-size: 24px;
+  }
+  .airportpage-subtitle {
+    font-size: 14px;
+  }
+  .airportpage-table th,
+  .airportpage-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .airportpage-action-btn {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+  .airportpage-action-btn > svg {
+    font-size: 14px;
+  }
+  .airportpage-pagination {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .airportpage-pagination-entries {
+    margin-bottom: 8px;
+  }
+}
+
+/* --- Pagination Styles (copied and prefixed) --- */
+.airportpage-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #fff; /* Added background for pagination section */
+  border-bottom-left-radius: 12px; /* Match card radius */
+  border-bottom-right-radius: 12px; /* Match card radius */
+  margin-top: -1px; /* Overlap the card bottom border slightly */
+}
+.airportpage-pagination-entries {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+.airportpage-pagination-entries select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.airportpage-pagination-entries select:hover {
+  border-color: #9ca3af;
+}
+.airportpage-pagination-entries select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+.airportpage-pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+.airportpage-pagination-button {
+  padding: 7px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.airportpage-pagination-button:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #1f2937;
+}
+.airportpage-pagination-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f3f4f6;
+}
+.airportpage-pagination-button > svg {
+  font-size: 14px;
+}
+/* Active state for pagination buttons if implementing page number list */
+/* .airportpage-pagination-button.active { 
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+.airportpage-pagination-button.active:hover {
+  background: #2563eb;
+} */
+
+.airportpage-pagination-info {
+  color: #6b7280;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* --- Action Menu Styles (copied and prefixed) --- */
+.airportpage-action-menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.airportpage-action-menu-btn:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+.airportpage-action-menu-btn.active {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.airportpage-dropdown-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.airportpage-action-dropdown {
+  position: absolute;
+  right: 0;
+  min-width: 140px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 2px;
+  animation: fadeIn 0.2s ease;
+  top: calc(100% + 4px);
+}
+
+/* For the last 2 rows, show dropdown above */
+tr:nth-last-child(-n+2) .airportpage-action-dropdown {
+  bottom: calc(100% + 4px);
+  top: auto;
+}
+
+.airportpage-action-dropdown-item {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border-radius: 8px;
+}
+
+.airportpage-action-dropdown-item:hover {
+  background: #f8fafc;
+  color: #2563eb;
+}
+
+.airportpage-action-dropdown-item:active {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+/* Prevent table hover effects when dropdown is open */
+.airportpage-table.has-dropdown-open tbody tr:hover {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Style for the active row with dropdown */
+.airportpage-table.has-dropdown-open tbody tr.active-dropdown {
+  background: rgba(241, 245, 249, 0.95);
+  position: relative;
+  z-index: 1100;
+}
+
+/* Add overlay when dropdown is open */
+.airportpage-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  z-index: 999;
+}
+
+/* Ensure the dropdown container takes full height of the cell */
+.airportpage-table td:last-child {
+  position: relative;
+  height: 100%;
+  padding: 4px 8px;
+}
+
+/* Animation for dropdown */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Action Buttons Styles */
+.action-button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.view-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.edit-button {
+  background-color: #10b981;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.delete-button {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Add icon styles if using icons */
+.action-button svg {
+  width: 16px;
+  height: 16px;
+} 

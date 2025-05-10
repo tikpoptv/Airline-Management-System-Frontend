@@ -45,7 +45,7 @@ function Admin() {
               <FaRoute className="icon" />
               Route
             </NavLink>
-            <NavLink to="/admin/pathways/airports" className={({ isActive }) => isActive ? 'sidebar-item-sub active' : 'sidebar-item-sub'}>
+            <NavLink to="/admin/pathways/airport" className={({ isActive }) => isActive ? 'sidebar-item-sub active' : 'sidebar-item-sub'}>
               <FaMapMarkerAlt className="icon" />
               Airport
             </NavLink>

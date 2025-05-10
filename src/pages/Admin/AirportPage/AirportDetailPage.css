@@ -1,0 +1,273 @@
+.airport-detail-page {
+  padding: 32px;
+  min-height: 100vh;
+  background: #f4f7fa;
+}
+
+/* Header Styles */
+.airport-detail-header {
+  margin-bottom: 32px;
+}
+
+.airport-detail-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.airport-detail-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.airport-detail-back-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
+  transform: translateX(-2px);
+}
+
+.airport-detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.airport-detail-breadcrumb-separator {
+  color: #94a3b8;
+}
+
+.airport-detail-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.airport-detail-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.airport-detail-iata {
+  font-size: 20px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.airport-detail-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.airport-detail-edit-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* Content Styles */
+.airport-detail-content {
+  display: grid;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.airport-detail-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  box-shadow: 0 4px 24px rgba(148, 163, 184, 0.08);
+}
+
+.airport-detail-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Info Grid Styles */
+.airport-detail-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.airport-detail-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.airport-detail-info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.airport-detail-info-label {
+  font-size: 14px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.airport-detail-icon {
+  font-size: 16px;
+  color: #64748b;
+}
+
+.airport-detail-info-value {
+  font-size: 16px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.airport-detail-info-value.highlight {
+  color: #2563eb;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Statistics Grid Styles */
+.airport-detail-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.airport-detail-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.airport-detail-stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(148, 163, 184, 0.1);
+}
+
+.airport-detail-stat-icon {
+  font-size: 24px;
+  color: #3b82f6;
+}
+
+.airport-detail-stat-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.airport-detail-stat-label {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Loading and Error States */
+.airport-detail-loading,
+.airport-detail-error {
+  text-align: center;
+  padding: 48px;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.airport-detail-error {
+  color: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .airport-detail-page {
+    padding: 16px;
+  }
+
+  .airport-detail-title {
+    font-size: 24px;
+  }
+
+  .airport-detail-iata {
+    font-size: 16px;
+  }
+
+  .airport-detail-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .airport-detail-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .airport-detail-edit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .airport-detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .airport-detail-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .airport-detail-page {
+    background: white;
+    padding: 20px;
+  }
+
+  .airport-detail-back-btn,
+  .airport-detail-edit-btn {
+    display: none;
+  }
+
+  .airport-detail-card {
+    break-inside: avoid;
+    border: none;
+    box-shadow: none;
+  }
+} 

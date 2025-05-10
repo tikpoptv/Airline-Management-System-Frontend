@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaPlus, FaSort, FaFilter } from 'react-icons/fa';
 import './MaintenancePage.css';
 import { useNavigate } from 'react-router-dom';
-import { MaintenanceLog, MaintenanceSearchParams, MaintenanceStatus } from '../../../types/maintenance';
+import { MaintenanceLog, MaintenanceSearchParams } from '../../../types/maintenance';
 import { getMaintenanceLogs } from '../../../services/maintenance/maintenanceService';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
@@ -46,6 +46,16 @@ const MaintenancePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
+
+  // Format date helper function
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
 
   // Sort states
   const [sortOption, setSortOption] = useState<SortOption | null>(null);
@@ -109,17 +119,87 @@ const MaintenancePage: React.FC = () => {
   };
 
   const handleSearch = () => {
-    const params: MaintenanceSearchParams = {};
-    
-    if (searchFilters.aircraftId) {
-      params.aircraft_id = parseInt(searchFilters.aircraftId);
-    }
-    
-    if (searchFilters.status) {
-      params.status = searchFilters.status as MaintenanceStatus;
-    }
+    const filteredData = maintenances.filter(maintenance => {
+      // Check Log ID
+      if (searchFilters.logId && 
+          !maintenance.log_id.toString().toLowerCase().includes(searchFilters.logId.toLowerCase())) {
+        return false;
+      }
 
-    fetchMaintenanceLogs(params);
+      // Check Aircraft ID
+      if (searchFilters.aircraftId && 
+          !maintenance.aircraft_id.toString().includes(searchFilters.aircraftId)) {
+        return false;
+      }
+
+      // Check Date Range
+      if (searchFilters.dateFrom || searchFilters.dateTo) {
+        const maintenanceDate = new Date(maintenance.date_of_maintenance);
+        
+        if (searchFilters.dateFrom) {
+          const fromDate = new Date(searchFilters.dateFrom);
+          if (maintenanceDate < fromDate) return false;
+        }
+        
+        if (searchFilters.dateTo) {
+          const toDate = new Date(searchFilters.dateTo);
+          toDate.setHours(23, 59, 59, 999); // Set to end of day
+          if (maintenanceDate > toDate) return false;
+        }
+      }
+
+      // Check Status
+      if (searchFilters.status && 
+          maintenance.status !== searchFilters.status) {
+        return false;
+      }
+
+      // Check Location
+      if (searchFilters.location && 
+          !maintenance.maintenance_location.toLowerCase().includes(searchFilters.location.toLowerCase())) {
+        return false;
+      }
+
+      return true;
+    });
+
+    setMaintenances(filteredData);
+    setTotalPages(Math.ceil(filteredData.length / entriesPerPage));
+    setCurrentPage(1);
+
+    // If there's a current sort option, apply it to the filtered data
+    if (sortOption) {
+      applySort(filteredData, sortOption);
+    }
+  };
+
+  const handleResetSearch = async () => {
+    setSearchFilters({
+      logId: '',
+      aircraftId: '',
+      dateFrom: '',
+      dateTo: '',
+      status: '',
+      location: ''
+    });
+    
+    // Fetch original data again
+    try {
+      const data = await getMaintenanceLogs();
+      if (Array.isArray(data)) {
+        setMaintenances(data);
+        setTotalPages(Math.ceil(data.length / entriesPerPage));
+        setCurrentPage(1);
+        
+        // If there's a current sort option, apply it to the reset data
+        if (sortOption) {
+          applySort(data, sortOption);
+        }
+      }
+    } catch (err) {
+      console.error('Error resetting search:', err);
+      setError(err instanceof Error ? err.message : 'Failed to reset search');
+    }
   };
 
   const applySort = (dataToProcess: MaintenanceLog[], selectedSort: SortOption) => {
@@ -197,18 +277,6 @@ const MaintenancePage: React.FC = () => {
     setTotalPages(Math.ceil(maintenances.length / value));
   };
 
-  const handleResetSearch = () => {
-    setSearchFilters({
-      logId: '',
-      aircraftId: '',
-      dateFrom: '',
-      dateTo: '',
-      status: '',
-      location: ''
-    });
-    fetchMaintenanceLogs();
-  };
-
   // Calculate current entries for pagination
   const indexOfLastEntry = currentPage * entriesPerPage;
   const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
@@ -259,19 +327,30 @@ const MaintenancePage: React.FC = () => {
                 placeholder="Search by Log ID..."
                 value={searchFilters.logId}
                 onChange={(e) => handleSearchFilterChange('logId', e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
               />
             </div>
             <div className="maintenance-search-buttons">
               <button 
-                className="maintenance-filter-btn"
+                className={`maintenance-filter-btn ${showAdvancedSearch ? 'active' : ''}`}
                 onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
               >
                 <FaFilter /> Filters
               </button>
-              <button className="maintenance-search-btn" onClick={handleSearch}>
+              <button 
+                className="maintenance-search-btn" 
+                onClick={handleSearch}
+              >
                 <FaSearch /> Search
               </button>
-              <button className="maintenance-reset-btn" onClick={handleResetSearch}>
+              <button 
+                className="maintenance-reset-btn" 
+                onClick={handleResetSearch}
+              >
                 Reset
               </button>
             </div>
@@ -433,7 +512,7 @@ const MaintenancePage: React.FC = () => {
                       <td>{maintenance.log_id}</td>
                       <td>{maintenance.aircraft_id}</td>
                       <td>{maintenance.aircraft?.model || 'N/A'}</td>
-                      <td>{new Date(maintenance.date_of_maintenance).toLocaleDateString()}</td>
+                      <td>{formatDate(maintenance.date_of_maintenance)}</td>
                       <td>{maintenance.assigned_user?.user_id || 'N/A'}</td>
                       <td>{maintenance.assigned_user?.username || 'N/A'}</td>
                       <td>{maintenance.maintenance_location}</td>

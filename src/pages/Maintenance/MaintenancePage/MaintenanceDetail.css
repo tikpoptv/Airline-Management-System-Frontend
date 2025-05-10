@@ -289,15 +289,17 @@
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.maintenance-detail.is-edit-mode .read-only-field {
-  background-color: #37393b !important;
-  color: #64748b;
+.profile-wrapper.is-edit-mode .read-only-field {
+  background-color: #817f7f !important;
+  color: #ffffff;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
 }
 
-.maintenance-detail.is-edit-mode .read-only-field:hover {
-  background: #e2e8f0 !important;
-  border-color: #cbd5e1;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+.profile-wrapper.is-edit-mode .read-only-field:hover {
+  background-color: #817f7f !important;
+  border: none;
 }
 
 /* Status Badge Container */

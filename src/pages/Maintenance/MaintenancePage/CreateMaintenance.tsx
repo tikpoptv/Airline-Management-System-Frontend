@@ -14,6 +14,7 @@ const CreateMaintenancePage = () => {
     details: '',
     maintenance_location: '',
     status: 'Pending',
+    assigned_to: 0,
   });
 
   const [loading] = useState(false);
@@ -50,6 +51,7 @@ const CreateMaintenancePage = () => {
     if (!formData.date_of_maintenance) newErrors.date_of_maintenance = 'Please select a date';
     if (!formData.maintenance_location) newErrors.maintenance_location = 'Please enter maintenance location';
     if (!formData.details) newErrors.details = 'Please enter maintenance details';
+    if (!formData.assigned_to) newErrors.assigned_to = 'Please enter user ID';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -274,8 +276,27 @@ const CreateMaintenancePage = () => {
                   </span>
                 )}
               </div>
-
               <div className="form-group">
+                <label>User ID</label>
+                <input
+                  type="number"
+                  value={formData.assigned_to}
+                  onChange={(e) => setFormData({ ...formData, assigned_to: Number(e.target.value) })}
+                  className={errors.assigned_to ? 'error' : ''}
+                  placeholder="Enter User ID"
+                />
+                {errors.assigned_to && (
+                  <span className="error-message">
+                    <FaExclamationCircle />
+                    {errors.assigned_to}
+                  </span>
+                )}
+              </div>
+              
+            </div>
+
+            <div className="form-row">
+              <div className="form-group full-width">
                 <label>Status</label>
                 <select
                   value={formData.status}

@@ -133,9 +133,10 @@ const MaintenanceLogList = ({
                 {isEditing && <th className="checkbox-column" />}
                 <th className="status-column">Status</th>
                 <th>Log ID</th>
-                <th>Aircraft</th>
+                <th>Aircraft_ID</th>
+                <th>Model</th>
                 <th>Date</th>
-                <th>Location</th>
+                <th>User_ID</th>
                 <th>Assigned To</th>
                 <th className="actions-column" />
               </tr>
@@ -162,15 +163,10 @@ const MaintenanceLogList = ({
                     </span>
                   </td>
                   <td className="id-column">{log.log_id}</td>
-                  <td className="aircraft-column">
-                    {log.aircraft ? (
-                      <>{log.aircraft.model} (#{log.aircraft_id})</>
-                    ) : (
-                      <>#{log.aircraft_id}</>
-                    )}
-                  </td>
+                  <td className="aircraft-column">{log.aircraft_id}</td>
+                  <td className="model-column">{log.aircraft?.model || 'N/A'}</td>
                   <td className="date-column">{formatDate(log.date_of_maintenance)}</td>
-                  <td className="location-column">{log.maintenance_location}</td>
+                  <td className="user-id-column">{log.assigned_user?.user_id || 'N/A'}</td>
                   <td className="assigned-column">
                     {log.assigned_user ? log.assigned_user.username : 'Unassigned'}
                   </td>

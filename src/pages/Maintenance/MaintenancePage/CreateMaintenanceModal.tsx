@@ -15,6 +15,7 @@ const CreateMaintenanceModal = ({ isOpen, onClose, onSuccess }: Props) => {
     details: '',
     maintenance_location: '',
     status: 'Pending',
+    assigned_to: 0,
   });
 
   const [loading] = useState(false);
@@ -33,6 +34,7 @@ const CreateMaintenanceModal = ({ isOpen, onClose, onSuccess }: Props) => {
     if (!formData.date_of_maintenance) newErrors.date_of_maintenance = 'Please select a date';
     if (!formData.maintenance_location) newErrors.maintenance_location = 'Please enter maintenance location';
     if (!formData.details) newErrors.details = 'Please enter maintenance details';
+    if (!formData.assigned_to) newErrors.assigned_to = 'Please enter user ID';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -71,65 +73,86 @@ const CreateMaintenanceModal = ({ isOpen, onClose, onSuccess }: Props) => {
         <h2>Create New Maintenance Log</h2>
 
         <div className="form-grid">
-          {/* Aircraft ID */}
-          <div className="input-group">
-            <label>Aircraft ID</label>
-            <input
-              type="number"
-              value={formData.aircraft_id}
-              onChange={(e) => setFormData({ ...formData, aircraft_id: Number(e.target.value) })}
-              className={errors.aircraft_id ? 'error' : ''}
-            />
-            {errors.aircraft_id && <span className="error-message">{errors.aircraft_id}</span>}
+          <div className="form-row">
+            {/* Aircraft ID */}
+            <div className="input-group">
+              <label>Aircraft ID</label>
+              <input
+                type="number"
+                value={formData.aircraft_id}
+                onChange={(e) => setFormData({ ...formData, aircraft_id: Number(e.target.value) })}
+                className={errors.aircraft_id ? 'error' : ''}
+              />
+              {errors.aircraft_id && <span className="error-message">{errors.aircraft_id}</span>}
+            </div>
+
+            {/* Date of Maintenance */}
+            <div className="input-group">
+              <label>Date of Maintenance</label>
+              <input
+                type="datetime-local"
+                value={formData.date_of_maintenance.slice(0, 16)}
+                onChange={(e) => setFormData({ ...formData, date_of_maintenance: new Date(e.target.value).toISOString() })}
+                className={errors.date_of_maintenance ? 'error' : ''}
+              />
+              {errors.date_of_maintenance && <span className="error-message">{errors.date_of_maintenance}</span>}
+            </div>
           </div>
 
-          {/* Date of Maintenance */}
-          <div className="input-group">
-            <label>Date of Maintenance</label>
-            <input
-              type="datetime-local"
-              value={formData.date_of_maintenance.slice(0, 16)}
-              onChange={(e) => setFormData({ ...formData, date_of_maintenance: new Date(e.target.value).toISOString() })}
-              className={errors.date_of_maintenance ? 'error' : ''}
-            />
-            {errors.date_of_maintenance && <span className="error-message">{errors.date_of_maintenance}</span>}
+          <div className="form-row">
+            {/* Maintenance Location */}
+            <div className="input-group">
+              <label>Maintenance Location</label>
+              <input
+                type="text"
+                value={formData.maintenance_location}
+                onChange={(e) => setFormData({ ...formData, maintenance_location: e.target.value })}
+                className={errors.maintenance_location ? 'error' : ''}
+              />
+              {errors.maintenance_location && <span className="error-message">{errors.maintenance_location}</span>}
+            </div>
+
+            {/* Status */}
+            <div className="input-group">
+              <label>Status</label>
+              <select
+                value={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value as MaintenanceLog['status'] })}
+              >
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
           </div>
 
-          {/* Maintenance Location */}
-          <div className="input-group">
-            <label>Maintenance Location</label>
-            <input
-              type="text"
-              value={formData.maintenance_location}
-              onChange={(e) => setFormData({ ...formData, maintenance_location: e.target.value })}
-              className={errors.maintenance_location ? 'error' : ''}
-            />
-            {errors.maintenance_location && <span className="error-message">{errors.maintenance_location}</span>}
-          </div>
-
-          {/* Status */}
-          <div className="input-group">
-            <label>Status</label>
-            <select
-              value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value as MaintenanceLog['status'] })}
-            >
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
+          <div className="form-row">
+            {/* User ID */}
+            <div className="input-group">
+              <label>User ID</label>
+              <input
+                type="number"
+                value={formData.assigned_to}
+                onChange={(e) => setFormData({ ...formData, assigned_to: Number(e.target.value) })}
+                className={errors.assigned_to ? 'error' : ''}
+                placeholder="Enter User ID"
+              />
+              {errors.assigned_to && <span className="error-message">{errors.assigned_to}</span>}
+            </div>
           </div>
 
           {/* Details */}
-          <div className="input-group maintenance-details">
-            <label>Maintenance Details</label>
-            <textarea
-              value={formData.details}
-              onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-              className={errors.details ? 'error' : ''}
-            />
-            {errors.details && <span className="error-message">{errors.details}</span>}
+          <div className="form-row">
+            <div className="input-group maintenance-details">
+              <label>Maintenance Details</label>
+              <textarea
+                value={formData.details}
+                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
+                className={errors.details ? 'error' : ''}
+              />
+              {errors.details && <span className="error-message">{errors.details}</span>}
+            </div>
           </div>
         </div>
 

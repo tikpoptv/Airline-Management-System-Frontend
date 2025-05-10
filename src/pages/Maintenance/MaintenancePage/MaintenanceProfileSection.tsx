@@ -1,5 +1,4 @@
 import {  useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { updateMaintenanceLog, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import { useNavigate } from 'react-router-dom';
@@ -75,7 +74,7 @@ const MaintenanceProfileSection = ({
   };
 
   return (
-    <div className="profile-wrapper">
+    <div className={`profile-wrapper ${isEditMode ? 'is-edit-mode' : ''}`}>
       <div className="form-container">
         {/* Status Badge */}
         <div className="status-badge-container">
@@ -113,26 +112,13 @@ const MaintenanceProfileSection = ({
               <label>Log ID</label>
               <div className="input-with-icon">
                 <div className="read-only-field">{editData.log_id}</div>
-                {isEditMode && (
-                  <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
-                    <FaTrash />
-                  </button>
-                )}
               </div>
             </div>
 
             <div className="field-group">
-              <label>Aircraft ID</label>
-              {isEditMode ? (
-                <input
-                  type="number"
-                  value={editData.aircraft_id}
-                  onChange={(e) => handleChange('aircraft_id', Number(e.target.value))}
-                />
-              ) : (
+                <label>Aircraft ID</label>
                 <div className="read-only-field">{editData.aircraft_id}</div>
-              )}
-            </div>
+              </div>
           </div>
         </div>
 
@@ -141,33 +127,6 @@ const MaintenanceProfileSection = ({
           {/* Information Section */}
           <div className="section information-section">
             <h2>Information</h2>
-            <div className="field-row">
-              <div className="field-group">
-                <label>Date of Maintenance</label>
-                {isEditMode ? (
-                  <input
-                    type="datetime-local"
-                    value={editData.date_of_maintenance}
-                    onChange={(e) => handleChange('date_of_maintenance', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{new Date(editData.date_of_maintenance).toLocaleString()}</div>
-                )}
-              </div>
-              
-              <div className="field-group">
-                <label>Location</label>
-                {isEditMode ? (
-                  <input
-                    type="text"
-                    value={editData.maintenance_location}
-                    onChange={(e) => handleChange('maintenance_location', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{editData.maintenance_location}</div>
-                )}
-              </div>
-            </div>
 
             <div className="field-row">
               <div className="field-group">
@@ -184,12 +143,61 @@ const MaintenanceProfileSection = ({
             <div className="field-row">
               <div className="field-group">
                 <label>User ID</label>
-                <div className="read-only-field">{editData.assigned_user?.user_id || 'N/A'}</div>
+                {isEditMode ? (
+                  <input
+                    type="number"
+                    value={editData.assigned_user?.user_id || ''}
+                    onChange={(e) => {
+                      const user_id = Number(e.target.value);
+                      handleChange('assigned_user', {
+                        user_id,
+                        username: editData.assigned_user?.username || ''
+                      });
+                    }}
+                    placeholder="Enter User ID"
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.assigned_user?.user_id || 'N/A'}</div>
+                )}
               </div>
               
               <div className="field-group">
                 <label>Username</label>
-                <div className="read-only-field">{editData.assigned_user?.username || 'N/A'}</div>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    value={editData.assigned_user?.username || ''}
+                    onChange={(e) => {
+                      handleChange('assigned_user', {
+                        user_id: editData.assigned_user?.user_id || 0,
+                        username: e.target.value
+                      });
+                    }}
+                    placeholder="Enter Username"
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.assigned_user?.username || 'N/A'}</div>
+                )}
+              </div>
+            </div>
+
+            
+            <div className="field-row">
+              <div className="field-group">
+                <label>Location</label>
+                {isEditMode ? (
+                  <input
+                    type="text"
+                    value={editData.maintenance_location}
+                    onChange={(e) => handleChange('maintenance_location', e.target.value)}
+                  />
+                ) : (
+                  <div className="read-only-field">{editData.maintenance_location}</div>
+                )}
+              </div>
+              <div className="field-group">
+                <label>Date of Maintenance</label>
+                  <div className="read-only-field">{new Date(editData.date_of_maintenance).toLocaleString()}</div>
               </div>
             </div>
 

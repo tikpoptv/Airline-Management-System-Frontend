@@ -10,6 +10,8 @@ const RoutePage: React.FC = () => {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [routes, setRoutes] = useState<Route[]>([]);
+  const [allRoutes, setAllRoutes] = useState<Route[]>([]);
+  const [filteredRoutes, setFilteredRoutes] = useState<Route[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
@@ -18,9 +20,25 @@ const RoutePage: React.FC = () => {
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [totalPages, setTotalPages] = useState(1);
 
+  // Sort and filter states
+  const [sortOption, setSortOption] = useState<string | null>(null);
+  const [filterOption, setFilterOption] = useState<string | null>(null);
+  
   const [menuOpenIdx, setMenuOpenIdx] = useState<number | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const sortBtnRef = useRef<HTMLButtonElement>(null);
+  const filterBtnRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
+
+  // Alternative approach - use regular state to control dropdown
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  
+  const toggleDropdownState = (type: string) => {
+    console.log('Clicked dropdown:', type, 'Previous state:', openDropdown);
+    
+    // Always close the current dropdown if it's the same as the clicked one, otherwise open the new one
+    setOpenDropdown(prevState => prevState === type ? null : type);
+  };
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -29,6 +47,8 @@ const RoutePage: React.FC = () => {
       try {
         const data = await getRouteList();
         setRoutes(data);
+        setAllRoutes(data);
+        setFilteredRoutes(data);
         setTotalPages(Math.ceil(data.length / entriesPerPage));
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -45,7 +65,67 @@ const RoutePage: React.FC = () => {
   };
 
   const handleSearch = () => {
-    console.log('ค้นหา', { routeId, from, to });
+    console.log('Search', { routeId, from, to });
+    
+    const newFilteredRoutes = allRoutes.filter(route => {
+      const matchesRouteId = !routeId || route.route_id.toString().includes(routeId);
+      const matchesFrom = !from || 
+        route.from_airport.city.toLowerCase().includes(from.toLowerCase()) || 
+        route.from_airport.iata_code.toLowerCase().includes(from.toLowerCase());
+      const matchesTo = !to || 
+        route.to_airport.city.toLowerCase().includes(to.toLowerCase()) || 
+        route.to_airport.iata_code.toLowerCase().includes(to.toLowerCase());
+        
+      return matchesRouteId && matchesFrom && matchesTo;
+    });
+    
+    setFilteredRoutes(newFilteredRoutes);
+    
+    applyFiltersAndSort(newFilteredRoutes);
+  };
+
+  const applyFiltersAndSort = (dataToProcess: Route[]) => {
+    const result = [...dataToProcess];
+    
+    if (filterOption) {
+      if (filterOption === 'From (A-Z)') {
+        // Sort data by origin city (From) from A-Z
+        result.sort((a, b) => 
+          a.from_airport.city.localeCompare(b.from_airport.city));
+      } else if (filterOption === 'Duration (Low - High)') {
+        result.sort((a, b) => {
+          const [aHours, aMinutes] = a.estimated_duration.split(':').map(Number);
+          const [bHours, bMinutes] = b.estimated_duration.split(':').map(Number);
+          
+          const aTotalMinutes = aHours * 60 + aMinutes;
+          const bTotalMinutes = bHours * 60 + bMinutes;
+          
+          return aTotalMinutes - bTotalMinutes;
+        });
+      }
+    }
+    
+    if (sortOption) {
+      if (sortOption === 'Active (A-Z)') {
+        result.sort((a, b) => {
+          if (a.status === 'active' && b.status !== 'active') return -1;
+          if (a.status !== 'active' && b.status === 'active') return 1;
+          
+          return a.from_airport.city.localeCompare(b.from_airport.city);
+        });
+      } else if (sortOption === 'Inactive (A-Z)') {
+        result.sort((a, b) => {
+          if (a.status === 'inactive' && b.status !== 'inactive') return -1;
+          if (a.status !== 'inactive' && b.status === 'inactive') return 1;
+          
+          return a.from_airport.city.localeCompare(b.from_airport.city);
+        });
+      }
+    }
+    
+    setRoutes(result);
+    setTotalPages(Math.ceil(result.length / entriesPerPage));
+    setCurrentPage(1);
   };
 
   // Pagination handlers
@@ -57,7 +137,39 @@ const RoutePage: React.FC = () => {
     const value = parseInt(event.target.value);
     setEntriesPerPage(value);
     setCurrentPage(1);
+    setTotalPages(Math.ceil(routes.length / value));
   };
+
+  // Sort handler - Update to close dropdown with state
+  const handleSortOption = (option: string) => {
+    console.log('Selected Sort option:', option);
+    setSortOption(prevSortOption => prevSortOption === option ? null : option); // Update state, allow unsetting
+    setOpenDropdown(null); // Close dropdown after selection
+    // applyFiltersAndSort will be called by useEffect
+  };
+
+  // Filter handler - Update to close dropdown with state
+  const handleFilterOption = (option: string) => {
+    console.log('Selected Filter option:', option);
+    setFilterOption(prevFilterOption => prevFilterOption === option ? null : option); // Update state, allow unsetting
+    setOpenDropdown(null); // Close dropdown after selection
+    // applyFiltersAndSort will be called by useEffect
+  };
+
+  // useEffect to apply sorting and filtering when options change
+  useEffect(() => {
+    // This effect runs when sortOption or filterOption changes,
+    // ensuring that applyFiltersAndSort uses the updated state.
+    console.log('useEffect for sort/filter triggered. Applying to filteredRoutes. Sort:', sortOption, 'Filter:', filterOption);
+    if (allRoutes.length > 0) { // Ensure initial data is loaded before attempting to sort/filter
+        applyFiltersAndSort(filteredRoutes);
+    }
+  }, [sortOption, filterOption, filteredRoutes, allRoutes.length]); // Add allRoutes.length to ensure it runs after initial load if needed.
+                                                                  // filteredRoutes is added because if search changes the base data, we need to re-apply sort/filter.
+                                                                  // However, handleSearch already calls applyFiltersAndSort.
+                                                                  // Let's refine dependencies to [sortOption, filterOption, allRoutes.length]
+                                                                  // and ensure applyFiltersAndSort inside handleSearch uses the most up-to-date filteredRoutes.
+                                                                  // For now, keeping filteredRoutes in dependency for safety, will monitor.
 
   // Calculate pagination
   const indexOfLastEntry = currentPage * entriesPerPage;
@@ -75,25 +187,64 @@ const RoutePage: React.FC = () => {
     setMenuOpenIdx(menuOpenIdx === idx ? null : idx);
   };
 
-  // Handle click outside to close dropdown
+  // Update click outside handling to use state approach
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      
+      // Close dropdown when clicking outside dropdown or button that opens dropdown
+      if (openDropdown && 
+          !target.closest('.routepage-dropdown') && 
+          !target.closest('.routepage-action-btn')) {
+        setOpenDropdown(null);
+      }
+      
+      // Close action menu when clicking elsewhere
+      if (menuOpenIdx !== null && menuRef.current && !menuRef.current.contains(target)) {
         setMenuOpenIdx(null);
       }
     };
-
-    if (menuOpenIdx !== null) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [menuOpenIdx]);
+  }, [openDropdown, menuOpenIdx]);
 
   const handleViewDetail = (routeId: number) => {
     navigate(`/admin/pathways/routes/detail/${routeId}`);
+  };
+
+  const handleEditRoute = (routeId: number) => {
+    navigate(`/admin/pathways/routes/edit/${routeId}`);
+  };
+
+  // Add function to reset search
+  const handleResetSearch = () => {
+    setRouteId('');
+    setFrom('');
+    setTo('');
+    setFilteredRoutes(allRoutes);
+    
+    // Reset filter and sort options too
+    setSortOption(null);
+    setFilterOption(null);
+    
+    setRoutes(allRoutes);
+    setCurrentPage(1);
+    setTotalPages(Math.ceil(allRoutes.length / entriesPerPage));
+  };
+
+  // Add function to reset filters and sorting
+  const handleResetFilters = () => {
+    setSortOption(null);
+    setFilterOption(null);
+    setOpenDropdown(null); // Close dropdown
+    // The useEffect listening to sortOption and filterOption will now
+    // call applyFiltersAndSort with null options, effectively resetting the view
+    // to filteredRoutes without additional sorting/filtering.
+    // applyFiltersAndSort also handles pagination reset.
   };
 
   return (
@@ -138,20 +289,91 @@ const RoutePage: React.FC = () => {
                 className="routepage-input routepage-input-bordered"
               />
             </div>
-            <button className="routepage-search-btn" onClick={handleSearch} aria-label="Search">
-              <FaSearch />
-              <span className="routepage-search-btn-text">Search</span>
-            </button>
+            <div className="routepage-search-buttons">
+              <button className="routepage-search-btn" onClick={handleSearch} aria-label="Search">
+                <FaSearch />
+                <span className="routepage-search-btn-text">Search</span>
+              </button>
+              {(routeId || from || to) && (
+                <button className="routepage-reset-btn" onClick={handleResetSearch} aria-label="Reset">
+                  Reset
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="routepage-actionbar">
-            <button className="routepage-action-btn">
-              <FaSort /> Sort by
-            </button>
-            <button className="routepage-action-btn">
-              <FaFilter /> Filter by
-            </button>
-            <button className="routepage-action-btn">
+            <div style={{ position: 'relative' }}>
+              <button 
+                ref={sortBtnRef}
+                className={`routepage-action-btn ${sortOption ? 'active' : ''}`}
+                onClick={() => toggleDropdownState('sort')}
+              >
+                <FaSort style={{ fontSize: '12px' }} /> 
+                <span>Sort by</span>
+                {sortOption && <span className="separator">:</span>}
+                {sortOption && <span className="option-value">{sortOption}</span>}
+              </button>
+              {openDropdown === 'sort' && (
+                <div className="routepage-dropdown">
+                  <button
+                    className={`routepage-dropdown-item ${sortOption === 'Active (A-Z)' ? 'active' : ''}`}
+                    onClick={() => handleSortOption('Active (A-Z)')}
+                  >
+                    Active (A-Z)
+                  </button>
+                  <button
+                    className={`routepage-dropdown-item ${sortOption === 'Inactive (A-Z)' ? 'active' : ''}`}
+                    onClick={() => handleSortOption('Inactive (A-Z)')}
+                  >
+                    Inactive (A-Z)
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <div style={{ position: 'relative' }}>
+              <button 
+                ref={filterBtnRef}
+                className={`routepage-action-btn ${filterOption ? 'active' : ''}`}
+                onClick={() => toggleDropdownState('filter')}
+              >
+                <FaFilter style={{ fontSize: '12px' }} />
+                <span>Filter by</span>
+                {filterOption && <span className="separator">:</span>}
+                {filterOption && <span className="option-value">{filterOption}</span>}
+              </button>
+              {openDropdown === 'filter' && (
+                <div className="routepage-dropdown">
+                  <button
+                    className={`routepage-dropdown-item ${filterOption === 'From (A-Z)' ? 'active' : ''}`}
+                    onClick={() => handleFilterOption('From (A-Z)')}
+                  >
+                    From (A-Z)
+                  </button>
+                  <button
+                    className={`routepage-dropdown-item ${filterOption === 'Duration (Low - High)' ? 'active' : ''}`}
+                    onClick={() => handleFilterOption('Duration (Low - High)')}
+                  >
+                    Duration (Low - High)
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            {(sortOption || filterOption) && (
+              <button 
+                className="routepage-reset-filter-btn"
+                onClick={handleResetFilters}
+              >
+                Reset Filters
+              </button>
+            )}
+            
+            <button 
+              className="routepage-action-btn"
+              onClick={() => navigate('/admin/pathways/routes/add')}
+            >
               <FaPlus /> Add New
             </button>
           </div>
@@ -175,50 +397,61 @@ const RoutePage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentEntries.map((route, idx) => (
-                      <tr 
-                        key={route.route_id || idx}
-                        className={menuOpenIdx === idx ? 'active-dropdown' : ''}
-                      >
-                        <td>
-                          <span className={`routepage-status ${route.status}`}>
-                            {route.status.charAt(0).toUpperCase() + route.status.slice(1)}
-                          </span>
-                        </td>
-                        <td>{route.route_id}</td>
-                        <td>{route.from_airport.city}, {route.from_airport.iata_code}</td>
-                        <td>{route.to_airport.city}, {route.to_airport.iata_code}</td>
-                        <td>{route.estimated_duration}</td>
-                        <td style={{ textAlign: 'center', position: 'relative' }}>
-                          <div className="routepage-dropdown-container">
-                            <button
-                              className="routepage-action-menu-btn"
-                              aria-label="More actions"
-                              onClick={(e) => handleMenuClick(e, idx)}
-                            >
-                              <FaEllipsisV />
-                            </button>
-                            {menuOpenIdx === idx && (
-                              <div 
-                                className="routepage-action-dropdown"
-                                ref={menuRef}
-                                onClick={(e) => e.stopPropagation()}
+                    {currentEntries.length > 0 ? (
+                      currentEntries.map((route, idx) => (
+                        <tr 
+                          key={route.route_id || idx}
+                          className={menuOpenIdx === idx ? 'active-dropdown' : ''}
+                        >
+                          <td>
+                            <span className={`routepage-status ${route.status}`}>
+                              {route.status.charAt(0).toUpperCase() + route.status.slice(1)}
+                            </span>
+                          </td>
+                          <td>{route.route_id}</td>
+                          <td>{route.from_airport.city}, {route.from_airport.iata_code}</td>
+                          <td>{route.to_airport.city}, {route.to_airport.iata_code}</td>
+                          <td>{route.estimated_duration}</td>
+                          <td style={{ textAlign: 'center', position: 'relative' }}>
+                            <div className="routepage-dropdown-container">
+                              <button
+                                className="routepage-action-menu-btn"
+                                aria-label="More actions"
+                                onClick={(e) => handleMenuClick(e, idx)}
                               >
-                                <button 
-                                  className="routepage-action-dropdown-item"
-                                  onClick={() => handleViewDetail(route.route_id)}
+                                <FaEllipsisV />
+                              </button>
+                              {menuOpenIdx === idx && (
+                                <div 
+                                  className="routepage-action-dropdown"
+                                  ref={menuRef}
+                                  onClick={(e) => e.stopPropagation()}
                                 >
-                                  View Detail
-                                </button>
-                                <button className="routepage-action-dropdown-item">
-                                  Edit Detail
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                                  <button 
+                                    className="routepage-action-dropdown-item"
+                                    onClick={() => handleViewDetail(route.route_id)}
+                                  >
+                                    View Detail
+                                  </button>
+                                  <button 
+                                    className="routepage-action-dropdown-item"
+                                    onClick={() => handleEditRoute(route.route_id)}
+                                  >
+                                    Edit Detail
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6} style={{ textAlign: 'center', padding: '32px 0' }}>
+                          No routes found
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+// import { FaTrash } from 'react-icons/fa';
 import { Crew } from '../../../types/crew';
 import avatarImg from '../../../assets/images/profile_web.webp';
 import { updateCrewById, deleteCrewById } from '../../../services/crew/crewService';
@@ -123,11 +123,11 @@ const CrewProfileSection = ({
               <label>Crew ID</label>
               <div className="input-with-icon">
                 <div className="read-only-field">{editData.crew_id}</div>
-                {isEditMode && (
+                {/* {isEditMode && (
                   <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
                     <FaTrash />
                   </button>
-                )}
+                )} */}
               </div>
             </div>
 
@@ -197,46 +197,29 @@ const CrewProfileSection = ({
                 )}
               </div>
               
-              <div className="field-group">
-                <label>License expire date</label>
+              <div className={`field-group ${isEditMode ? 'is-edit-mode' : ''}`}>
+                <label>Last name</label>
                 {isEditMode ? (
-                  <input
-                    type="date"
-                    value={editData.license_expiry_date}
-                    onChange={(e) => handleChange('license_expiry_date', e.target.value)}
-                  />
+                    <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    />
                 ) : (
-                  <div className="read-only-field">{formatDate(editData.license_expiry_date)}</div>
+                    <div className="read-only-field">{lastName}</div>
                 )}
-              </div>
+                </div>
             </div>
 
             <div className="field-row">
               <div className="field-group">
                 <label>Passport number</label>
-                {isEditMode ? (
-                  <input
-                    type="text"
-                    value={editData.passport_number}
-                    onChange={(e) => handleChange('passport_number', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{editData.passport_number}</div>
-                )}
-              </div>
-              
+                    <div className="read-only-field">{editData.passport_number}</div>              
+                </div>
               <div className="field-group">
                 <label>Passport expire date</label>
-                {isEditMode ? (
-                  <input
-                    type="date"
-                    value={editData.passport_expiry_date}
-                    onChange={(e) => handleChange('passport_expiry_date', e.target.value)}
-                  />
-                ) : (
-                  <div className="read-only-field">{formatDate(editData.passport_expiry_date)}</div>
-                )}
-              </div>
+                <div className="read-only-field">{formatDate(editData.passport_expiry_date)}</div>               
+             </div>
             </div>
           </div>
 

@@ -282,7 +282,7 @@
   .read-only-field {
     width: 100%;
     padding: 8px 12px;
-    background-color: #ffffff !important;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc)!important;
     border: 1px solid #e2e8f0;
     border-radius: 4px;
     color: #1e293b;
@@ -320,7 +320,7 @@
   }
   
   .is-edit-mode .read-only-field {
-    background-color: #37393b !important;
+    background-color: #df13df72 !important;
     color: #64748b;
   }
   

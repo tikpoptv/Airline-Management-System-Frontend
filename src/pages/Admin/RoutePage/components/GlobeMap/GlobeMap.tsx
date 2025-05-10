@@ -115,6 +115,7 @@
 // const ARC_LAYER_GET_HEIGHT_RATIO = 0.08;
 // const VISUAL_ALTITUDE_MULTIPLIER = 0.6;
 
+<<<<<<< HEAD
 // const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport }) => {
 //   const INITIAL_VIEW_STATE = {
 //     longitude: (fromAirport.lon + toAirport.lon) / 2,
@@ -123,6 +124,20 @@
 //     pitch: 45, 
 //     bearing: 0,
 //   };
+=======
+const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport }) => {
+  console.log('GlobeMap rendering with:', { fromAirport, toAirport });
+  
+  const INITIAL_VIEW_STATE = {
+    longitude: (fromAirport.lon + toAirport.lon) / 2,
+    latitude: (fromAirport.lat + toAirport.lat) / 2,
+    zoom: 2.5,
+    pitch: 45, 
+    bearing: 0,
+  };
+  
+  console.log('GlobeMap view state:', INITIAL_VIEW_STATE);
+>>>>>>> 0cffe7f0ac6a5ec8a4ddbd93b12c841077bdeeab
 
 //   const [animationProgress, setAnimationProgress] = useState(0);
 

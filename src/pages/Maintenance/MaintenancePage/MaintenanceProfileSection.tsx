@@ -79,9 +79,22 @@ const MaintenanceProfileSection = ({
       <div className="form-container">
         {/* Status Badge */}
         <div className="status-badge-container">
-          <div className={`status-badge ${editData.status.replace(/\s+/g, '-')}`}>
-            {editData.status}
-          </div>
+          {isEditMode ? (
+            <select
+              value={editData.status}
+              onChange={(e) => handleChange('status', e.target.value as MaintenanceLog['status'])}
+              className={`status-badge status-select ${editData.status.replace(/\s+/g, '-')}`}
+            >
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          ) : (
+            <div className={`status-badge ${editData.status.replace(/\s+/g, '-')}`}>
+              {editData.status}
+            </div>
+          )}
         </div>
 
         {/* Left Column - Avatar and Work Section */}
@@ -94,25 +107,7 @@ const MaintenanceProfileSection = ({
 
           <div className="section work-section">
             <h2>Maintenance Details</h2>
-            <div className="field-group">
-              <label>Status</label>
-              {isEditMode ? (
-                <select
-                  value={editData.status}
-                  onChange={(e) => handleChange('status', e.target.value as MaintenanceLog['status'])}
-                  className={`status-select ${editData.status.replace(/\s+/g, '-')}`}
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Completed">Completed</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              ) : (
-                <div className={`read-only-field status-field ${editData.status.replace(/\s+/g, '-')}`}>
-                  {editData.status}
-                </div>
-              )}
-            </div>
+            
 
             <div className="field-group">
               <label>Log ID</label>

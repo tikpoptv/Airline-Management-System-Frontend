@@ -6,7 +6,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <div className="title-group">
           <h4>dashboard</h4>
-          <h2 className="title">Hi, Somsak-m</h2>
+          <h2 className="title">Hi, Maintenance</h2>
         </div>
 
       <div className="task-and-list-container">

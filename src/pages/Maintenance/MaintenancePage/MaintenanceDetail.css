@@ -161,7 +161,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 /* Avatar */
@@ -200,7 +199,7 @@
   padding: 16px;
   background-color: transparent;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .work-section {
@@ -322,6 +321,31 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Status Select in Badge Position */
+.status-badge-container .status-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  min-width: 140px;
+  text-align: center;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.status-badge-container .status-select:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge-container .status-select:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
 /* Status Colors */
 .status-badge.Pending,
 .status-select.Pending,
@@ -355,28 +379,29 @@
   border: 1px solid #fca5a5;
 }
 
-/* Status Select Styling */
-.status-select {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+/* Status Select Options */
+.status-badge-container .status-select option {
+  background: white;
+  color: #1e293b;
+  padding: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.status-select:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.status-badge-container .status-select option[value="Pending"] {
+  color: #92400e;
 }
 
-/* Status Field Styling */
-.status-field {
-  text-align: center;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.status-badge-container .status-select option[value="In Progress"] {
+  color: #1e40af;
+}
+
+.status-badge-container .status-select option[value="Completed"] {
+  color: #166534;
+}
+
+.status-badge-container .status-select option[value="Cancelled"] {
+  color: #991b1b;
 }
 
 /* Grid Positioning */
@@ -497,20 +522,59 @@
 
 /* Field Groups */
 .field-group {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .field-row {
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .field-row .field-group {
   flex: 1;
+  margin-bottom: 0;
 }
 
 .field-group.full-width {
   width: 100%;
+}
+
+.field-group.full-width textarea,
+.field-group.full-width .read-only-field {
+  min-height: 150px;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.field-group.full-width .read-only-field {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.field-group.full-width textarea {
+  background-color: #f9fafe;
+  border: 1px solid #e2e8f0;
+  color: #1f1f4e;
+  transition: all 0.2s ease;
+}
+
+.field-group.full-width textarea:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.field-group.full-width textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .field-group label {
@@ -519,6 +583,42 @@
   color: #64748b;
   margin-bottom: 6px;
   font-weight: 500;
+}
+
+/* Information Section Specific Styles */
+.information-section .field-group {
+  margin-bottom: 0px;
+}
+
+.information-section .field-row {
+  margin-bottom: 8px;
+}
+
+.information-section .field-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Description Section Specific Styles */
+.contact-section .field-group.full-width {
+  margin-top: 0px;
+  margin-bottom: 0;
+}
+
+.contact-section .field-group.full-width textarea,
+.contact-section .field-group.full-width .read-only-field {
+  min-height: 200px;
+  font-family: inherit;
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff);
+}
+
+.contact-section .field-group.full-width textarea {
+  background: #f9fafe;
+}
+
+.contact-section .field-group.full-width .read-only-field {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff);
+  font-style: italic;
+  color: #475569;
 }
 
 @media (max-width: 992px) {
@@ -530,22 +630,7 @@
     grid-template-columns: 1fr;
   }
   
-  .work-section, .information-section, .contact-section {
-    grid-column: 1;
-  }
-  
-  .work-section {
-    grid-row: 1;
-  }
-  
-  .information-section {
-    grid-row: 2;
-  }
-  
-  .contact-section {
-    grid-row: 3;
-  }
-  
+
   .save-button-container {
     grid-column: 1;
   }

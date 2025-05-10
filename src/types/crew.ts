@@ -17,6 +17,7 @@ export interface CrewUser {
     license_expiry_date: string;
     passport_expiry_date: string;
     flight_hours: number;
+    status: 'active' | 'inactive' | 'on_leave' | 'training';
     user: CrewUser;
   }
   
@@ -27,6 +28,7 @@ export interface CrewUser {
     license_expiry_date: string;
     passport_expiry_date: string;
     flight_hours?: number;
+    status?: 'active' | 'inactive' | 'on_leave' | 'training';
     user_id?: number | null;
   }
   
@@ -37,6 +39,7 @@ export interface CrewUser {
     license_expiry_date?: string;
     passport_expiry_date?: string;
     flight_hours?: number;
+    status?: 'active' | 'inactive' | 'on_leave' | 'training';
     user_id?: number | null;
   }
   

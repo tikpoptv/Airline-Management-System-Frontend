@@ -1,68 +1,75 @@
-// import { useParams, useNavigate } from 'react-router-dom';
-// import { useEffect, useState } from 'react';
-// import { Crew } from '../../../types/crew';
-// import { getCrewList } from '../../../services/crew/crewService';
-// import { getFlightsByCrewId } from '../../../services/flight/flightService';
-// import { Flight } from '../../../types/flight';
-// import CrewDetail from './CrewDetail';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Crew } from '../../../types/crew';
+import { Flight } from '../../../types/flight';
+import CrewProfileSection from './CrewProfileSection';
+import Loading from '../../../components/Loading';
+import { getCrewById } from '../../../services/crew/crewService';
+import { getFlightsByCrewId } from '../../../services/flight/flightService';
 
-// function CrewDetailPage() {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const [crew, setCrew] = useState<Crew | null>(null);
-//   const [flightList, setFlightList] = useState<Flight[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [sortOption, setSortOption] = useState<'date' | 'status'>('date');
-//   const [flightFilter, setFlightFilter] = useState<'all' | 'today'>('all');
-//   const [isEditMode, setIsEditMode] = useState(false);
+const CrewDetailPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [crew, setCrew] = useState<Crew | null>(null);
+  const [flightList, setFlightList] = useState<Flight[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingFlights, setLoadingFlights] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-//   useEffect(() => {
-//     fetchData();
-//   }, [id]);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
 
-//   const fetchData = async () => {
-//     try {
-//       const crewList = await getCrewList();
-//       const found = crewList.find((c: Crew) => c.crew_id.toString() === id);
-//       if (!found) {
-//         navigate('/admin/crew');
-//         return;
-//       }
-//       setCrew(found);
+      try {
+        setLoading(true);
+        const crewData = await getCrewById(parseInt(id));
+        setCrew(crewData);
+      } catch (err) {
+        setError('ไม่สามารถโหลดข้อมูลลูกเรือได้');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//       const flights = await getFlightsByCrewId(found.crew_id);
-//       setFlightList(flights);
-//     } catch (error) {
-//       console.error(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+    fetchData();
+  }, [id]);
 
-//   if (loading) return <p>Loading...</p>;
-//   if (!crew) return <p>Crew not found</p>;
+  useEffect(() => {
+    const fetchFlights = async () => {
+      if (!id) return;
 
-//   return (
-//     <>
-//       <div className="page-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-//         <button className="edit-button" onClick={() => setIsEditMode((prev) => !prev)}>
-//           {isEditMode ? 'Done' : 'Edit'}
-//         </button>
-//       </div>
+      try {
+        setLoadingFlights(true);
+        const flights = await getFlightsByCrewId(parseInt(id));
+        setFlightList(flights);
+      } catch (err) {
+        console.error('Error fetching flights:', err);
+      } finally {
+        setLoadingFlights(false);
+      }
+    };
 
-//       <CrewDetail
-//         crew={crew}
-//         flightList={flightList}
-//         loading={false}
-//         sortOption={sortOption}
-//         setSortOption={setSortOption}
-//         flightFilter={flightFilter}
-//         setFlightFilter={setFlightFilter}
-//         onBack={() => navigate('/admin/crew')}
-//         isEditMode={isEditMode}
-//       />
-//     </>
-//   );
-// }
+    fetchFlights();
+  }, [id]);
 
-// export default CrewDetailPage;
+  if (loading) {
+    return <Loading message="กำลังโหลดข้อมูลลูกเรือ..." />;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
+
+  if (!crew) {
+    return <div className="error-message">ไม่พบข้อมูลลูกเรือ</div>;
+  }
+
+  return (
+    <CrewProfileSection
+      crew={crew}
+      flightList={flightList}
+      loadingFlights={loadingFlights}
+    />
+  );
+};
+
+export default CrewDetailPage;

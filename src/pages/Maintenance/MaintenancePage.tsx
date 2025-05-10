@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useMaintenance } from './context/MaintenanceContext';
 import { useState, useRef, useEffect } from 'react';
-import './MaintenancePage.css';
+import './NewMaintenancePage.css';
 
 function MaintenancePage() {
   const navigate = useNavigate();
   const { logs } = useMaintenance();
 
+  const [search, setSearch] = useState('');
+  const [sortKey, setSortKey] = useState<null | 'id' | 'status' | 'date' | 'model'>(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const [sortKey, setSortKey] = useState<null | 'status' | 'date' | 'model'>(null);
-
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,38 +24,51 @@ function MaintenancePage() {
     };
   }, []);
 
-  const handleRowClick = (logId: number) => {
-    navigate(`/maintenance/${logId}`);
+  const handleRowClick = (id: string) => {
+    navigate(`/maintenance/${id}`);
   };
 
-  const handleAddNew = () => {
-    navigate('/maintenance/maintenance/create');
-  };
-
-  const handleSort = (key: 'status' | 'date' | 'model') => {
+  const handleSort = (key: 'id' | 'status' | 'date' | 'model') => {
     setSortKey(key);
     setIsSortOpen(false);
   };
 
-  const sortedLogs = [...logs].sort((a, b) => {
-    if (!sortKey) return 0;
-    const valA = a[sortKey].toLowerCase?.() || '';
-    const valB = b[sortKey].toLowerCase?.() || '';
-    return valA.localeCompare(valB);
-  });
+  const filteredLogs = logs
+    .filter(log =>
+      Object.values(log).some(value =>
+        value.toLowerCase().includes(search.toLowerCase())
+      )
+    )
+    .sort((a, b) => {
+      if (!sortKey) return 0;
+      const valA = a[sortKey]?.toString().toLowerCase() || '';
+      const valB = b[sortKey]?.toString().toLowerCase() || '';
+      return valA.localeCompare(valB);
+    });
 
   return (
-    <div className="maintenance-page">
-      <h2>Maintenance</h2>
+    <div className="maintenance-container">
+      <h2 className="page-title">Maintenance</h2>
 
-      <div className="maintenance-header">
-        <input type="text" placeholder="Search" className="search-input" />
-        <div className="maintenance-buttons">
-          <button className="btn add-btn" onClick={handleAddNew}>+ Add new</button>
+      <div className="top-bar">
+        <input
+          type="text"
+          className="search-box"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="button-group">
+          <button className="btn" onClick={() => navigate('/maintenance/maintenance/create')}>
+            + Add new
+          </button>
           <div className="sort-wrapper" ref={sortRef}>
-            <button className="btn sort-btn" onClick={() => setIsSortOpen(!isSortOpen)}>Sort by ▾</button>
+            <button className="btn sort-btn" onClick={() => setIsSortOpen(!isSortOpen)}>
+              Sort by ▾
+            </button>
             {isSortOpen && (
               <div className="sort-dropdown">
+                <div onClick={() => handleSort('id')}>Log_ID</div>
                 <div onClick={() => handleSort('status')}>Status</div>
                 <div onClick={() => handleSort('date')}>Date</div>
                 <div onClick={() => handleSort('model')}>Model</div>
@@ -65,8 +78,8 @@ function MaintenancePage() {
         </div>
       </div>
 
-      <div className="maintenance-table">
-        <table>
+      <div className="table-wrapper">
+        <table className="maintenance-table">
           <thead>
             <tr>
               <th>Status</th>
@@ -79,19 +92,19 @@ function MaintenancePage() {
             </tr>
           </thead>
           <tbody>
-            {sortedLogs.map((item) => (
-              <tr key={item.id} onClick={() => handleRowClick(Number(item.id))} style={{ cursor: 'pointer' }}>
+            {filteredLogs.map((log) => (
+              <tr key={log.id} onClick={() => handleRowClick(log.id)} className="table-row">
                 <td>
-                  <span className={getStatusColorClass(item.status)}>
-                    {item.status}
+                  <span className={`status ${log.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                    {log.status}
                   </span>
                 </td>
-                <td>{item.id}</td>
-                <td>{item.aircraftId}</td>
-                <td>{item.model}</td>
-                <td>{item.date}</td>
-                <td>{item.userId}</td>
-                <td>{item.userName}</td>
+                <td>{log.id}</td>
+                <td>{log.aircraftId}</td>
+                <td>{log.model}</td>
+                <td>{log.date}</td>
+                <td>{log.userId}</td>
+                <td>{log.userName}</td>
               </tr>
             ))}
           </tbody>
@@ -99,23 +112,6 @@ function MaintenancePage() {
       </div>
     </div>
   );
-}
-
-function getStatusColorClass(status: string): string {
-  const normalized = status.toLowerCase().trim().replace(/\s+/g, ' ');
-  switch (normalized) {
-    case 'completed':
-      return 'status-badge green';
-    case 'cancelled':
-    case 'canceled':
-      return 'status-badge red';
-    case 'pending':
-      return 'status-badge orange';
-    case 'in progress':
-      return 'status-badge yellow';
-    default:
-      return 'status-badge';
-  }
 }
 
 export default MaintenancePage;

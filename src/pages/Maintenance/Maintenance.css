@@ -6,12 +6,11 @@
   .sidebar {
     width: 300px;
     background-color: #183152;
-   height: 60rem; 
+    height: 60rem; 
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 1rem;
-    
   }
   
   .sidebar-header {
@@ -80,3 +79,30 @@
     padding: 2rem;
     overflow-y: auto;
   }
+
+  .status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status.completed {
+    background-color: #28a745;
+}
+
+.status.cancelled {
+    background-color: #c82333;
+}
+
+.status.pending {
+    background-color: #fd7e14;
+}
+
+.status.in-progress {
+    background-color: #ffc107;
+    color: white !important;
+}

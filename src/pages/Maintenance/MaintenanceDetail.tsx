@@ -54,49 +54,78 @@ function MaintenanceDetail() {
           <div className="header">
             {isEditing ? (
               <>
-                <button className="edit-button" onClick={handleSave}><FaSave /> Save</button>
-                <button className="edit-button cancel" onClick={handleCancel}><FaTimes /> Cancel</button>
+                <button className="edit-button" onClick={handleSave}>
+                  <FaSave /> Save
+                </button>
+                <button className="edit-button cancel" onClick={handleCancel}>
+                  <FaTimes /> Cancel
+                </button>
               </>
             ) : (
-              <button className="edit-button" onClick={() => setIsEditing(true)}><FaEdit /> Edit</button>
+              <button className="edit-button" onClick={() => setIsEditing(true)}>
+                <FaEdit /> Edit
+              </button>
             )}
-            <span className={`status-badge ${log.status.toLowerCase().replace(' ', '-')}`}>{log.status}</span>
+            <span className={`status ${log.status.toLowerCase().replace(' ', '-')}`}>{log.status}</span>
           </div>
 
           <div className="info-grid">
-            <div>
-              <strong>Aircraft ID:</strong><br />
-              {isEditing ? <input name="aircraftId" value={formData?.aircraftId} onChange={handleChange} /> : log.aircraftId}
+            <div className="detail-item">
+              <label>Aircraft ID:</label>
+              {isEditing ? (
+                <input name="aircraftId" value={formData?.aircraftId} onChange={handleChange} />
+              ) : (
+                <p>{log.aircraftId}</p>
+              )}
             </div>
-            <div>
-              <strong>Model:</strong><br />
-              {isEditing ? <input name="model" value={formData?.model} onChange={handleChange} /> : log.model}
+            <div className="detail-item">
+              <label>Model:</label>
+              {isEditing ? (
+                <input name="model" value={formData?.model} onChange={handleChange} />
+              ) : (
+                <p>{log.model}</p>
+              )}
             </div>
-            <div>
-              <strong>User ID:</strong><br />
-              {isEditing ? <input name="userId" value={formData?.userId} onChange={handleChange} /> : log.userId}
+            <div className="detail-item">
+              <label>User ID:</label>
+              {isEditing ? (
+                <input name="userId" value={formData?.userId} onChange={handleChange} />
+              ) : (
+                <p>{log.userId}</p>
+              )}
             </div>
-            <div>
-              <strong>User name:</strong><br />
-              {isEditing ? <input name="userName" value={formData?.userName} onChange={handleChange} /> : log.userName}
+            <div className="detail-item">
+              <label>User name:</label>
+              {isEditing ? (
+                <input name="userName" value={formData?.userName} onChange={handleChange} />
+              ) : (
+                <p>{log.userName}</p>
+              )}
             </div>
-            <div>
-              <strong>Location:</strong><br />
-              {isEditing ? <input name="location" value={formData?.location} onChange={handleChange} /> : log.location}
+            <div className="detail-item">
+              <label>Location:</label>
+              {isEditing ? (
+                <input name="location" value={formData?.location} onChange={handleChange} />
+              ) : (
+                <p>{log.location}</p>
+              )}
             </div>
-            <div>
-              <strong>Date of maintenance:</strong><br />
-              {isEditing ? <input type="date" name="date" value={formData?.date} onChange={handleChange} /> : log.date}
+            <div className="detail-item">
+              <label>Date of maintenance:</label>
+              {isEditing ? (
+                <input type="date" name="date" value={formData?.date} onChange={handleChange} />
+              ) : (
+                <p>{log.date}</p>
+              )}
             </div>
-          </div>
-
-          <div className="details-section">
-            <strong>Details:</strong>
-            {isEditing ? (
-              <textarea name="details" value={formData?.details} onChange={handleChange} />
-            ) : (
-              <p>{log.details}</p>
-            )}
+            <div className="detail-item full-width">
+              <label>Details:</label>
+              {isEditing ? (
+                <textarea name="details" value={formData?.details} onChange={handleChange} />
+              ) : (
+                <p>{log.details}</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

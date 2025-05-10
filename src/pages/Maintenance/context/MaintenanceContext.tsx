@@ -1,4 +1,3 @@
-// src/context/MaintenanceContext.tsx
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface MaintenanceLog {
@@ -16,7 +15,7 @@ export interface MaintenanceLog {
 interface MaintenanceContextType {
   logs: MaintenanceLog[];
   updateLog: (id: string, updated: Partial<MaintenanceLog>) => void;
-  addLog: (newLog: MaintenanceLog) => void; // ✅ Ajout
+  addLog: (newLog: MaintenanceLog) => void;
 }
 
 const MaintenanceContext = createContext<MaintenanceContextType | undefined>(undefined);

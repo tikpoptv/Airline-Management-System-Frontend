@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useMaintenance } from './context/MaintenanceContext';
+import { FaPlane, FaEdit } from 'react-icons/fa';
 import './CreateMaintenance.css';
 
 function CreateMaintenance() {
@@ -19,7 +20,7 @@ function CreateMaintenance() {
     details: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -34,41 +35,94 @@ function CreateMaintenance() {
   };
 
   return (
-    <div className="create-maintenance-container">
-      <div className="breadcrumb">Maintenance &gt; Log ID &gt; Edit</div>
-      <h2>Maintenance</h2>
+    <div className="maintenance-detail-container">
+      <div className="maintenance-detail-header">
+        <h2>Maintenance</h2>
+        <div className="header">
+          <button className="edit-button" onClick={handleSubmit}>
+            <FaEdit /> Edit
+          </button>
+          <span className={`status ${form.status.toLowerCase().replace(' ', '-')}`}>
+            {form.status}
+          </span>
+        </div>
+      </div>
 
-      <div className="form-card">
-        <div className="form-header">
-          <div className="form-title">Frame {form.id}</div>
-          <select name="status" value={form.status} onChange={handleChange} className="status-dropdown">
-            <option value="Pending">Pending</option>
-            <option value="In progress">In progress</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
+      <div className="detail-card">
+        <div className="left-section">
+          <FaPlane className="plane-icon" />
+          <div className="log-id">Log ID: {form.id}</div>
         </div>
 
-        <div className="form-grid">
-          <input name="aircraftId" placeholder="Aircraft_ID" value={form.aircraftId} onChange={handleChange} />
-          <input name="model" placeholder="Model" value={form.model} onChange={handleChange} />
-          <input name="userId" placeholder="User_ID" value={form.userId} onChange={handleChange} />
-          <input name="userName" placeholder="User_name" value={form.userName} onChange={handleChange} />
-          <input name="location" placeholder="Location" value={form.location} onChange={handleChange} />
-          <input name="date" type="date" placeholder="Date of maintenance" value={form.date} onChange={handleChange} />
-        </div>
+        <div className="right-section">
+          <div className="info-grid">
+            <div className="detail-item">
+              <label>Aircraft ID:</label>
+              <input
+                name="aircraftId"
+                value={form.aircraftId}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item">
+              <label>Model:</label>
+              <input
+                name="model"
+                value={form.model}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item">
+              <label>User ID:</label>
+              <input
+                name="userId"
+                value={form.userId}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item">
+              <label>User name:</label>
+              <input
+                name="userName"
+                value={form.userName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item">
+              <label>Location:</label>
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item">
+              <label>Date of maintenance:</label>
+              <input
+                type="date"
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="detail-item full-width">
+              <label>Details:</label>
+              <textarea
+                name="details"
+                value={form.details}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
 
-        <textarea
-          name="details"
-          placeholder="Details"
-          value={form.details}
-          onChange={handleChange}
-          className="details-textarea"
-        />
-
-        <div className="form-buttons">
-          <button className="done-btn" onClick={handleSubmit}>DONE</button>
-          <button className="exit-btn" onClick={handleCancel}>EXIT</button>
+          <div className="form-buttons">
+            <button className="done-btn" onClick={handleSubmit}>
+              DONE
+            </button>
+            <button className="exit-btn" onClick={handleCancel}>
+              EXIT
+            </button>
+          </div>
         </div>
       </div>
     </div>

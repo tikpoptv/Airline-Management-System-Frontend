@@ -3,7 +3,7 @@ import './Maintenance.css';
 import { FaWrench } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
-import Navbar from '../../components/Sidebar';
+import Navbar from '../../../components/Sidebar';
 
 
 

@@ -4,7 +4,10 @@ import './Dashboard.css';
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
-      <h2 className="username">Hi, Somsak_m</h2>
+      <div className="title-group">
+          <h4>dashboard</h4>
+          <h2 className="title">Hi, Somsak-m</h2>
+        </div>
 
       <div className="task-and-list-container">
         <div className="task-box">

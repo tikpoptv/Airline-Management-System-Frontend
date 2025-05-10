@@ -1,14 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useMaintenance } from './context/MaintenanceContext';
 import './CreateMaintenance.css';
 
 function CreateMaintenance() {
   const navigate = useNavigate();
-  const { logs, addLog } = useMaintenance();
+  // const { logs, addLog } = useMaintenance();
 
   const [form, setForm] = useState({
-    id: String(logs.length + 1),
+    // id: String(logs.length + 1),
     aircraftId: '',
     model: '',
     userId: '',
@@ -25,7 +24,7 @@ function CreateMaintenance() {
   };
 
   const handleSubmit = () => {
-    addLog(form);
+    // addLog(form);
     navigate('/maintenance/maintenance');
   };
 
@@ -40,7 +39,7 @@ function CreateMaintenance() {
 
       <div className="form-card">
         <div className="form-header">
-          <div className="form-title">Frame {form.id}</div>
+          {/* <div className="form-title">Frame {form.id}</div> */}
           <select name="status" value={form.status} onChange={handleChange} className="status-dropdown">
             <option value="Pending">Pending</option>
             <option value="In progress">In progress</option>

@@ -6,7 +6,7 @@ import AircraftPage from "./pages/Admin/AircraftPage/AircraftPage";
 import AircraftDetailPage from "./pages/Admin/AircraftPage/AircraftDetailPage";
 import NotFound from "./pages/NotFound/NotFound";
 import ApiStatusChecker from "./components/ApiStatusChecker";
-import Maintenance from "./pages/Maintenance/Maintenance";
+import Maintenance from "./pages/Maintenance/MaintenancePage/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
 import FlightPage from "./pages/Admin/FlightPage/FlightPage";
@@ -14,18 +14,17 @@ import RoutePage from "./pages/Admin/RoutePage/RoutePage";
 import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
 import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
 import EditRoutePage from "./pages/Admin/RoutePage/EditRoutePage";
-import Dashboard from './pages/Maintenance/Dashboard';
-import MaintenancePage from './pages/Maintenance/MaintenancePage';
-import MaintenanceDetail from './pages/Maintenance/MaintenanceDetail';
-import CreateMaintenance from './pages/Maintenance/CreateMaintenance';
+import Dashboard from './pages/Maintenance/DashboardPage/Dashboard';
+import MaintenancePage from './pages/Maintenance/MaintenancePage/MaintenancePage';
+import MaintenanceDetail from './pages/Maintenance/MaintenancePage/MaintenanceDetail';
+import CreateMaintenance from './pages/Maintenance/MaintenancePage/CreateMaintenance';
 
-import { MaintenanceProvider } from './pages/Maintenance/context/MaintenanceContext';
 
 function App() {
   return (
     <>
       <ApiStatusChecker />
-      <MaintenanceProvider>
+      
         <Router>
           <Routes>
             <Route path="/" element={<Login />} />
@@ -55,7 +54,7 @@ function App() {
             <Route
               path="/maintenance"
               element={
-                <ProtectedRoute allowedRole="admin">
+                <ProtectedRoute allowedRole="maintenance">
                   <Maintenance />
                 </ProtectedRoute>
               }
@@ -69,7 +68,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
-      </MaintenanceProvider>
+      
     </>
   );
 }

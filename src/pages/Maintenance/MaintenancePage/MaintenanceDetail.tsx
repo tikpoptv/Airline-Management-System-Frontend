@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaPlane, FaEdit, FaArrowLeft, FaSave, FaTimes } from 'react-icons/fa';
 import { useState } from 'react';
-import { useMaintenance } from './context/MaintenanceContext';
 import './MaintenanceDetail.css';
 
 function MaintenanceDetail() {

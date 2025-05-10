@@ -503,7 +503,11 @@ const MaintenancePage: React.FC = () => {
               <tbody>
                 {maintenances.length > 0 ? (
                   currentEntries.map((maintenance) => (
-                    <tr key={maintenance.log_id} onClick={() => console.log('Row clicked:', maintenance)}>
+                    <tr 
+                      key={maintenance.log_id} 
+                      onClick={() => navigate(`/admin/maintenance/${maintenance.log_id}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <td>
                         <span className={`maintenance-status ${maintenance.status.toLowerCase().replace(' ', '-')}`}>
                           {maintenance.status}

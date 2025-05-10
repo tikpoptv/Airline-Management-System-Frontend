@@ -282,7 +282,7 @@
   .read-only-field {
     width: 100%;
     padding: 8px 12px;
-    background: linear-gradient(to bottom, #ffffff, #f8fafc)!important;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
     border: 1px solid #e2e8f0;
     border-radius: 4px;
     color: #1e293b;
@@ -489,6 +489,13 @@
     color: #64748b;
     margin-bottom: 6px;
     font-weight: 500;
+  }
+
+/* background */
+.gray-background {
+    background-color: #817f7f !important; /* light gray */
+    padding: 8px;
+    border-radius: 4px;
   }
 
   @media (max-width: 768px) {

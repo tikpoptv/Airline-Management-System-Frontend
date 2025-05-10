@@ -17,6 +17,7 @@ const CrewProfileSection = ({
   originalData,
   isEditMode,
   handleChange,
+  
 }: Props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -29,12 +30,14 @@ const CrewProfileSection = ({
   const [firstName, setFirstName] = useState(() => editData.name.split(' ')[0] || '');
   const [lastName, setLastName] = useState(() => editData.name.split(' ').slice(1).join(' ') || '');
 
+  
   useEffect(() => {
     const fullName = `${firstName} ${lastName}`.trim();
     handleChange('name', fullName);
-  }, [firstName, handleChange, lastName]);
+  }, [firstName, lastName]);
 
   const navigate = useNavigate();
+  {console.log("Edit mode:", isEditMode)}
 
   const triggerToast = (message: string, type: 'success' | 'error') => {
     setToastMessage(message);
@@ -122,8 +125,10 @@ const CrewProfileSection = ({
             <div className="field-group">
               <label>Crew ID</label>
               <div className="input-with-icon">
-                <div className="read-only-field">{editData.crew_id}</div>
-                {/* {isEditMode && (
+              <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.crew_id}
+                </div>
+                                {/* {isEditMode && (
                   <button className="delete-button" onClick={() => setShowDeleteConfirm(true)}>
                     <FaTrash />
                   </button>
@@ -199,7 +204,9 @@ const CrewProfileSection = ({
               
               <div className="field-group">
                 <label>License expire date</label>
-                <div className="read-only-field">{formatDate(editData.license_expiry_date)}</div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {formatDate(editData.license_expiry_date)}
+                    </div>
               </div>
             
             </div>
@@ -207,11 +214,15 @@ const CrewProfileSection = ({
             <div className="field-row">
               <div className="field-group">
                 <label>Passport number</label>
-                    <div className="read-only-field">{editData.passport_number}</div>              
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {editData.passport_number}
+                    </div>
                 </div>
               <div className="field-group">
                 <label>Passport expire date</label>
-                <div className="read-only-field">{formatDate(editData.passport_expiry_date)}</div>               
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                    {formatDate(editData.passport_expiry_date)}
+                    </div>               
              </div>
             </div>
           </div>
@@ -222,18 +233,24 @@ const CrewProfileSection = ({
             <div className="field-row">
               <div className="field-group">
                 <label>User ID</label>
-                <div className="read-only-field">{editData.user?.user_id || 'N/A'}</div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.user_id || 'N/A'}
+                </div>
               </div>
               
               <div className="field-group">
                 <label>Username</label>
-                <div className="read-only-field">{editData.user?.username || 'N/A'}</div>
+                <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.username || 'N/A'}
+                </div>
               </div>
             </div>
 
             <div className="field-group full-width">
               <label>Email</label>
-              <div className="read-only-field">{editData.user?.email || 'N/A'}</div>
+              <div className={`read-only-field ${isEditMode ? 'gray-background' : ''}`}>
+                {editData.user?.email || 'N/A'}
+                </div>
             </div>
           </div>
 
@@ -326,5 +343,6 @@ const CrewProfileSection = ({
     </div>
   );
 };
+
 
 export default CrewProfileSection;

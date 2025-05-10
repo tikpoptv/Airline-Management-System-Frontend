@@ -23,7 +23,7 @@ const CrewList = ({
   loading,
   selectedCrewIds,
   setSelectedCrewIds,
-  onDelete,
+//   onDelete,
 }: Props) => {
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [filterCrewId, setFilterCrewId] = useState('');
@@ -67,7 +67,7 @@ const CrewList = ({
 
           <div className="button-group">
             {isEditing && <button className="add-button">Add New</button>}
-            {isEditing && <button className="delete-button" onClick={onDelete}>Delete</button>}
+            {/* {isEditing && <button className="delete-button" onClick={onDelete}>Delete</button>} */}
             <button
               className={`edit-button ${isEditing ? 'done-button' : ''}`}
               onClick={() => setIsEditing(!isEditing)}

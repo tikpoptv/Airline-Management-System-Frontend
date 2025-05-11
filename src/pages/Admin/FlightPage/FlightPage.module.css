@@ -486,6 +486,7 @@ tr:last-child td {
   border-bottom: none;
 }
 
+/* Status Badges */
 .status-badge {
   display: inline-block;
   min-width: 110px;
@@ -493,45 +494,54 @@ tr:last-child td {
   box-sizing: border-box;
   text-align: center;
   margin: auto;
-  box-shadow: 0 2px 8px 0 rgba(59,130,246,0.08);
   border-radius: 12px;
-  background: linear-gradient(90deg, #f0fdf4 60%, #d1fae5 100%);
-  transition: box-shadow 0.18s, transform 0.18s;
   font-size: 13px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-width: 1px;
+  font-weight: 700;
+  padding: 6px 12px;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.status-badge.scheduled {
-  background: linear-gradient(90deg, #dbeafe 60%, #bfdbfe 100%);
-  color: #2563eb;
-  border: 1.5px solid #60a5fa;
-}
-
-.status-badge.boarding {
-  background: linear-gradient(90deg, #f0fdf4 60%, #bbf7d0 100%);
+/* Boarding - สีเขียว */
+.status-badge[class*="boarding"] {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
   color: #15803d;
   border: 1.5px solid #4ade80;
 }
 
-.status-badge.delayed {
-  background: linear-gradient(90deg, #fef9c3 60%, #fde68a 100%);
+/* Scheduled - สีฟ้า */
+.status-badge[class*="scheduled"] {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1d4ed8;
+  border: 1.5px solid #60a5fa;
+}
+
+/* Delayed - สีเหลือง */
+.status-badge[class*="delayed"] {
+  background: linear-gradient(135deg, #fef9c3 0%, #fde68a 100%);
   color: #b45309;
   border: 1.5px solid #fbbf24;
 }
 
-.status-badge.cancelled {
-  background: linear-gradient(90deg, #fee2e2 60%, #fecaca 100%);
+/* Cancelled - สีแดง */
+.status-badge[class*="cancelled"] {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
   color: #b91c1c;
-  border: 1.5px solid #fca5a5;
+  border: 1.5px solid #f87171;
 }
 
+/* Completed - สีม่วง */
+.status-badge[class*="completed"] {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  color: #3730a3;
+  border: 1.5px solid #818cf8;
+}
+
+/* เพิ่ม hover effect */
 .status-badge:hover {
-  box-shadow: 0 6px 24px 0 rgba(59,130,246,0.13);
-  transform: scale(1.04);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 /* เน้นคอลัมน์สำคัญ */

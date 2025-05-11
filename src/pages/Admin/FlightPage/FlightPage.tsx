@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
-import './FlightPage.css';
+import styles from './FlightPage.module.css';
 import { FaSearch, FaPlus, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllFlights } from '../../../services/flight/flightService';
@@ -231,28 +231,28 @@ const FlightPage: React.FC = () => {
   };
 
   return (
-    <div className="flight-page">
-      <div className="breadcrumb">
+    <div className={styles['flight-page']}>
+      <div className={styles.breadcrumb}>
         <Link to="/admin">Dashboard</Link>
-        <FaChevronRight className="breadcrumb-separator" />
+        <FaChevronRight className={styles['breadcrumb-separator']} />
         <span>Flight</span>
       </div>
 
-      <div className="content-wrapper">
-        <div className="page-header">
+      <div className={styles['content-wrapper']}>
+        <div className={styles['page-header']}>
           <h2>Flight</h2>
         </div>
 
-        <form className="search-section" onSubmit={handleSubmit} autoComplete="off">
+        <form className={styles['search-section']} onSubmit={handleSubmit} autoComplete="off">
           <h3>Search Flights</h3>
           
-          <div className="search-grid">
-            <div className="search-row">
-              <div className="form-group">
+          <div className={styles['search-grid']}>
+            <div className={styles['search-row']}>
+              <div className={styles['form-group']}>
                 <label>Route Information</label>
-                <div className="route-inputs">
-                  <div className="input-with-icon" style={{ position: 'relative' }}>
-                    <FaPlane className="input-icon" />
+                <div className={styles['route-inputs']}>
+                  <div className={styles['input-with-icon']} style={{ position: 'relative' }}>
+                    <FaPlane className={styles['input-icon']} />
                     <input
                       name="from"
                       type="text"
@@ -272,8 +272,8 @@ const FlightPage: React.FC = () => {
                       </ul>
                     )}
                   </div>
-                  <div className="input-with-icon" style={{ position: 'relative' }}>
-                    <FaPlane className="input-icon" />
+                  <div className={styles['input-with-icon']} style={{ position: 'relative' }}>
+                    <FaPlane className={styles['input-icon']} />
                     <input
                       name="to"
                       type="text"
@@ -297,12 +297,12 @@ const FlightPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="search-row">
-              <div className="form-group">
+            <div className={styles['search-row']}>
+              <div className={styles['form-group']}>
                 <label>Flight Details</label>
-                <div className="flight-details-inputs">
-                  <div className="input-with-icon">
-                    <FaCalendarAlt className="input-icon" />
+                <div className={styles['flight-details-inputs']}>
+                  <div className={styles['input-with-icon']}>
+                    <FaCalendarAlt className={styles['input-icon']} />
                     <input
                       name="date"
                       type="date"
@@ -311,7 +311,7 @@ const FlightPage: React.FC = () => {
                       onFocus={e => e.target.showPicker && e.target.showPicker()}
                     />
                   </div>
-                  <div className="input-with-icon" style={{ position: 'relative' }}>
+                  <div className={styles['input-with-icon']} style={{ position: 'relative' }}>
                     <input
                       name="flightNumber"
                       type="text"
@@ -345,12 +345,12 @@ const FlightPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="search-row" style={{ justifyContent: 'flex-end' }}>
-              <button type="submit" className="search-button">
+            <div className={styles['search-row']} style={{ justifyContent: 'flex-end' }}>
+              <button type="submit" className={styles['search-button']}>
                 <FaSearch /> Search Flights
               </button>
               {filteredFlights !== null && (
-                <button type="button" className="search-button" style={{ marginLeft: 8, background: '#f3f6fa', color: '#2563eb', border: '1.5px solid #e5eaf2' }} onClick={handleReset}>
+                <button type="button" className={styles['search-button']} style={{ marginLeft: 8, background: '#f3f6fa', color: '#2563eb', border: '1.5px solid #e5eaf2' }} onClick={handleReset}>
                   Clear
                 </button>
               )}
@@ -358,15 +358,15 @@ const FlightPage: React.FC = () => {
           </div>
         </form>
 
-        <div className="table-actions">
-          <button className="add-new-button">
+        <div className={styles['table-actions']}>
+          <button className={styles['add-new-button']}>
             <FaPlus /> Add new
           </button>
-          <div className="sortby-dropdown-wrapper" style={{ position: 'relative' }}>
+          <div className={styles['sortby-dropdown-wrapper']} style={{ position: 'relative' }}>
             <button
               ref={sortBtnRef}
               type="button"
-              className="sortby-btn"
+              className={styles['sortby-btn']}
               onClick={() => setSortDropdownOpen(open => !open)}
               style={{ minWidth: 160, height: 38, borderRadius: 10, border: '1.5px solid #e5eaf2', fontWeight: 600, color: '#2563eb', background: '#fff', marginLeft: 8, marginRight: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 18px', cursor: 'pointer', boxShadow: sortDropdownOpen ? '0 2px 8px 0 rgba(59,130,246,0.10)' : 'none' }}
             >
@@ -374,7 +374,7 @@ const FlightPage: React.FC = () => {
               <span style={{ marginLeft: 8, fontSize: 16, transition: 'transform 0.18s', transform: sortDropdownOpen ? 'rotate(180deg)' : 'none' }}>▼</span>
             </button>
             {sortDropdownOpen && (
-              <ul className="sortby-dropdown-menu" style={{ position: 'absolute', top: 44, left: 0, right: 0, zIndex: 20, background: '#fff', border: '1.5px solid #e5eaf2', borderRadius: 10, boxShadow: '0 4px 16px 0 rgba(59,130,246,0.07)', padding: 0, margin: 0, listStyle: 'none', overflow: 'hidden' }}>
+              <ul className={styles['sortby-dropdown-menu']} style={{ position: 'absolute', top: 44, left: 0, right: 0, zIndex: 20, background: '#fff', border: '1.5px solid #e5eaf2', borderRadius: 10, boxShadow: '0 4px 16px 0 rgba(59,130,246,0.07)', padding: 0, margin: 0, listStyle: 'none', overflow: 'hidden' }}>
                 {sortOptions.map(opt => (
                   <li
                     key={opt.value}
@@ -391,18 +391,18 @@ const FlightPage: React.FC = () => {
               </ul>
             )}
           </div>
-          <button className="edit-button">
+          <button className={styles['edit-button']}>
             <FaEdit /> Edit
           </button>
         </div>
 
-        <div className="table-container">
+        <div className={styles['table-container']}>
           {loading ? (
-            <div className="flight-table-empty">Loading...</div>
+            <div className={styles['flight-table-empty']}>Loading...</div>
           ) : error ? (
-            <div className="flight-table-empty">{error}</div>
+            <div className={styles['flight-table-empty']}>{error}</div>
           ) : filteredFlights !== null && pagedFlights.length === 0 ? (
-            <div className="flight-table-empty">No matching records found.</div>
+            <div className={styles['flight-table-empty']}>No matching records found.</div>
           ) : (
             <table>
               <thead>
@@ -410,12 +410,12 @@ const FlightPage: React.FC = () => {
                   <th>Status</th>
                   <th>Flight ID</th>
                   <th>Flight_number</th>
-                  <th className="aircraft">Aircraft</th>
-                  <th className="route">Route</th>
+                  <th className={styles['aircraft']}>Aircraft</th>
+                  <th className={styles['route']}>Route</th>
                   <th>Date</th>
                   <th>Depart</th>
                   <th>Arrival</th>
-                  <th className="remark">Remark</th>
+                  <th className={styles['remark']}>Remark</th>
                 </tr>
               </thead>
               <tbody>
@@ -423,15 +423,15 @@ const FlightPage: React.FC = () => {
                   <tr 
                     key={flight.flight_id}
                     onClick={() => handleFlightClick(flight.flight_id)}
-                    className="flight-row"
+                    className={styles['flight-row']}
                   >
                     <td>
-                      <span className={`status-badge ${flight.flight_status?.toLowerCase()}`}>{flight.flight_status}</span>
+                      <span className={`${styles['status-badge']} ${flight.flight_status?.toLowerCase()}`}>{flight.flight_status}</span>
                     </td>
                     <td>{flight.flight_id}</td>
                     <td>{flight.flight_number}</td>
-                    <td className="aircraft">{flight.aircraft?.model ?? '-'}</td>
-                    <td className="route">
+                    <td className={styles['aircraft']}>{flight.aircraft?.model ?? '-'}</td>
+                    <td className={styles['route']}>
                       {flight.route?.from_airport?.iata_code && flight.route?.to_airport?.iata_code
                         ? `${flight.route.from_airport.iata_code} → ${flight.route.to_airport.iata_code}`
                         : '-'}
@@ -440,7 +440,7 @@ const FlightPage: React.FC = () => {
                     <td>{flight.departure_time ? new Date(flight.departure_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
                     <td>{flight.arrival_time ? new Date(flight.arrival_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
                     <td
-                      className="remark"
+                      className={styles['remark']}
                       data-hastext={!!flight.cancellation_reason && flight.cancellation_reason !== '-' ? 'true' : undefined}
                       title={flight.cancellation_reason && flight.cancellation_reason !== '-' ? flight.cancellation_reason : undefined}
                     >
@@ -455,8 +455,8 @@ const FlightPage: React.FC = () => {
               </tbody>
             </table>
           )}
-          <div className="table-pagination">
-            <div className="page-size">
+          <div className={styles['table-pagination']}>
+            <div className={styles['page-size']}>
               Show
               <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }}>
                 <option value={10}>10</option>
@@ -466,9 +466,9 @@ const FlightPage: React.FC = () => {
               </select>
               entries
             </div>
-            <div className="page-controls">
+            <div className={styles['page-controls']}>
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
-              <span className="page-info">Page {page} / {totalPages || 1}</span>
+              <span className={styles['page-info']}>Page {page} / {totalPages || 1}</span>
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages || totalPages === 0}>Next</button>
             </div>
           </div>

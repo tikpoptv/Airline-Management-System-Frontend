@@ -35,6 +35,15 @@ export interface UpdateFlightAdvancedData {
   arrival_time?: string;
 }
 
+export interface CreateFlightData {
+  flight_number: string;
+  aircraft_id: number;
+  route_id: number;
+  departure_time: string;
+  arrival_time: string;
+  flight_status: string;
+}
+
 export interface AssignCrewRequest {
   crew_id: number;
   role_in_flight: string;
@@ -88,6 +97,11 @@ export const flightService = {
   // Get detailed information about a specific passenger
   getPassengerDetails: (passengerId: number): Promise<PassengerDetail> => {
     return api.get(`/api/passengers/${passengerId}`);
+  },
+
+  // Create a new flight
+  createFlight: async (data: CreateFlightData): Promise<Flight> => {
+    return api.post('/api/flights', data);
   },
 
   // Assign crew member to a flight

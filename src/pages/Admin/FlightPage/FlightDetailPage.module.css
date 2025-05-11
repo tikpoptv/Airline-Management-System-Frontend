@@ -325,6 +325,24 @@
   background-color: #f8fafc;
 }
 
+.infoGroup.cancellationReason {
+  background-color: #fef2f2;
+  border-top: 1px solid #fee2e2;
+  grid-column: 1 / -1;
+}
+
+.infoGroup.cancellationReason:hover {
+  background-color: #fee2e2;
+}
+
+.infoGroup.cancellationReason .infoLabel {
+  color: #b91c1c;
+}
+
+.infoGroup.cancellationReason .infoValue {
+  color: #991b1b;
+}
+
 .infoLabel {
   font-size: 13px;
   color: #64748b;
@@ -1543,4 +1561,11 @@
 
 .tableContainer th:last-child {
   text-align: center;
+}
+
+.noDataMessage {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
 } 

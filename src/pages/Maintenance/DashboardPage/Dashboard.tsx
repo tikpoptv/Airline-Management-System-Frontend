@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { MaintenanceLogStatus, MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogs } from '../../../services/maintenance/maintenanceService';
-import './Dashboard.css';
+import styles from './Dashboard.module.css';
 
 interface Aircraft {
   id: string;
@@ -79,56 +79,56 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="title-group">
+    <div className={styles.dashboardContainer}>
+      <div className={styles.titleGroup}>
         <h4>dashboard</h4>
-        <h2 className="title">Hi, Maintenance</h2>
+        <h2 className={styles.title}>Hi, Maintenance</h2>
       </div>
 
-      <div className="task-and-list-container">
-        <div className="task-box">
+      <div className={styles.taskAndListContainer}>
+        <div className={styles.taskBox}>
           <p>Today's Tasks</p>
-          <div className="task-count">{todayTasks}</div>
+          <div className={styles.taskCount}>{todayTasks}</div>
         </div>
 
-        <div className="aircraft-list">
+        <div className={styles.aircraftList}>
           <p>Aircraft List</p>
           {aircraftList.map((aircraft, index) => (
-            <div key={index} className="aircraft-id">
-              <div className="aircraft-info">
+            <div key={index} className={styles.aircraftId}>
+              <div className={styles.aircraftInfo}>
                 <span 
-                  className={`aircraft-status ${getStatusClass(aircraft.status)}`}
+                  className={`${styles.aircraftStatus} ${styles[`aircraftStatus${aircraft.status.replace(/\s+/g, '')}`]}`}
                 >
                   {aircraft.status}
                 </span>
-                <span className="aircraft-id-text">{aircraft.id}</span>
+                <span className={styles.aircraftIdText}>{aircraft.id}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="history-section">
-        <div className="history-header">
+      <div className={styles.historySection}>
+        <div className={styles.historyHeader}>
           <h3>History</h3>
-          <div className="history-actions">
+          <div className={styles.historyActions}>
             <button
-              className="search-popup-button"
+              className={styles.searchPopupButton}
               onClick={() => setShowSearchModal(true)}
               title="Advanced Search"
             >
               <FaSearch />
             </button>
-            <button className="add-button">+ Add new</button>
+            <button className={styles.addButton}>+ Add new</button>
           </div>
         </div>
 
         {loading ? (
-          <div className="loading-message">Loading maintenance logs...</div>
+          <div className={styles.loadingMessage}>Loading maintenance logs...</div>
         ) : error ? (
-          <div className="error-message">{error}</div>
+          <div className={styles.errorMessage}>{error}</div>
         ) : (
-          <table className="history-table">
+          <table className={styles.historyTable}>
             <thead>
               <tr>
                 <th>Status</th>
@@ -143,7 +143,7 @@ const Dashboard = () => {
             <tbody>
               {maintenanceLogs.map((log) => (
                 <tr key={log.log_id}>
-                  <td className={`status ${getStatusClass(log.status)}`}>
+                  <td className={`${styles.status} ${styles[`status${log.status.replace(' ', '')}`]}`}>
                     {log.status}
                   </td>
                   <td>{log.log_id}</td>
@@ -159,13 +159,12 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Search Modal */}
       {showSearchModal && (
-        <div className="search-modal-backdrop">
-          <div className="search-modal">
+        <div className={styles.searchModalBackdrop}>
+          <div className={styles.searchModal}>
             <h3>Advanced Search</h3>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Log ID</label>
               <input
                 type="text"
@@ -175,7 +174,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Aircraft ID</label>
               <input
                 type="text"
@@ -185,7 +184,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Status</label>
               <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
                 <option value="">All Status</option>
@@ -196,7 +195,7 @@ const Dashboard = () => {
               </select>
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Date</label>
               <input
                 type="date"
@@ -205,7 +204,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>User ID</label>
               <input
                 type="text"
@@ -215,7 +214,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>User Name</label>
               <input
                 type="text"
@@ -225,12 +224,12 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="modal-actions">
-              <button className="primary-button" onClick={() => setShowSearchModal(false)}>
+            <div className={styles.modalActions}>
+              <button className={styles.primaryButton} onClick={() => setShowSearchModal(false)}>
                 Apply Filter
               </button>
               <button
-                className="secondary-button"
+                className={styles.secondaryButton}
                 onClick={() => {
                   setFilterLogId('');
                   setFilterAircraftId('');

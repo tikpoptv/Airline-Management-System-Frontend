@@ -1,0 +1,50 @@
+/* GlobeMap.css */
+.globe-map-container {
+  width: 100%;
+  height: 100%;
+  min-height: 700px;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  margin: 20px 0;
+}
+
+/* Map elements styling */
+.globe-map-container > div,
+.globe-map-container .mapboxgl-map,
+.globe-map-container .deckgl-map,
+.globe-map-container canvas,
+.globe-map-container img,
+.globe-map-container .mapboxgl-canvas {
+  border-radius: inherit;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Custom map style overrides */
+.globe-map-container .mapboxgl-map {
+  background: transparent !important;
+}
+
+.globe-map-container .mapboxgl-canvas {
+  filter: contrast(1.1) saturate(1.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .globe-map-container {
+    min-height: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .globe-map-container {
+    min-height: 450px;
+    margin: 15px 0;
+    border-radius: 16px;
+  }
+} 

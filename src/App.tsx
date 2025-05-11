@@ -10,15 +10,26 @@ import Maintenance from "./pages/Maintenance/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
 import FlightPage from "./pages/Admin/FlightPage/FlightPage";
+import FlightDetailPage from "./pages/Admin/FlightPage/FlightDetailPage";
 import RoutePage from "./pages/Admin/RoutePage/RoutePage";
-// import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
-// import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
-// import EditRoutePage from "./pages/Admin/RoutePage/EditRoutePage";
 import Dashboard from './pages/Maintenance/DashboardPage/Dashboard';
-import MaintenancePage from './pages/Maintenance/MaintenancePage/MaintenancePage';
-import MaintenanceDetailPage from './pages/Maintenance/MaintenancePage/MaintenanceDetailPage';
-import CreateMaintenance from './pages/Maintenance/MaintenancePage/CreateMaintenance';
-
+import MaintenanceuserPage from './pages/Maintenance/MaintenancePage/MaintenancePage';
+import MaintenanceuserDetailPage from './pages/Maintenance/MaintenancePage/MaintenanceDetailPage';
+import CreateMaintenanceuser from './pages/Maintenance/MaintenancePage/CreateMaintenance';
+import RouteDetailPage from "./pages/Admin/RoutePage/RouteDetailPage";
+import AddRoutePage from "./pages/Admin/RoutePage/AddRoutePage";
+import EditRoutePage from "./pages/Admin/RoutePage/EditRoutePage";
+import AirportPage from "./pages/Admin/AirportPage/AirportPage";
+import AirportDetailPage from "./pages/Admin/AirportPage/AirportDetailPage";
+import EditAirportPage from './pages/Admin/AirportPage/EditAirportPage';
+import AddAirportPage from './pages/Admin/AirportPage/AddAirportPage';
+import MaintenancePage from "./pages/Admin/MaintenancePage/MaintenancePage";
+import MaintenanceDetail from "./pages/Admin/MaintenancePage/MaintenanceDetail";
+import EditMaintenance from "./pages/Admin/MaintenancePage/EditMaintenance";
+import CreateMaintenance from "./pages/Admin/MaintenancePage/CreateMaintenance";
+import CrewDetailPage from './pages/Admin/CrewPage/CrewDetailPage';
+import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
+import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
 
 function App() {
   return (
@@ -40,15 +51,26 @@ function App() {
             {/* Nested Pages inside /admin */}
             <Route index element={<div>Welcome to Admin Dashboard</div>} />
             <Route path="flights" element={<FlightPage />} />
+            <Route path="flights/:id" element={<FlightDetailPage />} />
             <Route path="aircrafts" element={<AircraftPage />} />
             <Route path="aircrafts/:id" element={<AircraftDetailPage />} />
             <Route path="crew" element={<CrewPage />} />
-            <Route path="crew/:id" element={<AircraftDetailPage />} />
+            <Route path="crew/:id" element={<CrewDetailPage />} />
+            <Route path="crew/edit/:id" element={<EditCrewPage />} />
+            <Route path="crew/create" element={<CreateCrewPage />} />
             <Route path="aircraft/create" element={<CreateAircraftPage />} />
             <Route path="pathways/routes" element={<RoutePage />} />
-            {/* <Route path="pathways/routes/detail/:id" element={<RouteDetailPage />} />
+            <Route path="pathways/routes/detail/:id" element={<RouteDetailPage />} />
             <Route path="pathways/routes/add" element={<AddRoutePage />} />
-            <Route path="pathways/routes/edit/:id" element={<EditRoutePage />} /> */}
+            <Route path="pathways/routes/edit/:id" element={<EditRoutePage />} />
+            <Route path="pathways/airport" element={<AirportPage />} />
+            <Route path="pathways/airport/detail/:id" element={<AirportDetailPage />} />
+            <Route path="pathways/airport/edit/:id" element={<EditAirportPage />} />
+            <Route path="pathways/airport/add" element={<AddAirportPage />} />
+            <Route path="maintenance" element={<MaintenancePage />} />
+            <Route path="maintenance/add" element={<CreateMaintenance />} />
+            <Route path="maintenance/:id" element={<MaintenanceDetail />} />
+            <Route path="maintenance/edit/:id" element={<EditMaintenance />} />
           </Route>
 
             <Route
@@ -60,9 +82,9 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="maintenance" element={<MaintenancePage />} />
-              <Route path="maintenance/create" element={<CreateMaintenance />} />
-              <Route path="maintenance/detail/:id" element={<MaintenanceDetailPage />} />
+              <Route path="maintenance" element={<MaintenanceuserPage />} />
+              <Route path="maintenance/create" element={<CreateMaintenanceuser />} />
+              <Route path="maintenance/detail/:id" element={<MaintenanceuserDetailPage />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

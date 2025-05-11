@@ -1,6 +1,26 @@
 // src/services/flight/flightService.ts
 import { api } from '../../api';
-import { Flight } from '../../types/flight';
+import { Flight, CrewMember, Passenger } from '../../pages/Admin/FlightPage/types';
+
+interface Airport {
+  iata_code: string;
+  name: string;
+  city: string;
+  country: string;
+}
+
+export interface PassengerDetail extends Passenger {
+  flight_details: {
+    flight_number: string;
+    departure_time: string;
+    arrival_time: string;
+    route: {
+      from_airport: Airport;
+      to_airport: Airport;
+    };
+  };
+  special_requests?: string;
+}
 
 export const getFlightsByAircraftId = async (aircraftId: number): Promise<Flight[]> => {
   return api.get(`/api/aircrafts/${aircraftId}/flights`);
@@ -12,4 +32,26 @@ export const getFlightsByCrewId = async (crewId: number): Promise<Flight[]> => {
 
 export const getAllFlights = async () => {
   return api.get('/api/flights');
+};
+
+export const flightService = {
+  // Get flight details including route and aircraft info
+  getFlightDetails: (flightId: number): Promise<Flight> => {
+    return api.get(`/api/flights/${flightId}`);
+  },
+
+  // Get crew members assigned to a flight
+  getFlightCrew: (flightId: number): Promise<CrewMember[]> => {
+    return api.get(`/api/flights/${flightId}/crew`);
+  },
+
+  // Get passengers on a flight
+  getFlightPassengers: (flightId: number): Promise<Passenger[]> => {
+    return api.get(`/api/flights/${flightId}/passengers`);
+  },
+
+  // Get detailed information about a specific passenger
+  getPassengerDetails: (passengerId: number): Promise<PassengerDetail> => {
+    return api.get(`/api/passengers/${passengerId}`);
+  }
 };

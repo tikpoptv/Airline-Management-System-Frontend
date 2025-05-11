@@ -17,7 +17,6 @@ interface Props {
   isEditMode: boolean;
 }
 
-
 const CrewDetail = ({
   crew,
   flightList,
@@ -30,20 +29,13 @@ const CrewDetail = ({
   isEditMode,
 }: Props) => {
   const [editData, setEditData] = useState<Crew>(crew);
-  const [originalData, setOriginalData] = useState<Crew>(crew);
-  
 
   useEffect(() => {
-    setEditData(crew);
-    setOriginalData(crew);
+    if (crew) {
+      setEditData(crew);
+    }
   }, [crew]);
-  console.log('Flight List:', flightList);
-  const handleChange = <K extends keyof Crew>(field: K, value: Crew[K]) => {
-    setEditData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+
   return (
     <div className="crew-detail">
       <div className="page-header-row">
@@ -62,12 +54,7 @@ const CrewDetail = ({
 
       <h2 className="section-title">Crew Profile</h2>
 
-      <CrewProfileSection
-        editData={editData}
-        originalData={originalData}
-        isEditMode={isEditMode}
-        handleChange={handleChange}
-      />
+      <CrewProfileSection crew={editData} />
 
       <FlightSchedule
         flightList={flightList}
@@ -78,7 +65,6 @@ const CrewDetail = ({
         setFlightFilter={setFlightFilter}
       />
     </div>
-    
   );
 };
 

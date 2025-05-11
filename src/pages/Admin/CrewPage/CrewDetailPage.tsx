@@ -1,68 +1,59 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Crew } from '../../../types/crew';
-import { getCrewList } from '../../../services/crew/crewService';
-import { getFlightsByCrewId } from '../../../services/flight/flightService';
-import { Flight } from '../../../types/flight';
-import CrewDetail from './CrewDetail';
+import CrewProfileSection from './CrewProfileSection';
+import Loading from '../../../components/Loading';
+import { getCrewById } from '../../../services/crew/crewService';
 
-function CrewDetailPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const CrewDetailPage = () => {
+  const { id } = useParams<{ id: string }>();
   const [crew, setCrew] = useState<Crew | null>(null);
-  const [flightList, setFlightList] = useState<Flight[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sortOption, setSortOption] = useState<'date' | 'status'>('date');
-  const [flightFilter, setFlightFilter] = useState<'all' | 'today'>('all');
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (!id) {
+        setError('Crew ID is required');
+        setLoading(false);
+        return;
+      }
+
+      const crewId = parseInt(id);
+      if (isNaN(crewId)) {
+        setError('Invalid Crew ID');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const crewData = await getCrewById(crewId);
+        setCrew(crewData);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, [id]);
 
-  const fetchData = async () => {
-    try {
-      const crewList = await getCrewList();
-      const found = crewList.find((c: Crew) => c.crew_id.toString() === id);
-      if (!found) {
-        navigate('/admin/crew');
-        return;
-      }
-      setCrew(found);
+  if (loading) {
+    return <Loading message="Loading crew data..." />;
+  }
 
-      const flights = await getFlightsByCrewId(found.crew_id);
-      setFlightList(flights);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
-  if (loading) return <p>Loading...</p>;
-  if (!crew) return <p>Crew not found</p>;
+  if (!crew) {
+    return <div className="error-message">Crew not found</div>;
+  }
 
-  return (
-    <>
-      <div className="page-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <button className="edit-button" onClick={() => setIsEditMode((prev) => !prev)}>
-          {isEditMode ? 'Done' : 'Edit'}
-        </button>
-      </div>
-
-      <CrewDetail
-        crew={crew}
-        flightList={flightList}
-        loading={false}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        flightFilter={flightFilter}
-        setFlightFilter={setFlightFilter}
-        onBack={() => navigate('/admin/crew')}
-        isEditMode={isEditMode}
-      />
-    </>
-  );
-}
+  return <CrewProfileSection crew={crew} />;
+};
 
 export default CrewDetailPage;

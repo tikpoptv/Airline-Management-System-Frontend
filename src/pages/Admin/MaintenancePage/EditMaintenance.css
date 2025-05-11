@@ -1,0 +1,238 @@
+.maintenance-detail-container {
+  padding: 24px;
+  margin: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.maintenance-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.maintenance-detail-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.back-button,
+.save-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.back-button {
+  background-color: #f5f5f5;
+  color: #595959;
+}
+
+.back-button:hover {
+  background-color: #e8e8e8;
+}
+
+.save-button {
+  background-color: #1677ff;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #4096ff;
+}
+
+.save-button:disabled {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.maintenance-detail-card {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.maintenance-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.detail-section {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+
+.detail-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.detail-item {
+  margin-bottom: 20px;
+}
+
+.detail-label {
+  display: block;
+  color: #8c8c8c;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.detail-value {
+  color: #1a1a1a;
+  font-size: 15px;
+}
+
+.detail-value.editable {
+  margin-top: 8px;
+}
+
+.detail-value.editable .ant-input,
+.detail-value.editable .ant-select {
+  width: 100%;
+}
+
+.ant-input,
+.ant-select-selector {
+  height: 40px !important;
+  border-radius: 6px !important;
+}
+
+.ant-select-selector {
+  padding: 4px 11px !important;
+}
+
+.view-details-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+  border: 1px solid #1677ff;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #1677ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.view-details-button:hover:not(:disabled) {
+  background-color: #1677ff;
+  color: white;
+}
+
+.view-details-button:disabled {
+  background-color: #fafafa;
+  border-color: #d9d9d9;
+  color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.maintenance-details-section {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  width: 100%;
+}
+
+.maintenance-details-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.maintenance-details-section .ant-input {
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+  padding: 12px;
+}
+
+.maintenance-details-section .ant-input:hover {
+  border-color: #4096ff;
+}
+
+.maintenance-details-section .ant-input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.maintenance-detail-error {
+  text-align: center;
+  padding: 40px;
+}
+
+.maintenance-detail-error h2 {
+  color: #ff4d4f;
+  margin-bottom: 16px;
+}
+
+.changes-confirmation {
+  padding: 16px 0;
+}
+
+.changes-list {
+  margin-top: 16px;
+}
+
+.change-item {
+  margin-bottom: 12px;
+  padding: 8px;
+  background-color: #fafafa;
+  border-radius: 4px;
+}
+
+.change-values {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.change-values .ant-typography-danger {
+  color: #ff4d4f;
+}
+
+.change-values .ant-typography-success {
+  color: #52c41a;
+} 

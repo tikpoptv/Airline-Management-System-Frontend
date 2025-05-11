@@ -1,7 +1,7 @@
 import styles from './MaintenancePage.module.css';
 import { useState, useEffect } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
-import { getMaintenanceLogs, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
+import { getMaintenanceLogs, updateMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import MaintenanceLogList from './MaintenanceList';
 import MaintenanceDetail from './MaintenanceDetail';
 
@@ -47,7 +47,7 @@ const MaintenancePage = () => {
 
     try {
       for (const id of selectedLogIds) {
-        await cancelMaintenanceLog(id);
+        await updateMaintenanceLog(id, { status: 'Cancelled' });
       }
       setSelectedLogIds([]);
       setShowConfirmModal(false);

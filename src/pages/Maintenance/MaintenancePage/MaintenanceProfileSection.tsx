@@ -1,7 +1,6 @@
 import {  useState } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
-import { updateMaintenanceLog, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
-import { useNavigate } from 'react-router-dom';
+import { updateMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import avatarImg from "../../../assets/images/maintenance.webp"
 import styles from './MaintenanceDetail.module.css';
 
@@ -20,13 +19,9 @@ const MaintenanceProfileSection = ({
 }: Props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
-
-  const navigate = useNavigate();
 
   const triggerToast = (message: string, type: 'success' | 'error') => {
     setToastMessage(message);
@@ -39,12 +34,10 @@ const MaintenanceProfileSection = ({
     setSaving(true);
     try {
       await updateMaintenanceLog(editData.log_id, {
-        aircraft_id: editData.aircraft_id,
-        date_of_maintenance: editData.date_of_maintenance,
-        details: editData.details,
-        maintenance_location: editData.maintenance_location,
         status: editData.status,
-        assigned_to: editData.assigned_user?.user_id,
+        maintenance_location: editData.maintenance_location,
+        details: editData.details,
+        assigned_to: editData.assigned_user?.user_id
       });
 
       triggerToast("✅ Maintenance log updated successfully!", 'success');
@@ -58,21 +51,7 @@ const MaintenanceProfileSection = ({
     }
   };
 
-  const confirmDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await cancelMaintenanceLog(editData.log_id);
-      triggerToast("✅ Maintenance log cancelled successfully!", 'success');
-      navigate('/maintenance/maintenance');
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : 'Unknown error occurred';
-      triggerToast("❌ Cancel failed: " + message, 'error');
-    } finally {
-      setIsDeleting(false);
-      setShowDeleteConfirm(false);
-    }
-  };
+  
 
   return (
     <div className={`${styles.profileWrapper} ${isEditMode ? styles.isEditMode : ''}`}>
@@ -276,22 +255,6 @@ const MaintenanceProfileSection = ({
         </div>
       )}
 
-      {showDeleteConfirm && (
-        <div className={styles.modalBackdrop}>
-          <div className={styles.modalContent}>
-            <h3>Confirm Cancel Maintenance Log</h3>
-            <p>Are you sure you want to cancel Maintenance Log ID: {editData.log_id}?</p>
-            <div className={styles.modalActions}>
-              <button className={styles.confirmButton} onClick={confirmDelete} disabled={isDeleting}>
-                {isDeleting ? 'Cancelling...' : 'Confirm'}
-              </button>
-              <button className={styles.cancelButton} onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
-                Back
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Toast notifications */}
       {showToast && (

@@ -1,15 +1,18 @@
-// src/types/maintenance.ts
-
-// Status types for maintenance logs
 export type MaintenanceLogStatus = 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
 
-// User related interfaces for maintenance logs
+export interface MaintenanceSearchParams {
+  aircraft_id?: number;
+  status?: MaintenanceLogStatus;
+  date_from?: string;
+  date_to?: string;
+  assigned_to?: number;
+}
+
 export interface MaintenanceUser {
   user_id: number;
   username: string;
 }
 
-// Aircraft reference used in maintenance logs
 export interface MaintenanceAircraft {
   aircraft_id: number;
   model: string;
@@ -17,7 +20,6 @@ export interface MaintenanceAircraft {
   manufacture_year: number;
 }
 
-// Maintenance log interface
 export interface MaintenanceLog {
   log_id: number;
   aircraft_id: number;

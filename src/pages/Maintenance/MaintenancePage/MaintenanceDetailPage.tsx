@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
-import { getMaintenanceLogById } from '../../../services/maintenance/maintenanceService';
+import { getMaintenanceLogDetail } from '../../../services/maintenance/maintenanceService';
 import MaintenanceDetail from './MaintenanceDetail';
 import styles from './MaintenanceDetail.module.css';
 
@@ -22,7 +22,7 @@ function MaintenanceDetailPage() {
         navigate('/maintenance/maintenance');
         return;
       }
-      const log = await getMaintenanceLogById(parseInt(id));
+      const log = await getMaintenanceLogDetail(id);
       setMaintenanceLog(log);
     } catch (error) {
       console.error(error);

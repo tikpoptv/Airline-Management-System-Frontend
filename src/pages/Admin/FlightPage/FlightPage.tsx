@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import './FlightPage.css';
 import { FaSearch, FaPlus, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAllFlights } from '../../../services/flight/flightService';
 import { Flight as ApiFlight } from '../../../types/flight';
 
@@ -55,6 +55,8 @@ const FlightPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('default');
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const sortBtnRef = useRef<HTMLButtonElement>(null);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -223,6 +225,10 @@ const FlightPage: React.FC = () => {
     }
     return () => document.removeEventListener('click', handleClick);
   }, [sortDropdownOpen]);
+
+  const handleFlightClick = (flightId: number) => {
+    navigate(`/admin/flights/${flightId}`);
+  };
 
   return (
     <div className="flight-page">
@@ -414,7 +420,11 @@ const FlightPage: React.FC = () => {
               </thead>
               <tbody>
                 {pagedFlights.map((flight) => (
-                  <tr key={flight.flight_id}>
+                  <tr 
+                    key={flight.flight_id}
+                    onClick={() => handleFlightClick(flight.flight_id)}
+                    className="flight-row"
+                  >
                     <td>
                       <span className={`status-badge ${flight.flight_status?.toLowerCase()}`}>{flight.flight_status}</span>
                     </td>

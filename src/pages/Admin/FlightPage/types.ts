@@ -32,7 +32,7 @@ export interface Flight {
   flight_number: string;
   departure_time: string;
   arrival_time: string;
-  flight_status: string;
+  flight_status: 'Scheduled' | 'Completed' | 'Cancelled';
   cancellation_reason: string | null;
   aircraft: Aircraft;
   route: Route;

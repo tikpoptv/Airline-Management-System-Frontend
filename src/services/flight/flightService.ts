@@ -2,6 +2,26 @@
 import { api } from '../../api';
 import { Flight, CrewMember, Passenger } from '../../pages/Admin/FlightPage/types';
 
+interface Airport {
+  iata_code: string;
+  name: string;
+  city: string;
+  country: string;
+}
+
+export interface PassengerDetail extends Passenger {
+  flight_details: {
+    flight_number: string;
+    departure_time: string;
+    arrival_time: string;
+    route: {
+      from_airport: Airport;
+      to_airport: Airport;
+    };
+  };
+  special_requests?: string;
+}
+
 export const getFlightsByAircraftId = async (aircraftId: number): Promise<Flight[]> => {
   return api.get(`/api/aircrafts/${aircraftId}/flights`);
 };
@@ -31,7 +51,7 @@ export const flightService = {
   },
 
   // Get detailed information about a specific passenger
-  getPassengerDetails: (passengerId: number): Promise<any> => {
+  getPassengerDetails: (passengerId: number): Promise<PassengerDetail> => {
     return api.get(`/api/passengers/${passengerId}`);
   }
 };

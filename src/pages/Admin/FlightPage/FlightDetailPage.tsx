@@ -204,6 +204,12 @@ const FlightDetailPage: React.FC = () => {
             <span className={styles.infoLabel}>PNR</span>
             <span className={styles.infoValue}>{flightDetail.flight_number}</span>
           </div>
+          {flightDetail.flight_status === 'Cancelled' && flightDetail.cancellation_reason && (
+            <div className={`${styles.infoGroup} ${styles.cancellationReason}`}>
+              <span className={styles.infoLabel}>Cancellation Reason</span>
+              <span className={styles.infoValue}>{flightDetail.cancellation_reason}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -396,26 +402,34 @@ const FlightDetailPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {crewMembers.map((crew) => (
-                <tr key={crew.crew_id}>
-                  <td>{crew.crew_id}</td>
-                  <td className={styles.crewName}>{crew.name}</td>
-                  <td>
-                    <span className={styles.roleBadge}>{crew.role}</span>
-                  </td>
-                  <td>
-                    <span className={styles.dutyBadge}>{crew.role_in_flight}</span>
-                  </td>
-                  <td>
-                    <Link 
-                      to={`/admin/crew/${crew.crew_id}`} 
-                      className={styles.viewDetailsButton}
-                    >
-                      View Details
-                    </Link>
+              {!crewMembers || crewMembers.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className={styles.noDataMessage}>
+                    No crew members assigned to this flight
                   </td>
                 </tr>
-              ))}
+              ) : (
+                crewMembers.map((crew) => (
+                  <tr key={crew.crew_id}>
+                    <td>{crew.crew_id}</td>
+                    <td className={styles.crewName}>{crew.name}</td>
+                    <td>
+                      <span className={styles.roleBadge}>{crew.role}</span>
+                    </td>
+                    <td>
+                      <span className={styles.dutyBadge}>{crew.role_in_flight}</span>
+                    </td>
+                    <td>
+                      <Link 
+                        to={`/admin/crew/${crew.crew_id}`} 
+                        className={styles.viewDetailsButton}
+                      >
+                        View Details
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -439,28 +453,36 @@ const FlightDetailPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {passengers.map((passenger) => (
-                <tr key={passenger.passenger_id}>
-                  <td>{passenger.passenger_id}</td>
-                  <td className={styles.passengerName}>{passenger.name}</td>
-                  <td>{passenger.nationality}</td>
-                  <td>
-                    {passenger.special_requests ? (
-                      <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
-                    ) : (
-                      <span className={styles.noRequests}>-</span>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      className={styles.viewDetailsButton}
-                      onClick={() => setSelectedPassengerId(passenger.passenger_id)}
-                    >
-                      View Details
-                    </button>
+              {!passengers || passengers.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className={styles.noDataMessage}>
+                    No passengers booked for this flight
                   </td>
                 </tr>
-              ))}
+              ) : (
+                passengers.map((passenger) => (
+                  <tr key={passenger.passenger_id}>
+                    <td>{passenger.passenger_id}</td>
+                    <td className={styles.passengerName}>{passenger.name}</td>
+                    <td>{passenger.nationality}</td>
+                    <td>
+                      {passenger.special_requests ? (
+                        <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
+                      ) : (
+                        <span className={styles.noRequests}>-</span>
+                      )}
+                    </td>
+                    <td>
+                      <button
+                        className={styles.viewDetailsButton}
+                        onClick={() => setSelectedPassengerId(passenger.passenger_id)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

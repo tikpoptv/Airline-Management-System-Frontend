@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import styles from './FlightPage.module.css';
-import { FaSearch, FaPlus, FaEdit, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
+import { FaSearch, FaPlus, FaChevronRight, FaCalendarAlt, FaPlane } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllFlights } from '../../../services/flight/flightService';
 import { Flight as ApiFlight } from '../../../types/flight';
@@ -230,6 +230,10 @@ const FlightPage: React.FC = () => {
     navigate(`/admin/flights/${flightId}`);
   };
 
+  const handleAddNewClick = () => {
+    navigate('/admin/flights/new');
+  };
+
   return (
     <div className={styles['flight-page']}>
       <div className={styles.breadcrumb}>
@@ -359,7 +363,7 @@ const FlightPage: React.FC = () => {
         </form>
 
         <div className={styles['table-actions']}>
-          <button className={styles['add-new-button']}>
+          <button className={styles['add-new-button']} onClick={handleAddNewClick}>
             <FaPlus /> Add new
           </button>
           <div className={styles['sortby-dropdown-wrapper']} style={{ position: 'relative' }}>
@@ -391,9 +395,6 @@ const FlightPage: React.FC = () => {
               </ul>
             )}
           </div>
-          <button className={styles['edit-button']}>
-            <FaEdit /> Edit
-          </button>
         </div>
 
         <div className={styles['table-container']}>

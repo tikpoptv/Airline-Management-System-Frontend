@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronRight, FaEdit, FaEllipsisV, FaPlane, FaClock } from 'react-icons/fa';
+import { FaChevronRight, FaEdit, FaPlane, FaClock } from 'react-icons/fa';
 import styles from './FlightDetailPage.module.css';
 import GlobeMap from '../RoutePage/components/GlobeMap/GlobeMap';
 import { flightService } from '../../../services/flight/flightService';
 import { Flight, CrewMember, Passenger } from './types';
+import PassengerDetailModal from './components/PassengerDetailModal/PassengerDetailModal';
 
 const getZoomLevel = (distance: number): number => {
   if (distance < 1000) return 5;
@@ -21,6 +22,7 @@ const FlightDetailPage: React.FC = () => {
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null);
 
   const formatDateTime = (dateTimeStr: string) => {
     const date = new Date(dateTimeStr);
@@ -390,51 +392,53 @@ const FlightDetailPage: React.FC = () => {
       <div className={styles.flightDetails}>
         <div className={styles.sectionHeader}>
           <h2>Passengers</h2>
-          <button className={styles.addPassengerButton}>+ Add Passenger</button>
         </div>
+        
         <div className={styles.tableContainer}>
-          {passengers.length === 0 ? (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>👥</div>
-              <p>No passengers added yet</p>
-              <button className={styles.addFirstButton}>Add First Passenger</button>
-            </div>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Nationality</th>
-                  <th>Special Requests</th>
-                  <th>Actions</th>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Nationality</th>
+                <th>Special Requests</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {passengers.map((passenger) => (
+                <tr key={passenger.passenger_id}>
+                  <td>{passenger.passenger_id}</td>
+                  <td className={styles.passengerName}>{passenger.name}</td>
+                  <td>{passenger.nationality}</td>
+                  <td>
+                    {passenger.special_requests ? (
+                      <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
+                    ) : (
+                      <span className={styles.noRequests}>-</span>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className={styles.viewDetailsButton}
+                      onClick={() => setSelectedPassengerId(passenger.passenger_id)}
+                    >
+                      View Details
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {passengers.map((passenger) => (
-                  <tr key={passenger.passenger_id}>
-                    <td>{passenger.passenger_id}</td>
-                    <td className={styles.passengerName}>{passenger.name}</td>
-                    <td>{passenger.nationality}</td>
-                    <td>
-                      {passenger.special_requests ? (
-                        <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
-                      ) : (
-                        <span className={styles.noRequests}>-</span>
-                      )}
-                    </td>
-                    <td>
-                      <button className={styles.actionButton}>
-                        <FaEllipsisV />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+
+      {/* Passenger Detail Modal */}
+      <PassengerDetailModal
+        isOpen={selectedPassengerId !== null}
+        onClose={() => setSelectedPassengerId(null)}
+        passengerId={selectedPassengerId || 0}
+      />
     </div>
   );
 };

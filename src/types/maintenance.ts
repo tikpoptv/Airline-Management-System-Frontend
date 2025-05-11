@@ -13,6 +13,8 @@ export interface MaintenanceUser {
 export interface MaintenanceAircraft {
   aircraft_id: number;
   model: string;
+  capacity: number;
+  manufacture_year: number;
 }
 
 // Maintenance log interface

@@ -142,6 +142,18 @@ const MaintenanceProfileSection = ({
 
             <div className={styles.fieldRow}>
               <div className={styles.fieldGroup}>
+                <label>Capacity</label>
+                <div className={styles.readOnlyField}>{editData.aircraft?.capacity || 'N/A'}</div>
+              </div>
+              
+              <div className={styles.fieldGroup}>
+                <label>Manufacture Year</label>
+                <div className={styles.readOnlyField}>{editData.aircraft?.manufacture_year || 'N/A'}</div>
+              </div>
+            </div>
+
+            <div className={styles.fieldRow}>
+              <div className={styles.fieldGroup}>
                 <label>User ID</label>
                 {isEditMode ? (
                   <input

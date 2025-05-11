@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
-import { Icon, LatLngExpression, Map as LeafletMap, DivIcon } from 'leaflet';
+import { LatLngExpression, Map as LeafletMap, DivIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import styles from './FlightMap.module.css';
-import { Flight } from '../../../../types/flight';
+import { Flight } from '../../../../types/flight_dashboard';
 
 // คำนวณตำแหน่งระหว่างจุดสองจุด
 const interpolatePosition = (start: [number, number], end: [number, number], progress: number): [number, number] => {
@@ -165,7 +165,7 @@ const FlightMap = () => {
 
   // สลับเครื่องบินที่จะติดตามทุก 5 วินาที
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number;
     
     if (autoTrack) {
       interval = setInterval(() => {
@@ -185,7 +185,7 @@ const FlightMap = () => {
     if (flights.length > 0) {
       setSelectedFlight(flights[currentFlightIndex]);
     }
-  }, []);
+  }, [flights, currentFlightIndex]);
 
   useEffect(() => {
     if (autoTrack) {
@@ -315,4 +315,4 @@ const FlightMap = () => {
   );
 };
 
-export default FlightMap; 
+export default FlightMap;

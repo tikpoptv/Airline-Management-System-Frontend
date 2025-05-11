@@ -27,6 +27,7 @@ import CrewDetailPage from './pages/Admin/CrewPage/CrewDetailPage';
 import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
 import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
 import AddFlightPage from "./pages/Admin/FlightPage/AddFlightPage/AddFlightPage";
+import DashboardPage from "./pages/Admin/DashboardPage/DashboardPage";
 
 function App() {
   return (
@@ -45,7 +46,8 @@ function App() {
             }
           >
             {/* Nested Pages inside /admin */}
-            <Route index element={<div>Welcome to Admin Dashboard</div>} />
+            <Route index element={<DashboardPage />} />
+            <Route path="dashboard" element={<DashboardPage />} />
             <Route path="flights" element={<FlightPage />} />
             <Route path="flights/new" element={<AddFlightPage />} />
             <Route path="flights/:id" element={<FlightDetailPage />} />

@@ -359,15 +359,20 @@ select:focus {
 }
 
 .add-new-button {
-  background: linear-gradient(90deg, #3b82f6 60%, #2563eb 100%);
-  color: #fff;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .add-new-button:hover {
-  background: linear-gradient(90deg, #2563eb 60%, #3b82f6 100%);
-  transform: translateY(-2px) scale(1.03);
+  background-color: #0052cc;
 }
 
 .sort-button, .edit-button {

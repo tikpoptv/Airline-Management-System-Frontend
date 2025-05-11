@@ -1,0 +1,84 @@
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #3b82f6;
+}
+
+.content {
+  flex: 1;
+}
+
+.content h3 {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.valueRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.trend.up {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.trend.down {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Status variants */
+.card.active .icon {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.card.warning .icon {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.card.error .icon {
+  background-color: #fee2e2;
+  color: #991b1b;
+} 

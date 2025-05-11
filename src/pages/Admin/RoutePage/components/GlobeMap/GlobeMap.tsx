@@ -18,6 +18,7 @@ interface GlobeMapProps {
   fromAirport: Airport;
   toAirport: Airport;
   onLocationClick?: (lat: number, lon: number) => void;
+  zoomLevel?: number;
 }
 
 interface AirplaneData {
@@ -242,9 +243,9 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     },
   });
 
-  const handleClick = (event: any) => {
-    if (onLocationClick) {
-      const { lat, lng } = event.coordinate || event.lngLat;
+  const handleClick = (info: unknown & { coordinate?: number[] }) => {
+    if (onLocationClick && info.coordinate && info.coordinate.length >= 2) {
+      const [lng, lat] = info.coordinate;
       onLocationClick(lat, lng);
     }
   };

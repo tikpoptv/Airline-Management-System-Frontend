@@ -1,34 +1,6 @@
 import React from 'react';
 import styles from './PassengerDetailModal.module.css';
-import { flightService } from '../../../../../services/flight/flightService';
-
-interface Airport {
-  iata_code: string;
-  name: string;
-  city: string;
-  country: string;
-}
-
-interface FlightDetails {
-  flight_number: string;
-  departure_time: string;
-  arrival_time: string;
-  route: {
-    from_airport: Airport;
-    to_airport: Airport;
-  };
-}
-
-interface PassengerDetail {
-  passenger_id: number;
-  name: string;
-  passport_number: string;
-  nationality: string;
-  flight_id: number;
-  special_requests: string;
-  user_id: number;
-  flight_details: FlightDetails;
-}
+import { flightService, PassengerDetail } from '../../../../../services/flight/flightService';
 
 interface Props {
   isOpen: boolean;

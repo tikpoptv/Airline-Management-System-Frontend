@@ -2,13 +2,14 @@
 .globe-map-container {
   width: 100%;
   height: 100%;
-  min-height: 700px;
+  min-height: 500px;
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
   margin: 20px 0;
+  aspect-ratio: 2.2/1;
 }
 
 /* Map elements styling */
@@ -37,14 +38,16 @@
 /* Responsive adjustments */
 @media (max-width: 1280px) {
   .globe-map-container {
-    min-height: 600px;
+    min-height: 450px;
+    aspect-ratio: 2/1;
   }
 }
 
 @media (max-width: 768px) {
   .globe-map-container {
-    min-height: 450px;
+    min-height: 350px;
     margin: 15px 0;
     border-radius: 16px;
+    aspect-ratio: 1.8/1;
   }
 } 

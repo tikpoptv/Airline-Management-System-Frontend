@@ -44,6 +44,10 @@ export interface CrewMember {
   passport_number: string;
   role: string;
   role_in_flight: string;
+  experience: number;  // years of experience
+  status: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface Passenger {

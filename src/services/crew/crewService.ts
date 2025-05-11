@@ -1,6 +1,16 @@
 import { api } from "../../api";
 import { Crew, CrewScheduleResponse } from "../../types/crew";
 
+export interface AvailableCrew {
+  crew_id: number;
+  first_name: string;
+  last_name: string;
+  position: string;
+  license_number: string;
+  passport_number: string;
+  status: string;
+}
+
 interface UpdateCrewData {
   name?: string;
   role?: 'Pilot' | 'Co-Pilot' | 'Attendant' | 'Technician';
@@ -48,36 +58,42 @@ export const deleteCrewById = async (id: number): Promise<void> => {
 };
 
 export const updateCrew = async (id: number, data: UpdateCrewData): Promise<Crew> => {
-  const response = await api.put(`/api/crew/${id}`, data);
-  return response;
+  return api.put(`/api/crew/${id}`, data);
 };
 
 export const createCrew = async (data: CreateCrewData): Promise<CrewResponse> => {
   try {
-    console.log('[DEBUG] Sending create crew request with data:', data);
-    
     const response = await api.post('/api/crew', data);
-    console.log('[DEBUG] Raw crew API response:', response);
     
     if (!response || typeof response !== 'object') {
       throw new Error('Invalid response format from server');
     }
 
-    // ตรวจสอบว่า response มี properties ที่จำเป็นครบถ้วน
     const { ID, name, role, status } = response;
     if (!ID || !name || !role || !status) {
-      console.error('[DEBUG] Invalid crew response structure:', response);
       throw new Error('Missing required fields in crew server response');
     }
-
-    console.log('[DEBUG] Parsed crew response:', response);
     
     return response as CrewResponse;
   } catch (error) {
-    console.error('[DEBUG] Error in createCrew:', error);
     if (error instanceof Error) {
       throw error;
     }
     throw new Error('Failed to create crew member');
+  }
+};
+
+export const crewService = {
+  // Get available crews for a flight
+  getAvailableCrews: async (flightId: number): Promise<AvailableCrew[]> => {
+    try {
+      const response = await api.get(`/api/flights/${flightId}/available-crews`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to fetch available crews');
+    }
   }
 };

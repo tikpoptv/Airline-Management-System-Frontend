@@ -174,7 +174,7 @@ const MaintenanceLogList = ({
                   <td className={styles.actionsColumn} onClick={(e) => e.stopPropagation()}>
                     <button
                       className={styles.viewButton}
-                      onClick={() => setSelectedMaintenanceLog(log)}
+                      onClick={() => navigate(`/maintenance/maintenance/detail/${log.log_id}`)}
                       title="View Details"
                     >
                       <FaEye />

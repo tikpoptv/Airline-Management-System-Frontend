@@ -44,7 +44,7 @@ function MaintenanceDetailPage() {
 
       <MaintenanceDetail
         maintenanceLog={maintenanceLog}
-        onBack={() => navigate('/admin/maintenance')}
+        onBack={() => navigate('/maintenance/maintenance')}
         isEditMode={isEditMode}
       />
     </>

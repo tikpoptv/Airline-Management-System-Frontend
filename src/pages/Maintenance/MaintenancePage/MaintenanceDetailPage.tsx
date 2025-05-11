@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogById } from '../../../services/maintenance/maintenanceService';
 import MaintenanceDetail from './MaintenanceDetail';
+import styles from './MaintenanceDetail.module.css';
 
 function MaintenanceDetailPage() {
   const { id } = useParams();
@@ -35,8 +36,8 @@ function MaintenanceDetailPage() {
 
   return (
     <>
-      <div className="page-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-        <button className="edit-button" onClick={() => setIsEditMode((prev) => !prev)}>
+      <div className={styles.pageActions} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginBottom: '1rem' }}>
+        <button className={styles.editButton} onClick={() => setIsEditMode((prev) => !prev)}>
           {isEditMode ? 'Done' : 'Edit'}
         </button>
       </div>

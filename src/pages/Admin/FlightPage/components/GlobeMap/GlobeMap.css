@@ -1,0 +1,144 @@
+/* GlobeMap.css */
+.globe-map-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.globe-map {
+  width: 100%;
+  height: 100%;
+}
+
+.globe-map-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+}
+
+.globe-map-error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  color: #dc3545;
+  padding: 2rem;
+  text-align: center;
+}
+
+.retry-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-button:hover {
+  background: #0056b3;
+}
+
+.airport-marker {
+  position: relative;
+  color: #ffc107;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.airport-marker:hover {
+  transform: scale(1.2);
+}
+
+.airport-marker.departure {
+  color: #28a745;
+}
+
+.airport-marker.arrival {
+  color: #dc3545;
+}
+
+.airport-label {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.airport-sublabel {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.globe-map-info {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  z-index: 1000;
+}
+
+.globe-map-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-point {
+  font-weight: bold;
+}
+
+.route-arrow {
+  color: #ffc107;
+}
+
+/* ให้ลูกทุกตัวไม่มี border-radius, box-shadow, background, margin, padding และขยายเต็ม container */
+.globe-map-container > div,
+.globe-map-container .mapboxgl-map,
+.globe-map-container .deckgl-map,
+.globe-map-container canvas,
+.globe-map-container img,
+.globe-map-container .mapboxgl-canvas {
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .globe-map-container {
+    height: 250px;
+  }
+} 

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Login from "./pages/Public/Login/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Admin from "./pages/Admin/Admin";
@@ -6,6 +7,7 @@ import AircraftPage from "./pages/Admin/AircraftPage/AircraftPage";
 import AircraftDetailPage from "./pages/Admin/AircraftPage/AircraftDetailPage";
 import NotFound from "./pages/NotFound/NotFound";
 import ApiStatusChecker from "./components/ApiStatusChecker";
+import MobileDeviceAlert from "./components/MobileDeviceAlert";
 import Maintenance from "./pages/Maintenance/Maintenance";
 import CrewPage from "./pages/Admin/CrewPage/CrewPage";
 import CreateAircraftPage from './pages/Admin/AircraftPage/CreateAircraftPage';
@@ -30,8 +32,25 @@ import AddFlightPage from "./pages/Admin/FlightPage/AddFlightPage/AddFlightPage"
 import DashboardPage from "./pages/Admin/DashboardPage/DashboardPage";
 
 function App() {
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const MOBILE_WIDTH_THRESHOLD = 768; // ขนาดหน้าจอที่จะถือว่าเป็นมือถือ (pixels)
+
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsMobileDevice(window.innerWidth <= MOBILE_WIDTH_THRESHOLD);
+    };
+
+    checkScreenWidth();
+    window.addEventListener('resize', checkScreenWidth);
+
+    return () => {
+      window.removeEventListener('resize', checkScreenWidth);
+    };
+  }, []);
+
   return (
     <>
+      {isMobileDevice && <MobileDeviceAlert />}
       <ApiStatusChecker />
       <Router>
         <Routes>

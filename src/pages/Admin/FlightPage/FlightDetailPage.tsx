@@ -6,6 +6,7 @@ import GlobeMap from '../RoutePage/components/GlobeMap/GlobeMap';
 import { flightService } from '../../../services/flight/flightService';
 import { Flight, CrewMember, Passenger } from './types';
 import PassengerDetailModal from './components/PassengerDetailModal/PassengerDetailModal';
+import EditFlightModal from './components/EditFlightModal/EditFlightModal';
 
 const getZoomLevel = (distance: number): number => {
   if (distance < 1000) return 5;
@@ -23,6 +24,7 @@ const FlightDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const formatDateTime = (dateTimeStr: string) => {
     const date = new Date(dateTimeStr);
@@ -69,6 +71,18 @@ const FlightDetailPage: React.FC = () => {
 
     fetchData();
   }, [id]);
+
+  const handleEditComplete = async () => {
+    if (!id) return;
+    try {
+      const updatedFlight = await flightService.getFlightDetails(Number(id));
+      setFlightDetail(updatedFlight);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to refresh flight data';
+      console.error('Error refreshing flight data:', errorMessage);
+      setError(errorMessage);
+    }
+  };
 
   if (loading) return (
     <div className="loading-container">
@@ -155,7 +169,7 @@ const FlightDetailPage: React.FC = () => {
               {flightDetail.flight_status}
             </span>
           </div>
-          <button className={styles.editButton}>
+          <button className={styles.editButton} onClick={() => setShowEditModal(true)}>
             <FaEdit /> Edit Flight
           </button>
         </div>
@@ -433,12 +447,23 @@ const FlightDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Passenger Detail Modal */}
-      <PassengerDetailModal
-        isOpen={selectedPassengerId !== null}
-        onClose={() => setSelectedPassengerId(null)}
-        passengerId={selectedPassengerId || 0}
-      />
+      {/* Edit Flight Modal */}
+      {flightDetail && (
+        <EditFlightModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          flight={flightDetail}
+          onUpdate={handleEditComplete}
+        />
+      )}
+
+      {selectedPassengerId && (
+        <PassengerDetailModal
+          isOpen={!!selectedPassengerId}
+          onClose={() => setSelectedPassengerId(null)}
+          passengerId={selectedPassengerId}
+        />
+      )}
     </div>
   );
 };

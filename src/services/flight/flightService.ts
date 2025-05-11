@@ -22,6 +22,19 @@ export interface PassengerDetail extends Passenger {
   special_requests?: string;
 }
 
+export interface UpdateFlightBasicData {
+  flight_status?: string;
+  cancellation_reason?: string;
+}
+
+export interface UpdateFlightAdvancedData {
+  flight_number?: string;
+  aircraft_id?: number;
+  route_id?: number;
+  departure_time?: string;
+  arrival_time?: string;
+}
+
 export const getFlightsByAircraftId = async (aircraftId: number): Promise<Flight[]> => {
   return api.get(`/api/aircrafts/${aircraftId}/flights`);
 };
@@ -32,6 +45,14 @@ export const getFlightsByCrewId = async (crewId: number): Promise<Flight[]> => {
 
 export const getAllFlights = async () => {
   return api.get('/api/flights');
+};
+
+export const updateFlightBasic = async (flightId: number, data: UpdateFlightBasicData): Promise<Flight> => {
+  return api.put(`/api/flights/${flightId}`, data);
+};
+
+export const updateFlightAdvanced = async (flightId: number, data: UpdateFlightAdvancedData): Promise<Flight> => {
+  return api.put(`/api/flights/${flightId}/details`, data);
 };
 
 export const flightService = {

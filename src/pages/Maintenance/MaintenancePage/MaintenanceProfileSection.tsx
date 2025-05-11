@@ -3,6 +3,7 @@ import { MaintenanceLog } from '../../../types/maintenance';
 import { updateMaintenanceLog, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import { useNavigate } from 'react-router-dom';
 import avatarImg from "../../../assets/images/maintenance.webp"
+import styles from './MaintenanceDetail.module.css';
 
 interface Props {
   editData: MaintenanceLog;
@@ -74,15 +75,15 @@ const MaintenanceProfileSection = ({
   };
 
   return (
-    <div className={`profile-wrapper ${isEditMode ? 'is-edit-mode' : ''}`}>
-      <div className="form-container">
+    <div className={`${styles.profileWrapper} ${isEditMode ? styles.isEditMode : ''}`}>
+      <div className={styles.formContainer}>
         {/* Status Badge */}
-        <div className="status-badge-container">
+        <div className={styles.statusBadgeContainer}>
           {isEditMode ? (
             <select
               value={editData.status}
               onChange={(e) => handleChange('status', e.target.value as MaintenanceLog['status'])}
-              className={`status-badge status-select ${editData.status.replace(/\s+/g, '-')}`}
+              className={`${styles.statusBadge} ${styles.statusSelect} ${styles[`statusSelect${editData.status.replace(/\s+/g, '')}`]}`}
             >
               <option value="Pending">Pending</option>
               <option value="In Progress">In Progress</option>
@@ -90,58 +91,57 @@ const MaintenanceProfileSection = ({
               <option value="Cancelled">Cancelled</option>
             </select>
           ) : (
-            <div className={`status-badge ${editData.status.replace(/\s+/g, '-')}`}>
+            <div className={`${styles.statusBadge} ${styles[`statusBadge${editData.status.replace(/\s+/g, '')}`]}`}>
               {editData.status}
             </div>
           )}
         </div>
 
         {/* Left Column - Avatar and Work Section */}
-        <div className="left-column">
-          <div className="avatar-section">
-            <div className="profile-avatar">
+        <div className={styles.leftColumn}>
+          <div className={styles.avatarSection}>
+            <div className={styles.profileAvatar}>
               <img src={avatarImg} alt="avatar" />
             </div>
           </div>
 
-          <div className="section work-section">
+          <div className={`${styles.section} ${styles.workSection}`}>
             <h2>Maintenance Details</h2>
             
-
-            <div className="field-group">
+            <div className={styles.fieldGroup}>
               <label>Log ID</label>
-              <div className="input-with-icon">
-                <div className="read-only-field">{editData.log_id}</div>
+              <div className={styles.inputGroup}>
+                <div className={styles.readOnlyField}>{editData.log_id}</div>
               </div>
             </div>
 
-            <div className="field-group">
+            <div className={styles.fieldGroup}>
                 <label>Aircraft ID</label>
-                <div className="read-only-field">{editData.aircraft_id}</div>
+                <div className={styles.readOnlyField}>{editData.aircraft_id}</div>
               </div>
           </div>
         </div>
 
         {/* Right Column - Information and Contact Sections */}
-        <div className="right-column">
+        <div className={styles.rightColumn}>
           {/* Information Section */}
-          <div className="section information-section">
+          <div className={`${styles.section} ${styles.informationSection}`}>
             <h2>Information</h2>
 
-            <div className="field-row">
-              <div className="field-group">
+            <div className={styles.fieldRow}>
+              <div className={styles.fieldGroup}>
                 <label>Aircraft ID</label>
-                <div className="read-only-field">{editData.aircraft_id}</div>
+                <div className={styles.readOnlyField}>{editData.aircraft_id}</div>
               </div>
               
-              <div className="field-group">
+              <div className={styles.fieldGroup}>
                 <label>Aircraft Model</label>
-                <div className="read-only-field">{editData.aircraft?.model || 'N/A'}</div>
+                <div className={styles.readOnlyField}>{editData.aircraft?.model || 'N/A'}</div>
               </div>
             </div>
 
-            <div className="field-row">
-              <div className="field-group">
+            <div className={styles.fieldRow}>
+              <div className={styles.fieldGroup}>
                 <label>User ID</label>
                 {isEditMode ? (
                   <input
@@ -157,11 +157,11 @@ const MaintenanceProfileSection = ({
                     placeholder="Enter User ID"
                   />
                 ) : (
-                  <div className="read-only-field">{editData.assigned_user?.user_id || 'N/A'}</div>
+                  <div className={styles.readOnlyField}>{editData.assigned_user?.user_id || 'N/A'}</div>
                 )}
               </div>
               
-              <div className="field-group">
+              <div className={styles.fieldGroup}>
                 <label>Username</label>
                 {isEditMode ? (
                   <input
@@ -176,14 +176,14 @@ const MaintenanceProfileSection = ({
                     placeholder="Enter Username"
                   />
                 ) : (
-                  <div className="read-only-field">{editData.assigned_user?.username || 'N/A'}</div>
+                  <div className={styles.readOnlyField}>{editData.assigned_user?.username || 'N/A'}</div>
                 )}
               </div>
             </div>
 
             
-            <div className="field-row">
-              <div className="field-group">
+            <div className={styles.fieldRow}>
+              <div className={styles.fieldGroup}>
                 <label>Location</label>
                 {isEditMode ? (
                   <input
@@ -192,21 +192,21 @@ const MaintenanceProfileSection = ({
                     onChange={(e) => handleChange('maintenance_location', e.target.value)}
                   />
                 ) : (
-                  <div className="read-only-field">{editData.maintenance_location}</div>
+                  <div className={styles.readOnlyField}>{editData.maintenance_location}</div>
                 )}
               </div>
-              <div className="field-group">
+              <div className={styles.fieldGroup}>
                 <label>Date of Maintenance</label>
-                  <div className="read-only-field">{new Date(editData.date_of_maintenance).toLocaleString()}</div>
+                  <div className={styles.readOnlyField}>{new Date(editData.date_of_maintenance).toLocaleString()}</div>
               </div>
             </div>
 
           </div>
 
           {/* Assigned User Section */}
-          <div className="section contact-section">
+          <div className={`${styles.section} ${styles.contactSection}`}>
             <h2>Description</h2>
-            <div className="field-group full-width">
+            <div className={`${styles.fieldGroup} ${styles.fieldGroupFullWidth}`}>
               <label>Details</label>
               {isEditMode ? (
                 <textarea
@@ -214,15 +214,15 @@ const MaintenanceProfileSection = ({
                   onChange={(e) => handleChange('details', e.target.value)}
                 />
               ) : (
-                <div className="read-only-field">{editData.details}</div>
+                <div className={styles.readOnlyField}>{editData.details}</div>
               )}
             </div>
           </div>
 
           {/* Save Button (when in edit mode) */}
           {isEditMode && (
-            <div className="save-button-container">
-              <button className="save-button" onClick={() => setShowConfirmModal(true)}>
+            <div className={styles.saveButtonContainer}>
+              <button className={styles.saveButton} onClick={() => setShowConfirmModal(true)}>
                 Save Changes
               </button>
             </div>
@@ -232,10 +232,10 @@ const MaintenanceProfileSection = ({
 
       {/* Modals */}
       {showConfirmModal && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modalContent}>
             <h3>Confirm Edit Maintenance Log</h3>
-            <div className="modal-diff">
+            <div className={styles.modalDiff}>
               {editData.status !== originalData.status && (
                 <p><strong>Status:</strong> {originalData.status} → {editData.status}</p>
               )}
@@ -252,11 +252,11 @@ const MaintenanceProfileSection = ({
                 <p><strong>Details:</strong> {originalData.details} → {editData.details}</p>
               )}
             </div>
-            <div className="modal-actions">
-              <button className="confirm-button" onClick={confirmSave} disabled={saving}>
+            <div className={styles.modalActions}>
+              <button className={styles.confirmButton} onClick={confirmSave} disabled={saving}>
                 {saving ? 'Saving...' : 'Confirm'}
               </button>
-              <button className="cancel-button" onClick={() => setShowConfirmModal(false)} disabled={saving}>
+              <button className={styles.cancelButton} onClick={() => setShowConfirmModal(false)} disabled={saving}>
                 Back
               </button>
             </div>
@@ -265,15 +265,15 @@ const MaintenanceProfileSection = ({
       )}
 
       {showDeleteConfirm && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modalContent}>
             <h3>Confirm Cancel Maintenance Log</h3>
             <p>Are you sure you want to cancel Maintenance Log ID: {editData.log_id}?</p>
-            <div className="modal-actions">
-              <button className="confirm-button" onClick={confirmDelete} disabled={isDeleting}>
+            <div className={styles.modalActions}>
+              <button className={styles.confirmButton} onClick={confirmDelete} disabled={isDeleting}>
                 {isDeleting ? 'Cancelling...' : 'Confirm'}
               </button>
-              <button className="cancel-button" onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
+              <button className={styles.cancelButton} onClick={() => setShowDeleteConfirm(false)} disabled={isDeleting}>
                 Back
               </button>
             </div>
@@ -284,7 +284,7 @@ const MaintenanceProfileSection = ({
       {/* Toast notifications */}
       {showToast && (
         <div
-          className={`toast ${toastType}`}
+          className={`${styles.toast} ${styles[toastType]}`}
           style={{
             position: 'fixed',
             top: '2rem',

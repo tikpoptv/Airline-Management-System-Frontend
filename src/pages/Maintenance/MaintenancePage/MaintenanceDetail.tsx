@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
 import MaintenanceProfileSection from './MaintenanceProfileSection';
-import './MaintenanceDetail.css'
+import styles from './MaintenanceDetail.module.css';
 
 interface Props {
   maintenanceLog: MaintenanceLog;
@@ -30,22 +30,22 @@ const MaintenanceDetail = ({
   };
 
   return (
-    <div className="maintenance-detail">
-      <div className="page-header-row">
-        <div className="page-heading-left">
-          <h1 className="page-title">{isEditMode ? 'Edit Maintenance Log' : 'Maintenance Management'}</h1>
-          <div className="breadcrumb">
-            <span className="breadcrumb-section">Maintenance</span>
-            <span className="breadcrumb-arrow">›</span>
-            <span className="breadcrumb-current">
+    <div className={styles.maintenanceDetail}>
+      <div className={styles.pageHeaderRow}>
+        <div className={styles.pageHeadingLeft}>
+          <h1 className={styles.pageTitle}>{isEditMode ? 'Edit Maintenance Log' : 'Maintenance Management'}</h1>
+          <div className={styles.breadcrumb}>
+            <span className={styles.breadcrumbSection}>Maintenance</span>
+            <span className={styles.breadcrumbArrow}>›</span>
+            <span className={styles.breadcrumbCurrent}>
               {isEditMode ? 'Edit Log' : 'Log Details'}
             </span>
           </div>
         </div>
-        <button className="back-button" onClick={onBack}>← Back</button>
+        <button className={styles.backButton} onClick={onBack}>← Back</button>
       </div>
 
-      <h2 className="section-title">Maintenance Log Details</h2>
+      <h2 className={styles.sectionTitle}>Maintenance Log Details</h2>
 
       <MaintenanceProfileSection
         editData={editData}

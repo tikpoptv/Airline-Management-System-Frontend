@@ -1,5 +1,5 @@
 /* Maintenance Details Page */
-.maintenance-detail {
+.maintenanceDetail {
   background: white;
   margin: -1.5rem;
   padding: 0;
@@ -7,7 +7,7 @@
 }
 
 /* Page Header */
-.page-header-row {
+.pageHeaderRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,13 +17,13 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-.page-heading-left {
+.pageHeadingLeft {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.page-title {
+.pageTitle {
   font-size: 1.5rem;
   font-weight: 600;
   color: #1e293b;
@@ -39,25 +39,25 @@
   padding-left: 0.15rem;
 }
 
-.breadcrumb-section {
+.breadcrumbSection {
   color: #94a3b8;
   font-size: 0.813rem;
   font-weight: 500;
 }
 
-.maintenance-detail .breadcrumb-arrow {
+.breadcrumbArrow {
   color: #cbd5e1;
   font-size: 0.813rem;
 }
 
-.maintenance-detail .breadcrumb-current {
+.breadcrumbCurrent {
   color: #64748b;
   font-size: 0.813rem;
   font-weight: 600;
 }
 
 /* Back Button */
-.maintenance-detail .back-button {
+.backButton {
   color: #64748b;
   font-size: 0.875rem;
   font-weight: 500;
@@ -70,12 +70,12 @@
   margin-left: auto;
 }
 
-.maintenance-detail .back-button:hover {
+.backButton:hover {
   background: #f1f5f9;
 }
 
 /* Edit Button */
-.edit-button {
+.editButton {
   padding: 0.5rem 1rem;
   background-color: #22c55e;
   color: white;
@@ -90,17 +90,17 @@
   gap: 0.5rem;
   min-width: 80px;
   justify-content: center;
-  margin-right: 43px;
+  margin-right: 60px;
 }
 
-.edit-button:hover {
+.editButton:hover {
   background-color: #16a34a;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Section Headers */
-.maintenance-detail .section-title {
+.sectionTitle {
   font-size: 1.35rem;
   font-weight: 600;
   color: #1e293b;
@@ -109,7 +109,7 @@
   position: relative;
 }
 
-.maintenance-detail .section-title::after {
+.sectionTitle::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -121,7 +121,7 @@
 }
 
 /* Profile Section */
-.maintenance-detail .profile-wrapper {
+.profileWrapper {
   padding: 24px;
   width: 100%;
   background: linear-gradient(to bottom, #ffffff, #f8fafc);
@@ -133,7 +133,7 @@
 }
 
 /* Form Layout */
-.maintenance-detail .form-grid {
+.formGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 0.5rem;
@@ -141,14 +141,14 @@
   padding: 0.5rem;
 }
 
-.form-container {
+.formContainer {
   position: relative;
   display: flex;
   gap: 24px;
 }
 
 /* Left Column - Avatar + Work Section */
-.left-column {
+.leftColumn {
   flex: 0 0 auto;
   width: 500px;
   display: flex;
@@ -157,14 +157,14 @@
 }
 
 /* Right Column - Information + Contact Sections */
-.right-column {
+.rightColumn {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 /* Avatar */
-.maintenance-detail .avatar-cell {
+.avatarCell {
   grid-row: 1 / 3;
   display: flex;
   justify-content: center;
@@ -180,13 +180,36 @@
   overflow: hidden;
 }
 
-.avatar-section {
+.avatarSection {
   flex: 0 0 auto;
   padding: 1rem;
+  width: 100%;
+}
+
+.profileAvatar {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #f1f5f9, #f8fafc);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.profileAvatar:hover img {
+  transform: scale(1.02);
 }
 
 /* Main Content Layout */
-.profile-content {
+.profileContent {
   flex: 1;
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -202,17 +225,17 @@
   margin-bottom: 0;
 }
 
-.work-section {
+.workSection {
   grid-column: 1;
   grid-row: 2 / span 3;
 }
 
-.information-section {
+.informationSection {
   grid-column: 2;
   grid-row: 1 / span 4;
 }
 
-.contact-section {
+.contactSection {
   grid-column: 2;
   grid-row: 5;
   position: relative;
@@ -238,7 +261,7 @@
   border-radius: 1px;
 }
 
-.maintenance-detail .avatar-cell img {
+.avatarCell img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -246,12 +269,12 @@
   transition: transform 0.3s ease;
 }
 
-.maintenance-detail .avatar-cell:hover img {
+.avatarCell:hover img {
   transform: scale(1.02);
 }
 
 /* Input Groups */
-.maintenance-detail .input-group {
+.inputGroup {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -261,7 +284,7 @@
   gap: 0.25rem;
 }
 
-.maintenance-detail .input-group label {
+.inputGroup label {
   font-size: 0.7rem;
   color: #64748b;
   font-weight: 500;
@@ -269,7 +292,7 @@
   letter-spacing: 0.02em;
 }
 
-.maintenance-detail .read-only-field {
+.readOnlyField {
   width: 100%;
   padding: 0.5rem 0.75rem;
   background-color: #ffffff !important;
@@ -284,12 +307,12 @@
   transition: all 0.2s ease;
 }
 
-.maintenance-detail .read-only-field:hover {
+.readOnlyField:hover {
   border-color: #cbd5e1;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.profile-wrapper.is-edit-mode .read-only-field {
+.isEditMode .readOnlyField {
   background-color: #817f7f !important;
   color: #ffffff;
   border: none;
@@ -297,13 +320,13 @@
   border-radius: 4px;
 }
 
-.profile-wrapper.is-edit-mode .read-only-field:hover {
+.isEditMode .readOnlyField:hover {
   background-color: #817f7f !important;
   border: none;
 }
 
 /* Status Badge Container */
-.status-badge-container {
+.statusBadgeContainer {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -311,7 +334,7 @@
 }
 
 /* Status Badge */
-.status-badge {
+.statusBadge {
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
@@ -324,7 +347,7 @@
 }
 
 /* Status Select in Badge Position */
-.status-badge-container .status-select {
+.statusSelect {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -339,50 +362,50 @@
   transition: all 0.2s ease;
 }
 
-.status-badge-container .status-select:hover {
+.statusSelect:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.status-badge-container .status-select:focus {
+.statusSelect:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Status Colors */
-.status-badge.Pending,
-.status-select.Pending,
-.status-field.Pending {
+.statusBadgePending,
+.statusSelectPending,
+.statusFieldPending {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   color: #92400e;
   border: 1px solid #fcd34d;
 }
 
-.status-badge.In-Progress,
-.status-select.In-Progress,
-.status-field.In-Progress {
+.statusBadgeInProgress,
+.statusSelectInProgress,
+.statusFieldInProgress {
   background: linear-gradient(135deg, #dbeafe, #bfdbfe);
   color: #1e40af;
   border: 1px solid #93c5fd;
 }
 
-.status-badge.Completed,
-.status-select.Completed,
-.status-field.Completed {
+.statusBadgeCompleted,
+.statusSelectCompleted,
+.statusFieldCompleted {
   background: linear-gradient(135deg, #dcfce7, #bbf7d0);
   color: #166534;
   border: 1px solid #86efac;
 }
 
-.status-badge.Cancelled,
-.status-select.Cancelled,
-.status-field.Cancelled {
+.statusBadgeCancelled,
+.statusSelectCancelled,
+.statusFieldCancelled {
   background: linear-gradient(135deg, #fee2e2, #fecaca);
   color: #991b1b;
   border: 1px solid #fca5a5;
 }
 
 /* Status Select Options */
-.status-badge-container .status-select option {
+.statusSelect option {
   background: white;
   color: #1e293b;
   padding: 0.5rem;
@@ -390,54 +413,54 @@
   font-weight: 500;
 }
 
-.status-badge-container .status-select option[value="Pending"] {
+.statusSelect option[value="Pending"] {
   color: #92400e;
 }
 
-.status-badge-container .status-select option[value="In Progress"] {
+.statusSelect option[value="In Progress"] {
   color: #1e40af;
 }
 
-.status-badge-container .status-select option[value="Completed"] {
+.statusSelect option[value="Completed"] {
   color: #166534;
 }
 
-.status-badge-container .status-select option[value="Cancelled"] {
+.statusSelect option[value="Cancelled"] {
   color: #991b1b;
 }
 
 /* Grid Positioning */
-.maintenance-detail .log-id-group {
+.logIdGroup {
   grid-column: 2 / -1;
 }
 
-.maintenance-detail .aircraft-group {
+.aircraftGroup {
   grid-column: 2;
 }
 
-.maintenance-detail .status-group {
+.statusGroup {
   grid-column: 3;
 }
 
-.maintenance-detail .location-group {
+.locationGroup {
   grid-column: 2;
 }
 
-.maintenance-detail .date-group {
+.dateGroup {
   grid-column: 2;
 }
 
-.maintenance-detail .details-group {
+.detailsGroup {
   grid-column: 3;
 }
 
 /* History / Notes */
-.maintenance-detail .maintenance-history {
+.maintenanceHistory {
   grid-column: 1 / -1;
   margin-top: 0.5rem;
 }
 
-.maintenance-detail .maintenance-history .read-only-field {
+.maintenanceHistory .readOnlyField {
   min-height: 50px;
   line-height: 1.4;
   white-space: pre-wrap;
@@ -448,9 +471,9 @@
 }
 
 /* Editable Fields */
-.maintenance-detail .input-group input,
-.maintenance-detail .input-group select,
-.maintenance-detail .input-group textarea {
+.inputGroup input,
+.inputGroup select,
+.inputGroup textarea {
   padding: 0.75rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
@@ -461,28 +484,28 @@
   width: 100%;
 }
 
-.maintenance-detail .input-group textarea {
+.inputGroup textarea {
   min-height: 100px;
   resize: vertical;
 }
 
-.maintenance-detail .input-group input:hover,
-.maintenance-detail .input-group select:hover,
-.maintenance-detail .input-group textarea:hover {
+.inputGroup input:hover,
+.inputGroup select:hover,
+.inputGroup textarea:hover {
   border-color: #cbd5e1;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.maintenance-detail .input-group input:focus,
-.maintenance-detail .input-group select:focus,
-.maintenance-detail .input-group textarea:focus {
+.inputGroup input:focus,
+.inputGroup select:focus,
+.inputGroup textarea:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Save Button */
-.save-button-container {
+.saveButtonContainer {
   grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
@@ -490,7 +513,7 @@
   gap: 1rem;
 }
 
-.save-button {
+.saveButton {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(45deg, #3b82f6, #2563eb);
   color: white;
@@ -502,13 +525,13 @@
   cursor: pointer;
 }
 
-.maintenance-detail .save-button:hover {
+.saveButton:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 }
 
 /* Delete Button */
-.maintenance-detail .delete-button {
+.deleteButton {
   padding: 0.375rem;
   border-radius: 0.375rem;
   background-color: #ef4444;
@@ -518,32 +541,32 @@
   box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
 }
 
-.maintenance-detail .delete-button:hover {
+.deleteButton:hover {
   background-color: #dc2626;
 }
 
 /* Field Groups */
-.field-group {
+.fieldGroup {
   margin-bottom: 8px;
 }
 
-.field-row {
+.fieldRow {
   display: flex;
   gap: 12px;
   margin-bottom: 8px;
 }
 
-.field-row .field-group {
+.fieldRow .fieldGroup {
   flex: 1;
   margin-bottom: 0;
 }
 
-.field-group.full-width {
+.fieldGroupFullWidth {
   width: 100%;
 }
 
-.field-group.full-width textarea,
-.field-group.full-width .read-only-field {
+.fieldGroupFullWidth textarea,
+.fieldGroupFullWidth .readOnlyField {
   min-height: 150px;
   width: 100%;
   padding: 1rem;
@@ -553,7 +576,7 @@
   resize: vertical;
 }
 
-.field-group.full-width .read-only-field {
+.fieldGroupFullWidth .readOnlyField {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   color: #1e293b;
@@ -561,25 +584,25 @@
   overflow-wrap: break-word;
 }
 
-.field-group.full-width textarea {
+.fieldGroupFullWidth textarea {
   background-color: #f9fafe;
   border: 1px solid #e2e8f0;
   color: #1f1f4e;
   transition: all 0.2s ease;
 }
 
-.field-group.full-width textarea:hover {
+.fieldGroupFullWidth textarea:hover {
   border-color: #cbd5e1;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.field-group.full-width textarea:focus {
+.fieldGroupFullWidth textarea:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.field-group label {
+.fieldGroup label {
   display: block;
   font-size: 14px;
   color: #64748b;
@@ -588,56 +611,55 @@
 }
 
 /* Information Section Specific Styles */
-.information-section .field-group {
+.informationSection .fieldGroup {
   margin-bottom: 0px;
 }
 
-.information-section .field-row {
+.informationSection .fieldRow {
   margin-bottom: 8px;
 }
 
-.information-section .field-row:last-child {
+.informationSection .fieldRow:last-child {
   margin-bottom: 0;
 }
 
 /* Description Section Specific Styles */
-.contact-section .field-group.full-width {
+.contactSection .fieldGroupFullWidth {
   margin-top: 0px;
   margin-bottom: 0;
 }
 
-.contact-section .field-group.full-width textarea,
-.contact-section .field-group.full-width .read-only-field {
+.contactSection .fieldGroupFullWidth textarea,
+.contactSection .fieldGroupFullWidth .readOnlyField {
   min-height: 200px;
   font-family: inherit;
   background: linear-gradient(to bottom right, #f8fafc, #ffffff);
 }
 
-.contact-section .field-group.full-width textarea {
+.contactSection .fieldGroupFullWidth textarea {
   background: #f9fafe;
 }
 
-.contact-section .field-group.full-width .read-only-field {
+.contactSection .fieldGroupFullWidth .readOnlyField {
   background: linear-gradient(to bottom right, #f8fafc, #ffffff);
   font-style: italic;
   color: #475569;
 }
 
 @media (max-width: 992px) {
-  .form-container {
+  .formContainer {
     flex-direction: column;
   }
   
-  .profile-content {
+  .profileContent {
     grid-template-columns: 1fr;
   }
   
-
-  .save-button-container {
+  .saveButtonContainer {
     grid-column: 1;
   }
   
-  .created-at {
+  .createdAt {
     grid-column: 1;
     grid-row: 4;
   }

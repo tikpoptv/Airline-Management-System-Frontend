@@ -115,7 +115,7 @@ const getPointAndBearingOnGreatCircle = (
 };
 
 const ARC_LAYER_GET_HEIGHT_RATIO = 0.08;
-const VISUAL_ALTITUDE_MULTIPLIER = 0.6;
+const VISUAL_ALTITUDE_MULTIPLIER = 0.8;
 
 const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick }) => {
   console.log('GlobeMap rendering with:', { fromAirport, toAirport });
@@ -123,26 +123,29 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
   // Calculate the distance between airports
   const distance = haversineDistance(
     { lat: fromAirport.lat, lon: fromAirport.lon },
-    { lat: toAirport.lat, lon: toAirport.lat }
+    { lat: toAirport.lat, lon: toAirport.lon }
   );
   
-  // Calculate zoom level based on distance with wider range
-  const maxDistance = 15000000; // 15000km in meters
-  const minDistance = 500000;   // 500km in meters
-  const maxZoom = 4;    // Reduced max zoom for shorter distances
-  const minZoom = 1;    // Much less zoom for longer distances
+  // Convert distance to kilometers for easier calculations
+  const distanceKm = distance / 1000;
+  console.log('Distance between airports:', distanceKm.toFixed(0), 'km');
   
-  // Logarithmic scaling for better zoom distribution
-  const logDistance = Math.log(distance);
-  const logMaxDistance = Math.log(maxDistance);
-  const logMinDistance = Math.log(minDistance);
+  // Calculate zoom level directly based on distance
+  // Define specific zoom levels for different distance ranges
+  let zoom;
+  if (distanceKm < 2000) {
+    // Short flights (< 2000 km): higher zoom level (5.0 to 3.5)
+    zoom = 5.0 - (distanceKm / 2000) * 1.5;
+  } else if (distanceKm < 10000) {
+    // Medium flights (2000-10000 km): medium zoom level (3.5 to 2.5)
+    zoom = 3.5 - ((distanceKm - 2000) / 8000) * 1.0;
+  } else {
+    // Long flights (> 10000 km): lower zoom level (2.5 to 2.0) 
+    // Slightly increase min zoom to ensure better visibility
+    zoom = 2.2 - Math.min((distanceKm - 10000) / 10000, 1) * 0.2;
+  }
   
-  // Adjust zoom calculation to favor more zoomed out views
-  const zoomBase = maxZoom - ((Math.min(Math.max(logDistance, logMinDistance), logMaxDistance) - logMinDistance) / 
-                         (logMaxDistance - logMinDistance)) * (maxZoom - minZoom);
-  
-  // Further reduce zoom for longer distances
-  const zoom = Math.max(minZoom, zoomBase - (distance > 5000000 ? 0.5 : 0));
+  console.log('Calculated zoom level:', zoom.toFixed(2));
   
   // Calculate bearing between airports
   const deltaLon = toAirport.lon - fromAirport.lon;
@@ -151,26 +154,84 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
            Math.sin(toRadians(fromAirport.lat)) * Math.cos(toRadians(toAirport.lat)) * Math.cos(deltaLon);
   const bearing = (toDegrees(Math.atan2(y, x)) + 360) % 360;
   
-  // Adjust center point to show more of the path
-  const midLat = (fromAirport.lat + toAirport.lat) / 2;
-  const midLon = (fromAirport.lon + toAirport.lon) / 2;
+  // Calculate center point that will place the route in the middle of the view
+  const lat1Rad = toRadians(fromAirport.lat);
+  const lon1Rad = toRadians(fromAirport.lon);
+  const lat2Rad = toRadians(toAirport.lat);
+  const lon2Rad = toRadians(toAirport.lon);
   
-  // For long distances, shift the center point more significantly
-  const distanceRatio = Math.min(distance / maxDistance, 1);
-  const centerLat = midLat + (distanceRatio * 15); // Increased shift north for better curve visibility
-  const centerLon = midLon;
+  // Instead of using exact midpoint at 0.5, we may need to adjust based on route
+  // For trans-oceanic or very long routes, we want to see more of the route
+  const midpointFraction = 0.5; // Default to exact midpoint
   
-  // Adjust pitch based on distance - use lower pitch for better overview
-  const maxPitch = 60;
-  const minPitch = 30;
-  const pitch = minPitch + ((maxDistance - Math.min(distance, maxDistance)) / maxDistance) * (maxPitch - minPitch);
+  // For some routes, we need to adjust the center point to get better view
+  // Based on geographic location pattern analysis
+  const isNorthToSouthRoute = Math.abs(fromAirport.lat - toAirport.lat) > 
+                             Math.abs(fromAirport.lon - toAirport.lon);
+  
+  const isTransOceanic = distanceKm > 5000;
+  const isEastWestLongRoute = !isNorthToSouthRoute && isTransOceanic;
+
+  // Get adjusted midpoint that places the route in center of view
+  const { lat: greatCircleMidLat, lon: greatCircleMidLon } = getPointAndBearingOnGreatCircle(
+    lat1Rad, lon1Rad, lat2Rad, lon2Rad, midpointFraction
+  );
+  
+  // For very long east-west routes, we may need to adjust the view bearing
+  let viewBearing = bearing;
+  // If route crosses date line, adjust bearing for better view
+  const lonDiff = Math.abs(fromAirport.lon - toAirport.lon);
+  if (lonDiff > 180) {
+    // For routes crossing date line, align view with route direction 
+    viewBearing = (bearing + 180) % 360; 
+  } else if (isEastWestLongRoute) {
+    // For long east-west routes, align view more with route
+    viewBearing = bearing;
+  }
+  
+  // Use calculated centerpoint 
+  const centerLat = greatCircleMidLat;
+  let centerLon = greatCircleMidLon;
+  
+  // Handle international date line crossing for center longitude
+  if (lonDiff > 180) {
+    if (fromAirport.lon < 0 && toAirport.lon > 0) {
+      centerLon = (fromAirport.lon + 360 + toAirport.lon) / 2;
+      if (centerLon > 180) centerLon -= 360;
+    } else if (fromAirport.lon > 0 && toAirport.lon < 0) {
+      centerLon = (fromAirport.lon + toAirport.lon + 360) / 2;
+      if (centerLon > 180) centerLon -= 360;
+    }
+  }
+  
+  console.log('Route analysis:', {
+    distance: distanceKm.toFixed(0) + ' km',
+    isNorthToSouthRoute,
+    isTransOceanic,
+    viewBearing: viewBearing.toFixed(1),
+    centerPoint: { lat: centerLat.toFixed(2), lon: centerLon.toFixed(2) }
+  });
+  
+  // Adjust pitch based on distance and route type
+  const maxPitch = 45; // Reduced for better overview
+  const minPitch = 30; // Lower minimum for flatter view when needed
+  
+  // Calculate appropriate pitch based on route characteristics
+  let pitch;
+  if (isNorthToSouthRoute) {
+    // For north-south routes, use higher pitch to see curve better
+    pitch = maxPitch;
+  } else {
+    // For east-west routes, use pitch based on distance
+    pitch = minPitch + ((15000 - Math.min(distanceKm, 15000)) / 15000) * (maxPitch - minPitch);
+  }
   
   const INITIAL_VIEW_STATE = {
     longitude: centerLon,
     latitude: centerLat,
     zoom: zoom,
     pitch: pitch,
-    bearing: bearing,
+    bearing: viewBearing,
     transitionDuration: 1000,
     transitionInterpolator: new FlyToInterpolator()
   };
@@ -239,9 +300,10 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     id: 'airport-layer',
     data: [fromAirport, toAirport],
     getPosition: (d: Airport) => [d.lon, d.lat],
-    getFillColor: [255, 215, 0],
-    getRadius: 100000,
+    getFillColor: [255, 140, 0],
+    getRadius: 120000,
     pickable: true,
+    radiusUnits: 'meters',
   });
 
   const arcLayer = new ArcLayer<{ from: Airport; to: Airport }>({
@@ -249,11 +311,11 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     data: [{ from: fromAirport, to: toAirport }],
     getSourcePosition: (d) => [d.from.lon, d.from.lat],
     getTargetPosition: (d) => [d.to.lon, d.to.lat],
-    getSourceColor: [0, 170, 220, 200],
-    getTargetColor: [0, 170, 220, 200],
-    getWidth: 4,
+    getSourceColor: [0, 128, 255, 230],
+    getTargetColor: [0, 128, 255, 230],
+    getWidth: 5,
     getHeight: ARC_LAYER_GET_HEIGHT_RATIO,
-    getTilt: 0, // Kept at 0 for this test
+    getTilt: 0,
     greatCircle: true,
     pickable: false,
   });
@@ -263,8 +325,8 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     data: animatedAirplaneData,
     getPosition: (d: AirplaneData) => d.position,
     getText: (d: AirplaneData) => d.text,
-    getSize: 45,
-    getColor: [220, 20, 60, 255],
+    getSize: 50,
+    getColor: [255, 0, 0, 255],
     getAngle: (d: AirplaneData) => d.angle || 0,
     billboard: true,
     sizeUnits: 'pixels',
@@ -274,9 +336,12 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     },
   });
 
+  // DeckGL event type is complex and specific type definition is not our main concern right now
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleClick = (event: any) => {
-    if (onLocationClick) {
-      const { lat, lng } = event.coordinate || event.lngLat;
+    if (onLocationClick && event && event.coordinate) {
+      const lat = Array.isArray(event.coordinate) ? event.coordinate[1] : (event.lngLat?.lat ?? 0);
+      const lng = Array.isArray(event.coordinate) ? event.coordinate[0] : (event.lngLat?.lng ?? 0);
       onLocationClick(lat, lng);
     }
   };
@@ -288,7 +353,7 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
         controller={true}
         layers={[airportLayer, arcLayer, airplaneTextLayer]}
         width="100%"
-        height="600px"
+        height="100%"
         onClick={handleClick}
         getTooltip={({ object, layer }) => {
           if (object && layer && layer.id === 'airport-layer') {

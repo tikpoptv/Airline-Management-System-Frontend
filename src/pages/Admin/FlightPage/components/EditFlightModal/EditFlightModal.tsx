@@ -4,6 +4,7 @@ import { Flight } from '../../types';
 import { UpdateFlightBasicData, UpdateFlightAdvancedData, updateFlightBasic, updateFlightAdvanced } from '../../../../../services/flight/flightService';
 import ConfirmationModal from './ConfirmationModal';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { message } from 'antd';
 
 interface Props {
   isOpen: boolean;
@@ -96,15 +97,33 @@ const EditFlightModal: React.FC<Props> = ({
   const handleConfirm = async () => {
     setLoading(true);
     setError(null);
+    
+    const messageKey = 'updatable';
+    message.loading({ content: 'Saving changes...', key: messageKey });
+    
     try {
       if (showAdvanced) {
         await updateFlightAdvanced(flight.flight_id, advancedData);
       }
       await updateFlightBasic(flight.flight_id, basicData);
+      
+      message.success({
+        content: 'Flight details updated successfully',
+        key: messageKey,
+        duration: 3
+      });
+      
       onUpdate();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred while updating flight data');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while updating flight data';
+      setError(errorMessage);
+      
+      message.error({
+        content: errorMessage,
+        key: messageKey,
+        duration: 4
+      });
     } finally {
       setLoading(false);
       setShowConfirmation(false);

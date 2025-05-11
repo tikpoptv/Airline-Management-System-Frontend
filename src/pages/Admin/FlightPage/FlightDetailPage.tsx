@@ -7,6 +7,7 @@ import { flightService } from '../../../services/flight/flightService';
 import { Flight, CrewMember, Passenger } from './types';
 import PassengerDetailModal from './components/PassengerDetailModal/PassengerDetailModal';
 import EditFlightModal from './components/EditFlightModal/EditFlightModal';
+import AddCrewModal from './components/AddCrewModal/AddCrewModal';
 
 const getZoomLevel = (distance: number): number => {
   if (distance < 1000) return 5;
@@ -25,6 +26,7 @@ const FlightDetailPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddCrewModal, setShowAddCrewModal] = useState(false);
 
   const formatDateTime = (dateTimeStr: string) => {
     const date = new Date(dateTimeStr);
@@ -84,6 +86,18 @@ const FlightDetailPage: React.FC = () => {
     }
   };
 
+  const handleAddCrewComplete = async () => {
+    if (!id) return;
+    try {
+      const updatedCrew = await flightService.getFlightCrew(Number(id));
+      setCrewMembers(updatedCrew);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to refresh crew data';
+      console.error('Error refreshing crew data:', errorMessage);
+      setError(errorMessage);
+    }
+  };
+
   if (loading) return (
     <div className="loading-container">
       <div className="loading-spinner"></div>
@@ -136,7 +150,12 @@ const FlightDetailPage: React.FC = () => {
         <h2>Flight Crew</h2>
         <div className={styles.headerActions}>
           {isAllowedToAdd(flightDetail.flight_status) ? (
-            <button className={styles.addCrewButton}>+ Add Crew</button>
+            <button 
+              className={styles.addCrewButton}
+              onClick={() => setShowAddCrewModal(true)}
+            >
+              + Add Crew
+            </button>
           ) : (
             <div className={styles.disabledAddButton} title="Cannot add crew in current flight status">
               + Add Crew
@@ -462,6 +481,16 @@ const FlightDetailPage: React.FC = () => {
           isOpen={!!selectedPassengerId}
           onClose={() => setSelectedPassengerId(null)}
           passengerId={selectedPassengerId}
+        />
+      )}
+
+      {/* Add Crew Modal */}
+      {showAddCrewModal && flightDetail && (
+        <AddCrewModal
+          isOpen={showAddCrewModal}
+          onClose={() => setShowAddCrewModal(false)}
+          flightId={Number(id)}
+          onSuccess={handleAddCrewComplete}
         />
       )}
     </div>

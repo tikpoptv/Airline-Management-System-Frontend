@@ -35,6 +35,20 @@ export interface UpdateFlightAdvancedData {
   arrival_time?: string;
 }
 
+export interface AssignCrewRequest {
+  crew_id: number;
+  role_in_flight: string;
+}
+
+export interface AvailableCrew {
+  crew_id: number;
+  name: string;
+  role: string;
+  flight_hours: number;
+  status: string;
+  license_valid: boolean;
+}
+
 export const getFlightsByAircraftId = async (aircraftId: number): Promise<Flight[]> => {
   return api.get(`/api/aircrafts/${aircraftId}/flights`);
 };
@@ -74,5 +88,16 @@ export const flightService = {
   // Get detailed information about a specific passenger
   getPassengerDetails: (passengerId: number): Promise<PassengerDetail> => {
     return api.get(`/api/passengers/${passengerId}`);
+  },
+
+  // Assign crew member to a flight
+  assignCrewToFlight: async (flightId: number, data: AssignCrewRequest): Promise<void> => {
+    return api.post(`/api/flights/${flightId}/assign-crew`, data);
+  },
+
+  // Get available crews for a flight
+  getAvailableCrews: async (flightId: number): Promise<AvailableCrew[]> => {
+    const response = await api.get(`/api/flights/${flightId}/available-crews`);
+    return response.data;
   }
 };

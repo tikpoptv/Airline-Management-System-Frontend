@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FaPlane, FaUsers, FaWrench, FaRoute, FaMapLocationDot } from 'react-icons/fa6';
 import { MdFlightTakeoff, MdFlightLand } from 'react-icons/md';
 import { TbPlaneOff } from 'react-icons/tb';
@@ -8,8 +9,9 @@ import MaintenanceChart from './components/MaintenanceChart';
 import CrewSchedule from './components/CrewSchedule';
 import WeatherWidget from './components/WeatherWidget';
 import NotificationList from './components/NotificationList';
-import { Notification } from './types';
 import FlightMap from './components/FlightMap';
+import FlightDetailsModal from './components/FlightDetailsModal';
+import { Notification } from './types';
 
 // Mock data
 const mockStats = {
@@ -33,7 +35,11 @@ const mockNotifications: Notification[] = [
   { id: 3, type: 'weather', message: 'Strong winds at BKK airport', time: '1 hour ago' },
 ];
 
+type ModalType = 'total' | 'active' | 'delayed' | 'cancelled' | null;
+
 const DashboardPage = () => {
+  const [selectedModal, setSelectedModal] = useState<ModalType>(null);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -56,24 +62,28 @@ const DashboardPage = () => {
           title="Total Flights Today"
           value={mockStats.totalFlights}
           trend={+12.5}
+          onClick={() => setSelectedModal('total')}
         />
         <StatCard
           icon={<FaPlane />}
           title="Active Flights"
           value={mockStats.activeFlights}
           status="active"
+          onClick={() => setSelectedModal('active')}
         />
         <StatCard
           icon={<MdFlightLand />}
           title="Delayed Flights"
           value={mockStats.delayedFlights}
           status="warning"
+          onClick={() => setSelectedModal('delayed')}
         />
         <StatCard
           icon={<TbPlaneOff />}
           title="Cancelled Flights"
           value={mockStats.cancelledFlights}
           status="error"
+          onClick={() => setSelectedModal('cancelled')}
         />
       </div>
 
@@ -187,6 +197,13 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
+
+      {selectedModal && (
+        <FlightDetailsModal
+          type={selectedModal}
+          onClose={() => setSelectedModal(null)}
+        />
+      )}
     </div>
   );
 };

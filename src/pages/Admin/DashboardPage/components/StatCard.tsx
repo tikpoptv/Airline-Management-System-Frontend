@@ -8,11 +8,17 @@ interface StatCardProps {
   value: number;
   trend?: number;
   status?: 'active' | 'warning' | 'error';
+  onClick?: () => void;
 }
 
-const StatCard = ({ icon, title, value, trend, status }: StatCardProps) => {
+const StatCard = ({ icon, title, value, trend, status, onClick }: StatCardProps) => {
   return (
-    <div className={`${styles.card} ${status ? styles[status] : ''}`}>
+    <div 
+      className={`${styles.card} ${status ? styles[status] : ''} ${onClick ? styles.clickable : ''}`}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+    >
       <div className={styles.icon}>{icon}</div>
       <div className={styles.content}>
         <h3>{title}</h3>

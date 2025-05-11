@@ -109,6 +109,29 @@ const FlightDetailPage: React.FC = () => {
     country: flightDetail.route.to_airport.country
   };
 
+  const FlightCrewHeader = () => {
+    const isAllowedToAdd = (status: string) => {
+      const allowedStatuses = ['SCHEDULED', 'DELAYED'];
+      return allowedStatuses.includes(status.toUpperCase());
+    };
+
+    return (
+      <div className={styles.sectionHeader}>
+        <h2>Flight Crew</h2>
+        <div className={styles.headerActions}>
+          {isAllowedToAdd(flightDetail.flight_status) ? (
+            <button className={styles.addCrewButton}>+ Add Crew</button>
+          ) : (
+            <div className={styles.disabledAddButton} title="Cannot add crew in current flight status">
+              + Add Crew
+            </div>
+          )}
+          <Link to="/admin/crew" className={styles.viewDetailButton}>View All Crew</Link>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.flightDetailPage}>
       {/* Breadcrumb */}
@@ -324,13 +347,7 @@ const FlightDetailPage: React.FC = () => {
 
       {/* Crew Section */}
       <div className={styles.flightDetails}>
-        <div className={styles.sectionHeader}>
-          <h2>Flight Crew</h2>
-          <div className={styles.headerActions}>
-            <button className={styles.addCrewButton}>+ Add Crew</button>
-            <Link to="/admin/crews" className={styles.viewDetailButton}>View All Crew</Link>
-          </div>
-        </div>
+        <FlightCrewHeader />
         
         <div className={styles.tableContainer}>
           <table>
@@ -355,14 +372,12 @@ const FlightDetailPage: React.FC = () => {
                     <span className={styles.dutyBadge}>{crew.role_in_flight}</span>
                   </td>
                   <td>
-                    <div className={styles.actionButtons}>
-                      <Link to={`/admin/crews/${crew.crew_id}`} className={styles.actionButton}>
-                        View Details
-                      </Link>
-                      <button className={styles.actionButton}>
-                        <FaEllipsisV />
-                      </button>
-                    </div>
+                    <Link 
+                      to={`/admin/crew/${crew.crew_id}`} 
+                      className={styles.viewDetailsButton}
+                    >
+                      View Details
+                    </Link>
                   </td>
                 </tr>
               ))}

@@ -4,23 +4,20 @@ import { ScatterplotLayer, ArcLayer, TextLayer } from '@deck.gl/layers';
 import { StaticMap } from 'react-map-gl';
 import { GL } from '@luma.gl/constants';
 import './GlobeMap.css';
+import { FlyToInterpolator } from '@deck.gl/core';
 
-// Fallback to default token if environment variable is not set
-const MAPBOX_TOKEN = "pk.eyJ1IjoiamVkc2FkYXBvcm4iLCJhIjoiY2xzOWdqcWp2MDNvMjJrbXVnOWYwc2wzNyJ9.uMuDq7UhTkwNZO5-QKOEng";
-
-interface AirportProps {
+export interface Airport {
   iata_code: string;
   name: string;
   lat: number;
   lon: number;
-  city: string;
-  country: string;
+  city?: string;
+  country?: string;
 }
 
 interface GlobeMapProps {
-  fromAirport: AirportProps;
-  toAirport: AirportProps;
-  route_id: number;
+  fromAirport: Airport;
+  toAirport: Airport;
   onLocationClick?: (lat: number, lon: number) => void;
 }
 
@@ -60,7 +57,7 @@ const getPointAndBearingOnGreatCircle = (
 
   // Calculate current point
   let currentLatRad, currentLonRad;
-  if (d === 0 || isNaN(d) || Math.sin(d) === 0) {
+  if (d === 0 || isNaN(d) || Math.sin(d) === 0) { // Added Math.sin(d) === 0 for robustness
     currentLatRad = fraction > 0.5 ? lat2Rad : lat1Rad;
     currentLonRad = fraction > 0.5 ? lon2Rad : lon1Rad;
   } else {
@@ -73,10 +70,10 @@ const getPointAndBearingOnGreatCircle = (
     currentLonRad = Math.atan2(y, x);
   }
 
-  // Calculate next point for bearing
-  const epsilon = 0.0001;
+  // Calculate next point for bearing (infinitesimally small step forward)
+  const epsilon = 0.0001; // Small fraction for next step
   let nextFraction = fraction + epsilon;
-  if (nextFraction > 1) nextFraction = 1;
+  if (nextFraction > 1) nextFraction = 1; // Cap at destination
 
   let nextLatRad, nextLonRad;
   if (d === 0 || isNaN(d) || Math.sin(d) === 0) {
@@ -92,22 +89,25 @@ const getPointAndBearingOnGreatCircle = (
     nextLonRad = Math.atan2(y_next, x_next);
   }
   
-  // Calculate bearing
+  // Calculate bearing from current point to next point
   const deltaLonBearing = nextLonRad - currentLonRad;
   const yBearing = Math.sin(deltaLonBearing) * Math.cos(nextLatRad);
   const xBearing = Math.cos(currentLatRad) * Math.sin(nextLatRad) -
                  Math.sin(currentLatRad) * Math.cos(nextLatRad) * Math.cos(deltaLonBearing);
   let bearingRad = Math.atan2(yBearing, xBearing);
 
+  // Handle case where current and next point are virtually identical (e.g., at the very end)
   if (isNaN(bearingRad)) {
-    if (fraction < epsilon) {
+    // Fallback: bearing towards the destination if at start, or maintain previous if possible
+    // For simplicity, if at the start, calculate bearing to end. If at end, can be 0 or last known.
+    if (fraction < epsilon) { // At the start
         const initialDeltaLon = lon2Rad - lon1Rad;
         const yInitialBearing = Math.sin(initialDeltaLon) * Math.cos(lat2Rad);
         const xInitialBearing = Math.cos(lat1Rad) * Math.sin(lat2Rad) -
                                Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(initialDeltaLon);
         bearingRad = Math.atan2(yInitialBearing, xInitialBearing);
-    } else {
-      bearingRad = 0;
+    } else { // At or near the end, or other NaN cases
+        bearingRad = 0; // Or maintain last valid bearing if implemented
     }
   }
 
@@ -117,21 +117,69 @@ const getPointAndBearingOnGreatCircle = (
 const ARC_LAYER_GET_HEIGHT_RATIO = 0.08;
 const VISUAL_ALTITUDE_MULTIPLIER = 0.6;
 
-const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, onLocationClick }) => {
+const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick }) => {
+  console.log('GlobeMap rendering with:', { fromAirport, toAirport });
+  
+  // Calculate the distance between airports
+  const distance = haversineDistance(
+    { lat: fromAirport.lat, lon: fromAirport.lon },
+    { lat: toAirport.lat, lon: toAirport.lat }
+  );
+  
+  // Calculate zoom level based on distance with wider range
+  const maxDistance = 15000000; // 15000km in meters
+  const minDistance = 500000;   // 500km in meters
+  const maxZoom = 4;    // Reduced max zoom for shorter distances
+  const minZoom = 1;    // Much less zoom for longer distances
+  
+  // Logarithmic scaling for better zoom distribution
+  const logDistance = Math.log(distance);
+  const logMaxDistance = Math.log(maxDistance);
+  const logMinDistance = Math.log(minDistance);
+  
+  // Adjust zoom calculation to favor more zoomed out views
+  const zoomBase = maxZoom - ((Math.min(Math.max(logDistance, logMinDistance), logMaxDistance) - logMinDistance) / 
+                         (logMaxDistance - logMinDistance)) * (maxZoom - minZoom);
+  
+  // Further reduce zoom for longer distances
+  const zoom = Math.max(minZoom, zoomBase - (distance > 5000000 ? 0.5 : 0));
+  
+  // Calculate bearing between airports
+  const deltaLon = toAirport.lon - fromAirport.lon;
+  const y = Math.sin(deltaLon) * Math.cos(toRadians(toAirport.lat));
+  const x = Math.cos(toRadians(fromAirport.lat)) * Math.sin(toRadians(toAirport.lat)) -
+           Math.sin(toRadians(fromAirport.lat)) * Math.cos(toRadians(toAirport.lat)) * Math.cos(deltaLon);
+  const bearing = (toDegrees(Math.atan2(y, x)) + 360) % 360;
+  
+  // Adjust center point to show more of the path
+  const midLat = (fromAirport.lat + toAirport.lat) / 2;
+  const midLon = (fromAirport.lon + toAirport.lon) / 2;
+  
+  // For long distances, shift the center point more significantly
+  const distanceRatio = Math.min(distance / maxDistance, 1);
+  const centerLat = midLat + (distanceRatio * 15); // Increased shift north for better curve visibility
+  const centerLon = midLon;
+  
+  // Adjust pitch based on distance - use lower pitch for better overview
+  const maxPitch = 60;
+  const minPitch = 30;
+  const pitch = minPitch + ((maxDistance - Math.min(distance, maxDistance)) / maxDistance) * (maxPitch - minPitch);
+  
   const INITIAL_VIEW_STATE = {
-    longitude: (fromAirport.lon + toAirport.lon) / 2,
-    latitude: (fromAirport.lat + toAirport.lat) / 2,
-    zoom: 2.5,
-    pitch: 45, 
-    bearing: 0
+    longitude: centerLon,
+    latitude: centerLat,
+    zoom: zoom,
+    pitch: pitch,
+    bearing: bearing,
+    transitionDuration: 1000,
+    transitionInterpolator: new FlyToInterpolator()
   };
+  
+  console.log('GlobeMap view state:', INITIAL_VIEW_STATE, 'Distance:', distance / 1000, 'km', 'Zoom:', zoom);
 
   const [animationProgress, setAnimationProgress] = useState(0);
 
   useEffect(() => {
-    console.log('Current Route ID:', route_id);
-    console.log('From Airport:', fromAirport);
-    console.log('To Airport:', toAirport);
     setAnimationProgress(0);
     let frameId: number;
     const animate = () => {
@@ -147,7 +195,7 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, o
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [route_id, fromAirport, toAirport]);
+  }, [fromAirport, toAirport]);
 
   const animatedAirplaneData = useMemo((): AirplaneData[] => {
     if (!fromAirport || !toAirport) return [];
@@ -170,6 +218,7 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, o
     );
 
     let currentAltitude = 0;
+    // Check if points are same or very close using the original d calculation logic if needed
     const deltaLonForD = lon2Rad - lon1Rad;
     const dForAltitude = Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) +
                            Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.cos(deltaLonForD));
@@ -186,16 +235,16 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, o
     }];
   }, [fromAirport, toAirport, animationProgress]);
 
-  const airportLayer = new ScatterplotLayer<AirportProps>({
+  const airportLayer = new ScatterplotLayer<Airport>({
     id: 'airport-layer',
     data: [fromAirport, toAirport],
-    getPosition: (d: AirportProps) => [d.lon, d.lat],
+    getPosition: (d: Airport) => [d.lon, d.lat],
     getFillColor: [255, 215, 0],
     getRadius: 100000,
     pickable: true,
   });
 
-  const arcLayer = new ArcLayer<{ from: AirportProps; to: AirportProps }>({
+  const arcLayer = new ArcLayer<{ from: Airport; to: Airport }>({
     id: 'arc-layer',
     data: [{ from: fromAirport, to: toAirport }],
     getSourcePosition: (d) => [d.from.lon, d.from.lat],
@@ -204,7 +253,7 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, o
     getTargetColor: [0, 170, 220, 200],
     getWidth: 4,
     getHeight: ARC_LAYER_GET_HEIGHT_RATIO,
-    getTilt: 0,
+    getTilt: 0, // Kept at 0 for this test
     greatCircle: true,
     pickable: false,
   });
@@ -238,27 +287,22 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, route_id, o
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={[airportLayer, arcLayer, airplaneTextLayer]}
+        width="100%"
+        height="600px"
         onClick={handleClick}
         getTooltip={({ object, layer }) => {
           if (object && layer && layer.id === 'airport-layer') {
-            const airport = object as AirportProps;
+            const airport = object as Airport;
             return `${airport.iata_code} - ${airport.name}`;
           }
           return null;
         }}
       >
         <StaticMap
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-          mapStyle="mapbox://styles/mapbox/dark-v11"
+          mapStyle="mapbox://styles/mapbox/light-v10"
+          mapboxApiAccessToken="pk.eyJ1IjoiZGV2LW5vcmRpZSIsImEiOiJjbGRtYzJndDEwMDM3M3JvZG56anFsbzl2In0.JMeq3FeAkMoxd0PY2SuGmg"
         />
       </DeckGL>
-      <div className="globe-map-info">
-        <div className="globe-map-route">
-          <span className="route-point">{fromAirport.iata_code}</span>
-          <span className="route-arrow">→</span>
-          <span className="route-point">{toAirport.iata_code}</span>
-        </div>
-      </div>
     </div>
   );
 };

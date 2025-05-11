@@ -1,0 +1,908 @@
+/* Flight Detail Page Styles */
+.flightDetailPage {
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  min-height: 100vh;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.breadcrumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #0066ff;
+}
+
+.breadcrumbSeparator {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* Flight Header */
+.flightHeader {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+  border-radius: 20px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 16px rgba(0, 102, 255, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.flightHeader:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 102, 255, 0.15);
+}
+
+.flightTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.flightNumberSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.flightIcon {
+  color: #0066ff;
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #e6f0ff 0%, #f0f7ff 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 102, 255, 0.15);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.flightTitle h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.flightStatus {
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.scheduled {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
+  box-shadow: 0 4px 8px rgba(21, 128, 61, 0.15);
+  animation: statusPulse 2s infinite;
+}
+
+@keyframes statusPulse {
+  0% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(21, 128, 61, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0); }
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: white;
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #e2e8f0;
+}
+
+.editButton:hover {
+  border-color: #0066ff;
+  color: #0066ff;
+  background-color: #f8fafc;
+}
+
+.editButton svg {
+  width: 16px;
+  height: 16px;
+  transition: all 0.2s;
+}
+
+.editButton:hover svg {
+  color: #0066ff;
+}
+
+.flightInfo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background-color: #f1f5f9;
+}
+
+.infoGroup {
+  background: white;
+  padding: 20px 32px;
+  transition: all 0.2s;
+}
+
+.infoGroup:hover {
+  background-color: #f8fafc;
+}
+
+.infoLabel {
+  font-size: 13px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoLabel svg {
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+.infoValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Route Card */
+.routeCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  min-height: 400px;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.routeCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.routeMapContainer {
+  position: relative;
+  height: 100%;
+  min-height: 450px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  order: 1;
+}
+
+.routeMapContainer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.routeInfo {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  background-color: #f8fafc;
+  border-radius: 16px;
+  height: 450px;
+  order: 2;
+}
+
+.airportInfo {
+  flex: 1;
+  text-align: center;
+  padding: 32px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.airportInfo:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 24px rgba(0, 102, 255, 0.12);
+}
+
+.airportCity {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.airportCode {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0066ff 0%, #80b3ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 4px rgba(0, 102, 255, 0.2);
+  animation: codeGlow 2s infinite;
+}
+
+@keyframes codeGlow {
+  0% { text-shadow: 0 0 10px rgba(0, 102, 255, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(0, 102, 255, 0.8); }
+  100% { text-shadow: 0 0 10px rgba(0, 102, 255, 0.5); }
+}
+
+.airportName {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.airportTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.timeIcon {
+  color: #64748b;
+}
+
+.airportMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.routeLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px;
+  position: relative;
+}
+
+.durationBadge {
+  background-color: #f0f7ff;
+  color: #0066ff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.1);
+}
+
+.lineWithPlane {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #0066ff 0%, #80b3ff 50%, #0066ff 100%);
+  background-size: 200% 100%;
+  animation: gradientMove 4s linear infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.animatedPlane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: #0066ff;
+  filter: drop-shadow(0 2px 4px rgba(0, 102, 255, 0.3));
+  animation: flyAndGlow 3s infinite;
+}
+
+@keyframes flyAndGlow {
+  0% {
+    transform: translate(-50%, -50%) translateX(-20px) rotate(0deg);
+    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.5));
+  }
+  50% {
+    transform: translate(-50%, -50%) translateX(20px) rotate(0deg);
+    filter: drop-shadow(0 0 20px rgba(0, 102, 255, 0.8));
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(-20px) rotate(0deg);
+    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.5));
+  }
+}
+
+/* Route and Aircraft Information */
+.flightInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.infoSection {
+  background-color: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.sectionTitle h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+}
+
+.viewDetailButton {
+  color: #0066ff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #f0f7ff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.1);
+}
+
+.viewDetailButton:hover {
+  background-color: #0066ff;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 102, 255, 0.2);
+}
+
+.infoCardsGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.infoCard {
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  border: 1px solid #e2e8f0;
+}
+
+.infoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cardIcon {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cardContent label {
+  font-size: 13px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.cardContent span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.cardContent small {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+  .flightDetailPage {
+    padding: 24px;
+  }
+
+  .routeCard {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .routeMapContainer {
+    min-height: 400px;
+    order: 1;
+  }
+
+  .routeInfo {
+    height: auto;
+    min-height: 400px;
+    order: 2;
+  }
+}
+
+@media (max-width: 1024px) {
+  .flightInfoGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .flightDetailPage {
+    padding: 16px;
+  }
+
+  .routeCard {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .routeMapContainer {
+    min-height: 300px;
+  }
+
+  .routeInfo {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    min-height: 300px;
+  }
+
+  .infoCardsGroup {
+    grid-template-columns: 1fr;
+  }
+
+  .flightTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .editButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .flightHeader {
+    border-radius: 12px;
+  }
+
+  .flightTitle {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .flightNumberSection {
+    width: 100%;
+  }
+
+  .editButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flightInfo {
+    grid-template-columns: 1fr;
+  }
+
+  .infoGroup {
+    padding: 16px 20px;
+  }
+}
+
+/* Loading and Error States */
+.loading-container,
+.error-container,
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0066ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Flight Detail Page Styles */
+.flightDetails {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.addCrewButton {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewDetailButton {
+  color: #0066ff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: #f0f7ff;
+  font-weight: 500;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tableContainer table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableContainer th {
+  text-align: left;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  color: #666;
+  font-weight: 500;
+}
+
+.tableContainer td {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.crewName {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  background-color: #e5f1ff;
+  color: #0066ff;
+}
+
+.dutyBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  background-color: #f0f2f5;
+  color: #666;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actionButton {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #f0f7ff;
+  color: #0066ff;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actionButton:hover {
+  background-color: #e5f1ff;
+}
+
+/* Flight Crew Section Styles */
+.sectionTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.crewCount {
+  background-color: #f0f2f5;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.viewAllButton {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #0066ff;
+  background-color: #f0f7ff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.viewAllButton:hover {
+  background-color: #e5f1ff;
+}
+
+.crewTableContainer {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.crewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.crewTable th {
+  background-color: #f8f9fa;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 1px solid #eee;
+}
+
+.crewTable td {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.crewId {
+  color: #666;
+  font-family: monospace;
+}
+
+.crewNameCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crewAvatar {
+  width: 32px;
+  height: 32px;
+  background-color: #e5f1ff;
+  color: #0066ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.roleBadge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.pilot {
+  background-color: #e5f1ff;
+  color: #0066ff;
+}
+
+.co-pilot {
+  background-color: #fff2e5;
+  color: #ff6b00;
+}
+
+.technician {
+  background-color: #e6f4ea;
+  color: #1e8e3e;
+}
+
+.viewDetailsButton {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #0066ff;
+  background-color: #f0f7ff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.viewDetailsButton:hover {
+  background-color: #e5f1ff;
+}
+
+.moreButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background-color: transparent;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.moreButton:hover {
+  background-color: #f0f2f5;
+}
+
+.emptyCrewState {
+  padding: 48px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyCrewState p {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.addFirstButton {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addFirstButton:hover {
+  background-color: #0052cc;
+} 

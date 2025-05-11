@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogDetail } from '../../../services/maintenance/maintenanceService';
 import MaintenanceDetail from './MaintenanceDetail';
@@ -12,11 +12,7 @@ function MaintenanceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       if (!id) {
         navigate('/maintenance/maintenance');
@@ -29,7 +25,11 @@ function MaintenanceDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   if (loading) return <p>Loading...</p>;
   if (!maintenanceLog) return <p>Maintenance log not found</p>;

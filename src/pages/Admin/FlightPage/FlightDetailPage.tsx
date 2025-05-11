@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronRight, FaEdit, FaEllipsisV, FaPlane, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaChevronRight, FaEdit, FaEllipsisV, FaPlane, FaClock } from 'react-icons/fa';
 import styles from './FlightDetailPage.module.css';
 import GlobeMap from '../RoutePage/components/GlobeMap/GlobeMap';
 import { flightService } from '../../../services/flight/flightService';
@@ -153,40 +153,90 @@ const FlightDetailPage: React.FC = () => {
       <div className={styles.routeCard}>
         <div className={styles.routeInfo}>
           <div className={`${styles.airportInfo} ${styles.departure}`}>
-            <div className={styles.airportCity}>{flightDetail.route.from_airport.city}</div>
-            <div className={styles.airportCode}>{flightDetail.route.from_airport.iata_code}</div>
-            <div className={styles.airportName}>{flightDetail.route.from_airport.name}</div>
-            <div className={styles.airportTime}>
-              <FaClock className={styles.timeIcon} />
-              {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+            <div className={styles.airportHeader}>
+              <h3>{flightDetail.route.from_airport.city}</h3>
+              <span className={styles.airportCode}>{flightDetail.route.from_airport.iata_code}</span>
             </div>
-            <div className={styles.airportMarker}>
-              <FaMapMarkerAlt className={styles.markerIcon} />
-              Departure
+            <div className={styles.airportDetails}>
+              <div className={styles.airportName}>{flightDetail.route.from_airport.name}</div>
+              <div className={styles.timeInfo}>
+                <FaClock className={styles.timeIcon} />
+                <span className={styles.time}>
+                  {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+                </span>
+                <span className={styles.date}>
+                  {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).date : 'N/A'}
+                </span>
+              </div>
+              <div className={styles.statusBadge}>
+                <FaPlane className={styles.planeIcon} />
+                Departure
+              </div>
             </div>
           </div>
 
-          <div className={styles.routeLine}>
-            <div className={styles.durationBadge}>
-              <FaClock className={styles.clockIcon} />
-              {flightDetail.route.estimated_duration}
-            </div>
-            <div className={styles.lineWithPlane}>
-              <div className={styles.animatedPlane}>✈️</div>
+          <div className={styles.flightPath}>
+            <div className={styles.pathLine}>
+              <div className={styles.dot}></div>
+              <div className={styles.line}></div>
+              <div className={styles.flightStatusBox}>
+                <div className={styles.timeDisplay}>
+                  <div className={styles.timeValue}>
+                    {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+                  </div>
+                  <div className={styles.dateValue}>
+                    {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).date : 'N/A'}
+                  </div>
+                  <div className={styles.timezone}>
+                    {flightDetail.route.from_airport.timezone || 'Local Time'}
+                  </div>
+                </div>
+                <div className={styles.flightIdentifier}>
+                  <span className={styles.flightNumber}>{flightDetail.flight_number}</span>
+                  {flightDetail.flight_status.toLowerCase() === 'delayed' && (
+                    <div className={styles.delayBadge}>
+                      <FaClock className={styles.delayIcon} />
+                      <span>Delayed</span>
+                    </div>
+                  )}
+                </div>
+                <div className={styles.flightProgress}>
+                  <div className={styles.progressBar}>
+                    <div 
+                      className={`${styles.progressFill} ${styles[flightDetail.flight_status.toLowerCase()]}`}
+                      style={{ width: '45%' }}
+                    ></div>
+                  </div>
+                  <div className={styles.flightDuration}>
+                    <span>Duration: {flightDetail.route.estimated_duration}</span>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.line}></div>
+              <div className={styles.dot}></div>
             </div>
           </div>
 
           <div className={`${styles.airportInfo} ${styles.arrival}`}>
-            <div className={styles.airportCity}>{flightDetail.route.to_airport.city}</div>
-            <div className={styles.airportCode}>{flightDetail.route.to_airport.iata_code}</div>
-            <div className={styles.airportName}>{flightDetail.route.to_airport.name}</div>
-            <div className={styles.airportTime}>
-              <FaClock className={styles.timeIcon} />
-              {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).time : 'N/A'}
+            <div className={styles.airportHeader}>
+              <h3>{flightDetail.route.to_airport.city}</h3>
+              <span className={styles.airportCode}>{flightDetail.route.to_airport.iata_code}</span>
             </div>
-            <div className={styles.airportMarker}>
-              <FaMapMarkerAlt className={styles.markerIcon} />
-              Arrival
+            <div className={styles.airportDetails}>
+              <div className={styles.airportName}>{flightDetail.route.to_airport.name}</div>
+              <div className={styles.timeInfo}>
+                <FaClock className={styles.timeIcon} />
+                <span className={styles.time}>
+                  {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).time : 'N/A'}
+                </span>
+                <span className={styles.date}>
+                  {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).date : 'N/A'}
+                </span>
+              </div>
+              <div className={styles.statusBadge}>
+                <FaPlane className={`${styles.planeIcon} ${styles.arrival}`} />
+                Arrival
+              </div>
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { MaintenanceLog, MaintenanceLogStatus } from '../../../types/maintenance';
 // import CreateMaintenanceModal from './CreateMaintenanceModal';
 import { useNavigate } from 'react-router-dom';
+import styles from './MaintenancePage.module.css';
 
 interface Props {
   maintenanceList: MaintenanceLog[];
@@ -18,10 +19,10 @@ interface Props {
 
 const getMaintenanceStatusClass = (status: MaintenanceLogStatus): string => {
   const statusMap: Record<MaintenanceLogStatus, string> = {
-    'Pending': 'status-pending',
-    'In Progress': 'status-in-progress',
-    'Completed': 'status-completed',
-    'Cancelled': 'status-cancelled'
+    'Pending': styles.statusPending,
+    'In Progress': styles.statusInProgress,
+    'Completed': styles.statusCompleted,
+    'Cancelled': styles.statusCancelled
   };
   return statusMap[status] || '';
 };
@@ -86,35 +87,35 @@ const MaintenanceLogList = ({
   };
 
   return (
-    <div className="maintenance-list">
-      <div className="maintenance-header">
-        <div className="title-group">
+    <div className={styles.maintenanceList}>
+      <div className={styles.maintenanceHeader}>
+        <div className={styles.titleGroup}>
           <h4>Maintenance</h4>
           <h2>Maintenance Log Management</h2>
         </div>
 
-        <div className="header-actions">
+        <div className={styles.headerActions}>
           <button
-            className="search-popup-button"
+            className={styles.searchPopupButton}
             onClick={() => setShowSearchModal(true)}
             title="Advanced Search"
           >
             <FaSearch />
           </button>
 
-          <div className="button-group">
+          <div className={styles.buttonGroup}>
             {isEditing && (
-              <button className="add-button" onClick={() => navigate('/maintenance/maintenance/create')}>
+              <button className={styles.addButton} onClick={() => navigate('/maintenance/maintenance/create')}>
                 <FaPlus /> Add New
               </button>
             )}
             {isEditing && selectedLogIds.length > 0 && (
-              <button className="delete-button" onClick={onDelete}>
+              <button className={styles.deleteButton} onClick={onDelete}>
                 <FaTrash /> Delete Selected
               </button>
             )}
             <button
-              className={`edit-button ${isEditing ? 'done-button' : ''}`}
+              className={`${styles.editButton} ${isEditing ? styles.doneButton : ''}`}
               onClick={() => setIsEditing(!isEditing)}
             >
               {isEditing ? 'Done' : <><FaEdit /> Edit</>}
@@ -126,19 +127,19 @@ const MaintenanceLogList = ({
       {loading ? (
         <Loading message="Loading maintenance logs..." />
       ) : (
-        <div className="table-container">
-          <table className="maintenance-table">
+        <div className={styles.tableContainer}>
+          <table className={styles.maintenanceTable}>
             <thead>
               <tr>
-                {isEditing && <th className="checkbox-column" />}
-                <th className="status-column">Status</th>
+                {isEditing && <th className={styles.checkboxColumn} />}
+                <th className={styles.statusColumn}>Status</th>
                 <th>Log ID</th>
                 <th>Aircraft_ID</th>
                 <th>Model</th>
                 <th>Date</th>
                 <th>User_ID</th>
                 <th>Assigned To</th>
-                <th className="actions-column" />
+                <th className={styles.actionsColumn} />
               </tr>
             </thead>
             <tbody>
@@ -146,10 +147,10 @@ const MaintenanceLogList = ({
                 <tr
                   key={log.log_id}
                   onClick={() => handleRowClick(log)}
-                  className={`maintenance-row ${selectedLogIds.includes(log.log_id) ? 'selected' : ''}`}
+                  className={`${styles.maintenanceRow} ${selectedLogIds.includes(log.log_id) ? styles.selected : ''}`}
                 >
                   {isEditing && (
-                    <td className="checkbox-column" onClick={(e) => e.stopPropagation()}>
+                    <td className={styles.checkboxColumn} onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         checked={selectedLogIds.includes(log.log_id)}
@@ -157,22 +158,22 @@ const MaintenanceLogList = ({
                       />
                     </td>
                   )}
-                  <td className="status-column">
-                    <span className={`maintenance-status ${getMaintenanceStatusClass(log.status)}`}>
+                  <td className={styles.statusColumn}>
+                    <span className={`${styles.maintenanceStatus} ${getMaintenanceStatusClass(log.status)}`}>
                       {getMaintenanceStatusLabel(log.status)}
                     </span>
                   </td>
-                  <td className="id-column">{log.log_id}</td>
-                  <td className="aircraft-column">{log.aircraft_id}</td>
-                  <td className="model-column">{log.aircraft?.model || 'N/A'}</td>
-                  <td className="date-column">{formatDate(log.date_of_maintenance)}</td>
-                  <td className="user-id-column">{log.assigned_user?.user_id || 'N/A'}</td>
-                  <td className="assigned-column">
+                  <td className={styles.idColumn}>{log.log_id}</td>
+                  <td className={styles.aircraftColumn}>{log.aircraft_id}</td>
+                  <td className={styles.modelColumn}>{log.aircraft?.model || 'N/A'}</td>
+                  <td className={styles.dateColumn}>{formatDate(log.date_of_maintenance)}</td>
+                  <td className={styles.userIdColumn}>{log.assigned_user?.user_id || 'N/A'}</td>
+                  <td className={styles.assignedColumn}>
                     {log.assigned_user ? log.assigned_user.username : 'Unassigned'}
                   </td>
-                  <td className="actions-column" onClick={(e) => e.stopPropagation()}>
+                  <td className={styles.actionsColumn} onClick={(e) => e.stopPropagation()}>
                     <button
-                      className="view-button"
+                      className={styles.viewButton}
                       onClick={() => setSelectedMaintenanceLog(log)}
                       title="View Details"
                     >
@@ -188,11 +189,11 @@ const MaintenanceLogList = ({
 
       {/* Search Modal */}
       {showSearchModal && (
-        <div className="search-modal-backdrop">
-          <div className="search-modal">
+        <div className={styles.searchModalBackdrop}>
+          <div className={styles.searchModal}>
             <h3>Advanced Search</h3>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Log ID</label>
               <input
                 type="text"
@@ -202,7 +203,7 @@ const MaintenanceLogList = ({
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Aircraft ID</label>
               <input
                 type="text"
@@ -212,7 +213,7 @@ const MaintenanceLogList = ({
               />
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Location</label>
               <select value={filterLocation} onChange={(e) => setFilterLocation(e.target.value)}>
                 <option value="">All Locations</option>
@@ -222,7 +223,7 @@ const MaintenanceLogList = ({
               </select>
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Status</label>
               <select 
                 value={filterStatus} 
@@ -236,7 +237,7 @@ const MaintenanceLogList = ({
               </select>
             </div>
 
-            <div className="input-group">
+            <div className={styles.inputGroup}>
               <label>Assigned To</label>
               <select value={filterAssignedTo} onChange={(e) => setFilterAssignedTo(e.target.value)}>
                 <option value="">All Users</option>
@@ -246,12 +247,12 @@ const MaintenanceLogList = ({
               </select>
             </div>
 
-            <div className="modal-actions">
-              <button className="primary-button" onClick={() => setShowSearchModal(false)}>
+            <div className={styles.modalActions}>
+              <button className={styles.confirmButton} onClick={() => setShowSearchModal(false)}>
                 Apply Filter
               </button>
               <button
-                className="secondary-button"
+                className={styles.cancelButton}
                 onClick={() => {
                   setFilterLogId('');
                   setFilterAircraftId('');

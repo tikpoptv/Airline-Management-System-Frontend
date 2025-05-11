@@ -1,4 +1,4 @@
-import './MaintenancePage.css';
+import styles from './MaintenancePage.module.css';
 import { useState, useEffect } from 'react';
 import { MaintenanceLog } from '../../../types/maintenance';
 import { getMaintenanceLogs, cancelMaintenanceLog } from '../../../services/maintenance/maintenanceService';
@@ -69,13 +69,13 @@ const MaintenancePage = () => {
   };
 
   return (
-    <div className="maintenance-page">
-      {error && <div className="error-message">{error}</div>}
+    <div className={styles.maintenancePage}>
+      {error && <div className={styles.errorMessage}>{error}</div>}
 
       {selectedMaintenanceLog ? (
         <>
-          <div className="page-actions" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-            <button className="edit-button" onClick={() => setIsEditMode((prev) => !prev)}>
+          <div className={styles.pageActions} style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+            <button className={styles.editButton} onClick={() => setIsEditMode((prev) => !prev)}>
               {isEditMode ? 'Done' : 'Edit'}
             </button>
           </div>
@@ -102,20 +102,20 @@ const MaintenancePage = () => {
       )}
 
       {showConfirmModal && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modalContent}>
             <h3>Confirm Cancel Maintenance Logs</h3>
             <p>Are you sure you want to cancel {selectedLogIds.length} maintenance log(s)?</p>
-            <div className="modal-actions">
+            <div className={styles.modalActions}>
               <button
-                className="confirm-button"
+                className={styles.confirmButton}
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
               >
                 {isDeleting ? 'Cancelling...' : 'Confirm'}
               </button>
               <button
-                className="cancel-button"
+                className={styles.cancelButton}
                 onClick={() => setShowConfirmModal(false)}
                 disabled={isDeleting}
               >
@@ -128,7 +128,7 @@ const MaintenancePage = () => {
 
       {showToast && (
         <div
-          className={`toast ${toastType}`}
+          className={`${styles.toast} ${toastType === 'success' ? styles.success : styles.error}`}
           style={{
             position: 'fixed',
             top: '2rem',

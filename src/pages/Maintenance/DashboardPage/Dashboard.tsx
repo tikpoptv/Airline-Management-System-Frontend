@@ -63,15 +63,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const getStatusClass = (status: MaintenanceLogStatus) => {
-    const statusMap = {
-      'Pending': 'pending',
-      'In Progress': 'progress',
-      'Completed': 'completed',
-      'Cancelled': 'cancelled'
-    };
-    return statusMap[status];
-  };
+  
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

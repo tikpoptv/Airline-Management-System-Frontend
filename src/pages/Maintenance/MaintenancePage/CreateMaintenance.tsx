@@ -4,7 +4,7 @@ import { MaintenanceLog, CreateMaintenanceLogPayload } from '../../../types/main
 import { createMaintenanceLog } from '../../../services/maintenance/maintenanceService';
 import { FaArrowLeft, FaCheckCircle, FaExclamationCircle, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
 import uploadPlaceholder from '../../../assets/images/upload.png';
-import './CreateMaintenance.css';
+import styles from './CreateMaintenance.module.css';
 
 const CreateMaintenancePage = () => {
   const navigate = useNavigate();
@@ -105,15 +105,15 @@ const CreateMaintenancePage = () => {
     const validStatus = status || 'Pending';
     switch (validStatus) {
       case 'Pending':
-        return 'status-badge pending';
+        return styles['status-badge'] + ' ' + styles['pending'];
       case 'In Progress':
-        return 'status-badge in-progress';
+        return styles['status-badge'] + ' ' + styles['in-progress'];
       case 'Completed':
-        return 'status-badge completed';
+        return styles['status-badge'] + ' ' + styles['completed'];
       case 'Cancelled':
-        return 'status-badge cancelled';
+        return styles['status-badge'] + ' ' + styles['cancelled'];
       default:
-        return 'status-badge pending';
+        return styles['status-badge'] + ' ' + styles['pending'];
     }
   };
 
@@ -168,28 +168,28 @@ const CreateMaintenancePage = () => {
   }
 
   return (
-    <div className="content-container">
-      <div className="page-header">
+    <div className={styles['content-container']}>
+      <div className={styles['page-header']}>
         <div>
-          <div className="breadcrumb">
+          <div className={styles['breadcrumb']}>
             <span>Maintenance</span>
-            <span className="breadcrumb-separator">›</span>
+            <span className={styles['breadcrumb-separator']}>›</span>
             <span>Create New</span>
           </div>
-          <h1 className="page-title">Create New Maintenance Log</h1>
+          <h1 className={styles['page-title']}>Create New Maintenance Log</h1>
         </div>
-        <button className="back-button" onClick={() => navigate('/maintenance/maintenance')}>
+        <button className={styles['back-button']} onClick={() => navigate('/maintenance/maintenance')}>
           <FaArrowLeft /> Back to List
         </button>
       </div>
 
-      <h2 className="section-title">Maintenance Details</h2>
+      <h2 className={styles['section-title']}>Maintenance Details</h2>
 
-      <div className="profile-form">
-        <div className="form-layout">
+      <div className={styles['profile-form']}>
+        <div className={styles['form-layout']}>
           {/* Maintenance Image Upload */}
           <div 
-            className={`maintenance-image ${isDragging ? 'dragging' : ''}`}
+            className={`${styles['maintenance-image']} ${isDragging ? styles['dragging'] : ''}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -197,7 +197,7 @@ const CreateMaintenancePage = () => {
             {selectedImage ? (
               <>
                 <img src={selectedImage} alt="Selected maintenance" />
-                <button className="remove-image" onClick={removeImage}>
+                <button className={styles['remove-image']} onClick={removeImage}>
                   <FaTimes />
                 </button>
               </>
@@ -209,10 +209,10 @@ const CreateMaintenancePage = () => {
                   onChange={handleImageChange}
                   title=""
                 />
-                <img src={uploadPlaceholder} alt="Upload placeholder" className="placeholder-image" />
-                <div className="upload-overlay">
-                  <FaCloudUploadAlt className="upload-icon" />
-                  <span className="upload-text">
+                <img src={uploadPlaceholder} alt="Upload placeholder" className={styles['placeholder-image']} />
+                <div className={styles['upload-overlay']}>
+                  <FaCloudUploadAlt className={styles['upload-icon']} />
+                  <span className={styles['upload-text']}>
                     Click to upload or drag and drop
                     <br />
                     maintenance documentation here
@@ -223,35 +223,35 @@ const CreateMaintenancePage = () => {
           </div>
 
           {/* Form Fields */}
-          <div className="form-fields">
-            <div className="form-row">
-              <div className="form-group">
+          <div className={styles['form-fields']}>
+            <div className={styles['form-row']}>
+              <div className={styles['form-group']}>
                 <label>Aircraft ID</label>
                 <input
                   type="number"
                   value={formData.aircraft_id}
                   onChange={(e) => setFormData({ ...formData, aircraft_id: Number(e.target.value) })}
-                  className={errors.aircraft_id ? 'error' : ''}
+                  className={errors.aircraft_id ? styles['error'] : ''}
                   placeholder="Enter aircraft ID"
                 />
                 {errors.aircraft_id && (
-                  <span className="error-message">
+                  <span className={styles['error-message']}>
                     <FaExclamationCircle />
                     {errors.aircraft_id}
                   </span>
                 )}
               </div>
 
-              <div className="form-group">
+              <div className={styles['form-group']}>
                 <label>Date of Maintenance</label>
                 <input
                   type="datetime-local"
                   value={formData.date_of_maintenance.slice(0, 16)}
                   onChange={(e) => setFormData({ ...formData, date_of_maintenance: new Date(e.target.value).toISOString() })}
-                  className={errors.date_of_maintenance ? 'error' : ''}
+                  className={errors.date_of_maintenance ? styles['error'] : ''}
                 />
                 {errors.date_of_maintenance && (
-                  <span className="error-message">
+                  <span className={styles['error-message']}>
                     <FaExclamationCircle />
                     {errors.date_of_maintenance}
                   </span>
@@ -259,34 +259,34 @@ const CreateMaintenancePage = () => {
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
+            <div className={styles['form-row']}>
+              <div className={styles['form-group']}>
                 <label>Maintenance Location</label>
                 <input
                   type="text"
                   value={formData.maintenance_location}
                   onChange={(e) => setFormData({ ...formData, maintenance_location: e.target.value })}
-                  className={errors.maintenance_location ? 'error' : ''}
+                  className={errors.maintenance_location ? styles['error'] : ''}
                   placeholder="Enter maintenance location"
                 />
                 {errors.maintenance_location && (
-                  <span className="error-message">
+                  <span className={styles['error-message']}>
                     <FaExclamationCircle />
                     {errors.maintenance_location}
                   </span>
                 )}
               </div>
-              <div className="form-group">
+              <div className={styles['form-group']}>
                 <label>User ID</label>
                 <input
                   type="number"
                   value={formData.assigned_to}
                   onChange={(e) => setFormData({ ...formData, assigned_to: Number(e.target.value) })}
-                  className={errors.assigned_to ? 'error' : ''}
+                  className={errors.assigned_to ? styles['error'] : ''}
                   placeholder="Enter User ID"
                 />
                 {errors.assigned_to && (
-                  <span className="error-message">
+                  <span className={styles['error-message']}>
                     <FaExclamationCircle />
                     {errors.assigned_to}
                   </span>
@@ -295,8 +295,8 @@ const CreateMaintenancePage = () => {
               
             </div>
 
-            <div className="form-row">
-              <div className="form-group full-width">
+            <div className={styles['form-row']}>
+              <div className={`${styles['form-group']} ${styles['full-width']}`}>
                 <label>Status</label>
                 <select
                   value={formData.status}
@@ -310,18 +310,18 @@ const CreateMaintenancePage = () => {
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group full-width">
+            <div className={styles['form-row']}>
+              <div className={`${styles['form-group']} ${styles['full-width']}`}>
                 <label>Maintenance Details</label>
                 <textarea
                   value={formData.details}
                   onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                   rows={6}
                   placeholder="Enter maintenance details and notes..."
-                  className={errors.details ? 'error' : ''}
+                  className={errors.details ? styles['error'] : ''}
                 />
                 {errors.details && (
-                  <span className="error-message">
+                  <span className={styles['error-message']}>
                     <FaExclamationCircle />
                     {errors.details}
                   </span>
@@ -332,9 +332,9 @@ const CreateMaintenancePage = () => {
         </div>
       </div>
 
-      <div className="form-actions">
+      <div className={styles['form-actions']}>
         <button
-          className="create-button"
+          className={styles['create-button']}
           onClick={handleSubmit}
           disabled={saving}
         >
@@ -348,45 +348,45 @@ const CreateMaintenancePage = () => {
 
       {/* Confirm Modal */}
       {showConfirmModal && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
+        <div className={styles['modal-backdrop']}>
+          <div className={styles['modal-content']}>
             <h2>Confirm Create Maintenance Log</h2>
             <p>Are you sure you want to create this maintenance log with the following details?</p>
             
-            <div className="modal-details">
-              <div className="detail-row">
+            <div className={styles['modal-details']}>
+              <div className={styles['detail-row']}>
                 <strong>Aircraft ID:</strong> {formData.aircraft_id}
               </div>
-              <div className="detail-row">
+              <div className={styles['detail-row']}>
                 <strong>Date:</strong> {new Date(formData.date_of_maintenance).toLocaleString()}
               </div>
-              <div className="detail-row">
+              <div className={styles['detail-row']}>
                 <strong>Location:</strong> {formData.maintenance_location}
               </div>
-              <div className="detail-row status">
+              <div className={`${styles['detail-row']} ${styles['status']}`}>
                 <strong>Status:</strong> 
                 <span className={getStatusBadgeClass(formData.status)}>
                   {formData.status}
                 </span>
               </div>
-              <div className="detail-row">
+              <div className={styles['detail-row']}>
                 <strong>Details:</strong> 
-                <span className="details-text">
+                <span className={styles['details-text']}>
                   {formData.details || '-'}
                 </span>
               </div>
             </div>
 
-            <div className="modal-actions">
+            <div className={styles['modal-actions']}>
               <button 
-                className="confirm-button" 
+                className={styles['confirm-button']} 
                 onClick={handleConfirmCreate}
                 disabled={saving}
               >
                 {saving ? 'Creating...' : 'Confirm'}
               </button>
               <button 
-                className="cancel-button"
+                className={styles['cancel-button']}
                 onClick={() => setShowConfirmModal(false)}
                 disabled={saving}
               >
@@ -399,13 +399,13 @@ const CreateMaintenancePage = () => {
 
       {/* Notification Popup */}
       {toast.show && (
-        <div className={`notification-popup ${toast.type} ${toast.show ? 'show' : 'hide'}`}>
+        <div className={`${styles['notification-popup']} ${styles[toast.type]} ${toast.show ? styles['show'] : styles['hide']}`}>
           {toast.type === 'success' ? (
-            <FaCheckCircle className="icon" />
+            <FaCheckCircle className={styles['icon']} />
           ) : (
-            <FaExclamationCircle className="icon" />
+            <FaExclamationCircle className={styles['icon']} />
           )}
-          <span className="message">{toast.message}</span>
+          <span className={styles['message']}>{toast.message}</span>
         </div>
       )}
     </div>

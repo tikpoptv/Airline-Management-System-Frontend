@@ -28,5 +28,10 @@ export const flightService = {
   // Get passengers on a flight
   getFlightPassengers: (flightId: number): Promise<Passenger[]> => {
     return api.get(`/api/flights/${flightId}/passengers`);
+  },
+
+  // Get detailed information about a specific passenger
+  getPassengerDetails: (passengerId: number): Promise<any> => {
+    return api.get(`/api/passengers/${passengerId}`);
   }
 };

@@ -1,0 +1,203 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #64748b;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.closeButton:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.loadingState,
+.errorState {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorIcon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.passengerInfo h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 32px;
+}
+
+.infoSection {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.infoSection h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+  margin: 0 0 20px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.infoItem label {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.infoItem span {
+  font-size: 16px;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.flightInfo {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.flightNumber {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.routeInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.airport {
+  flex: 1;
+}
+
+.airportCode {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.airportName {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.time {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.date {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.flightPath {
+  display: flex;
+  align-items: center;
+  color: #94a3b8;
+  padding: 0 16px;
+}
+
+.arrow {
+  font-size: 24px;
+}
+
+@media (max-width: 640px) {
+  .modalContent {
+    padding: 24px;
+    width: 95%;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .routeInfo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .flightPath {
+    transform: rotate(90deg);
+    padding: 16px 0;
+  }
+} 

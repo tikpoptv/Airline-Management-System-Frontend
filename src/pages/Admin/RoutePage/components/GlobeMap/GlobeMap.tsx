@@ -119,11 +119,27 @@ const VISUAL_ALTITUDE_MULTIPLIER = 0.6;
 const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick }) => {
   console.log('GlobeMap rendering with:', { fromAirport, toAirport });
   
+  // Calculate distance between airports for dynamic zoom
+  const distance = haversineDistance(
+    { lat: fromAirport.lat, lon: fromAirport.lon },
+    { lat: toAirport.lat, lon: toAirport.lon }
+  );
+
+  // Calculate zoom level based on distance
+  const getZoomLevel = (distanceMeters: number) => {
+    const distanceKm = distanceMeters / 1000;
+    if (distanceKm < 1000) return 5;
+    if (distanceKm < 2000) return 4;
+    if (distanceKm < 3000) return 3.5;
+    if (distanceKm < 5000) return 3;
+    return 2;
+  };
+  
   const INITIAL_VIEW_STATE = {
     longitude: (fromAirport.lon + toAirport.lon) / 2,
     latitude: (fromAirport.lat + toAirport.lat) / 2,
-    zoom: 2.5,
-    pitch: 45, 
+    zoom: getZoomLevel(distance),
+    pitch: 45,
     bearing: 0,
   };
   

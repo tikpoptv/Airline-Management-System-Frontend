@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaChevronRight, FaEdit, FaEllipsisV, FaPlane, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaChevronRight, FaEdit, FaPlane, FaClock } from 'react-icons/fa';
 import styles from './FlightDetailPage.module.css';
 import GlobeMap from '../RoutePage/components/GlobeMap/GlobeMap';
 import { flightService } from '../../../services/flight/flightService';
 import { Flight, CrewMember, Passenger } from './types';
+import PassengerDetailModal from './components/PassengerDetailModal/PassengerDetailModal';
+
+const getZoomLevel = (distance: number): number => {
+  if (distance < 1000) return 5;
+  if (distance < 2000) return 4;
+  if (distance < 3000) return 3.5;
+  if (distance < 5000) return 3;
+  return 2;
+};
 
 const FlightDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +22,7 @@ const FlightDetailPage: React.FC = () => {
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedPassengerId, setSelectedPassengerId] = useState<number | null>(null);
 
   const formatDateTime = (dateTimeStr: string) => {
     const date = new Date(dateTimeStr);
@@ -101,6 +111,29 @@ const FlightDetailPage: React.FC = () => {
     country: flightDetail.route.to_airport.country
   };
 
+  const FlightCrewHeader = () => {
+    const isAllowedToAdd = (status: string) => {
+      const allowedStatuses = ['SCHEDULED', 'DELAYED'];
+      return allowedStatuses.includes(status.toUpperCase());
+    };
+
+    return (
+      <div className={styles.sectionHeader}>
+        <h2>Flight Crew</h2>
+        <div className={styles.headerActions}>
+          {isAllowedToAdd(flightDetail.flight_status) ? (
+            <button className={styles.addCrewButton}>+ Add Crew</button>
+          ) : (
+            <div className={styles.disabledAddButton} title="Cannot add crew in current flight status">
+              + Add Crew
+            </div>
+          )}
+          <Link to="/admin/crew" className={styles.viewDetailButton}>View All Crew</Link>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.flightDetailPage}>
       {/* Breadcrumb */}
@@ -144,41 +177,91 @@ const FlightDetailPage: React.FC = () => {
       {/* Route Card */}
       <div className={styles.routeCard}>
         <div className={styles.routeInfo}>
-          <div className={styles.airportInfo + ' ' + styles.departure}>
-            <div className={styles.airportCity}>{flightDetail.route.from_airport.city}</div>
-            <div className={styles.airportCode}>{flightDetail.route.from_airport.iata_code}</div>
-            <div className={styles.airportName}>{flightDetail.route.from_airport.name}</div>
-            <div className={styles.airportTime}>
-              <FaClock className={styles.timeIcon} />
-              {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+          <div className={`${styles.airportInfo} ${styles.departure}`}>
+            <div className={styles.airportHeader}>
+              <h3>{flightDetail.route.from_airport.city}</h3>
+              <span className={styles.airportCode}>{flightDetail.route.from_airport.iata_code}</span>
             </div>
-            <div className={styles.airportMarker}>
-              <FaMapMarkerAlt />
-              Departure
+            <div className={styles.airportDetails}>
+              <div className={styles.airportName}>{flightDetail.route.from_airport.name}</div>
+              <div className={styles.timeInfo}>
+                <FaClock className={styles.timeIcon} />
+                <span className={styles.time}>
+                  {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+                </span>
+                <span className={styles.date}>
+                  {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).date : 'N/A'}
+                </span>
+              </div>
+              <div className={styles.statusBadge}>
+                <FaPlane className={styles.planeIcon} />
+                Departure
+              </div>
             </div>
           </div>
 
-          <div className={styles.routeLine}>
-            <div className={styles.durationBadge}>
-              <FaClock />
-              {flightDetail.route.estimated_duration}
-            </div>
-            <div className={styles.lineWithPlane}>
-              <div className={styles.animatedPlane}>✈️</div>
+          <div className={styles.flightPath}>
+            <div className={styles.pathLine}>
+              <div className={styles.dot}></div>
+              <div className={styles.line}></div>
+              <div className={styles.flightStatusBox}>
+                <div className={styles.timeDisplay}>
+                  <div className={styles.timeValue}>
+                    {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
+                  </div>
+                  <div className={styles.dateValue}>
+                    {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).date : 'N/A'}
+                  </div>
+                  <div className={styles.timezone}>
+                    {flightDetail.route.from_airport.timezone || 'Local Time'}
+                  </div>
+                </div>
+                <div className={styles.flightIdentifier}>
+                  <span className={styles.flightNumber}>{flightDetail.flight_number}</span>
+                  {flightDetail.flight_status.toLowerCase() === 'delayed' && (
+                    <div className={styles.delayBadge}>
+                      <FaClock className={styles.delayIcon} />
+                      <span>Delayed</span>
+                    </div>
+                  )}
+                </div>
+                <div className={styles.flightProgress}>
+                  <div className={styles.progressBar}>
+                    <div 
+                      className={`${styles.progressFill} ${styles[flightDetail.flight_status.toLowerCase()]}`}
+                      style={{ width: '45%' }}
+                    ></div>
+                  </div>
+                  <div className={styles.flightDuration}>
+                    <span>Duration: {flightDetail.route.estimated_duration}</span>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.line}></div>
+              <div className={styles.dot}></div>
             </div>
           </div>
 
-          <div className={styles.airportInfo + ' ' + styles.arrival}>
-            <div className={styles.airportCity}>{flightDetail.route.to_airport.city}</div>
-            <div className={styles.airportCode}>{flightDetail.route.to_airport.iata_code}</div>
-            <div className={styles.airportName}>{flightDetail.route.to_airport.name}</div>
-            <div className={styles.airportTime}>
-              <FaClock className={styles.timeIcon} />
-              {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).time : 'N/A'}
+          <div className={`${styles.airportInfo} ${styles.arrival}`}>
+            <div className={styles.airportHeader}>
+              <h3>{flightDetail.route.to_airport.city}</h3>
+              <span className={styles.airportCode}>{flightDetail.route.to_airport.iata_code}</span>
             </div>
-            <div className={styles.airportMarker}>
-              <FaMapMarkerAlt />
-              Arrival
+            <div className={styles.airportDetails}>
+              <div className={styles.airportName}>{flightDetail.route.to_airport.name}</div>
+              <div className={styles.timeInfo}>
+                <FaClock className={styles.timeIcon} />
+                <span className={styles.time}>
+                  {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).time : 'N/A'}
+                </span>
+                <span className={styles.date}>
+                  {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).date : 'N/A'}
+                </span>
+              </div>
+              <div className={styles.statusBadge}>
+                <FaPlane className={`${styles.planeIcon} ${styles.arrival}`} />
+                Arrival
+              </div>
             </div>
           </div>
         </div>
@@ -187,6 +270,7 @@ const FlightDetailPage: React.FC = () => {
           <GlobeMap
             fromAirport={fromAirportMapped}
             toAirport={toAirportMapped}
+            zoomLevel={getZoomLevel(flightDetail.route.distance)}
           />
         </div>
       </div>
@@ -265,13 +349,7 @@ const FlightDetailPage: React.FC = () => {
 
       {/* Crew Section */}
       <div className={styles.flightDetails}>
-        <div className={styles.sectionHeader}>
-          <h2>Flight Crew</h2>
-          <div className={styles.headerActions}>
-            <button className={styles.addCrewButton}>+ Add Crew</button>
-            <Link to="/admin/crews" className={styles.viewDetailButton}>View All Crew</Link>
-          </div>
-        </div>
+        <FlightCrewHeader />
         
         <div className={styles.tableContainer}>
           <table>
@@ -296,14 +374,12 @@ const FlightDetailPage: React.FC = () => {
                     <span className={styles.dutyBadge}>{crew.role_in_flight}</span>
                   </td>
                   <td>
-                    <div className={styles.actionButtons}>
-                      <Link to={`/admin/crews/${crew.crew_id}`} className={styles.actionButton}>
-                        View Details
-                      </Link>
-                      <button className={styles.actionButton}>
-                        <FaEllipsisV />
-                      </button>
-                    </div>
+                    <Link 
+                      to={`/admin/crew/${crew.crew_id}`} 
+                      className={styles.viewDetailsButton}
+                    >
+                      View Details
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -316,51 +392,53 @@ const FlightDetailPage: React.FC = () => {
       <div className={styles.flightDetails}>
         <div className={styles.sectionHeader}>
           <h2>Passengers</h2>
-          <button className={styles.addPassengerButton}>+ Add Passenger</button>
         </div>
+        
         <div className={styles.tableContainer}>
-          {passengers.length === 0 ? (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>👥</div>
-              <p>No passengers added yet</p>
-              <button className={styles.addFirstButton}>Add First Passenger</button>
-            </div>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Nationality</th>
-                  <th>Special Requests</th>
-                  <th>Actions</th>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Nationality</th>
+                <th>Special Requests</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {passengers.map((passenger) => (
+                <tr key={passenger.passenger_id}>
+                  <td>{passenger.passenger_id}</td>
+                  <td className={styles.passengerName}>{passenger.name}</td>
+                  <td>{passenger.nationality}</td>
+                  <td>
+                    {passenger.special_requests ? (
+                      <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
+                    ) : (
+                      <span className={styles.noRequests}>-</span>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className={styles.viewDetailsButton}
+                      onClick={() => setSelectedPassengerId(passenger.passenger_id)}
+                    >
+                      View Details
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {passengers.map((passenger) => (
-                  <tr key={passenger.passenger_id}>
-                    <td>{passenger.passenger_id}</td>
-                    <td className={styles.passengerName}>{passenger.name}</td>
-                    <td>{passenger.nationality}</td>
-                    <td>
-                      {passenger.special_requests ? (
-                        <span className={styles.specialRequestBadge}>{passenger.special_requests}</span>
-                      ) : (
-                        <span className={styles.noRequests}>-</span>
-                      )}
-                    </td>
-                    <td>
-                      <button className={styles.actionButton}>
-                        <FaEllipsisV />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
+
+      {/* Passenger Detail Modal */}
+      <PassengerDetailModal
+        isOpen={selectedPassengerId !== null}
+        onClose={() => setSelectedPassengerId(null)}
+        passengerId={selectedPassengerId || 0}
+      />
     </div>
   );
 };

@@ -111,27 +111,164 @@
   gap: 12px;
 }
 
+/* Flight Status Styles */
 .flightStatus {
-  padding: 8px 16px;
-  border-radius: 24px;
+  padding: 10px 20px;
+  border-radius: 30px;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.flightStatus::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  transition: all 0.4s ease;
+}
+
+/* SCHEDULED status */
+.scheduled {
+  background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+  color: #15803d;
+  box-shadow: 0 4px 15px rgba(21, 128, 61, 0.2);
+  border-color: #86efac;
+}
+
+.scheduled::before {
+  background: #15803d;
+  box-shadow: 0 0 10px #15803d;
+}
+
+/* DELAYED status */
+.delayed {
+  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+  color: #b45309;
+  box-shadow: 0 4px 15px rgba(180, 83, 9, 0.2);
+  border-color: #fcd34d;
+  animation: shake 1.5s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+
+.delayed::before {
+  background: #b45309;
+  box-shadow: 0 0 10px #b45309;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/* BOARDING status */
+.boarding {
+  background: linear-gradient(135deg, #dbeafe 0%, #60a5fa 100%);
+  color: #1d4ed8;
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.2);
+  border-color: #60a5fa;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.boarding::before {
+  background: #1d4ed8;
+  box-shadow: 0 0 10px #1d4ed8;
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+/* IN_FLIGHT status */
+.inFlight {
+  background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 100%);
+  color: #0369a1;
+  box-shadow: 0 4px 15px rgba(3, 105, 161, 0.2);
+  border-color: #38bdf8;
+  animation: float 4s ease-in-out infinite;
+}
+
+.inFlight::before {
+  background: #0369a1;
+  box-shadow: 0 0 10px #0369a1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* LANDED status */
+.landed {
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+  color: #334155;
+  box-shadow: 0 4px 15px rgba(51, 65, 85, 0.2);
+  border-color: #cbd5e1;
   transition: all 0.3s ease;
 }
 
-.scheduled {
-  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-  color: #15803d;
-  box-shadow: 0 4px 8px rgba(21, 128, 61, 0.15);
-  animation: statusPulse 2s infinite;
+.landed::before {
+  background: #334155;
+  box-shadow: 0 0 10px #334155;
 }
 
-@keyframes statusPulse {
-  0% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(21, 128, 61, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0); }
+/* CANCELLED status */
+.cancelled {
+  background: linear-gradient(135deg, #fee2e2 0%, #f87171 100%);
+  color: #b91c1c;
+  box-shadow: 0 4px 15px rgba(185, 28, 28, 0.2);
+  border-color: #f87171;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+.cancelled::before {
+  background: #b91c1c;
+  box-shadow: 0 0 10px #b91c1c;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Dot animations */
+@keyframes dotPulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes dotPulseWarning {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.5; }
+}
+
+@keyframes dotPulseActive {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+@keyframes dotPulseDanger {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes dotPulseInFlight {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
 }
 
 .editButton {
@@ -228,19 +365,17 @@
 }
 
 .routeMapContainer {
-  position: relative;
-  height: 100%;
-  min-height: 450px;
-  border-radius: 16px;
+  height: 500px;
+  width: 100%;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  order: 1;
 }
 
 .routeMapContainer:hover {
-  transform: scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .routeInfo {
@@ -255,138 +390,148 @@
 }
 
 .airportInfo {
-  flex: 1;
-  text-align: center;
-  padding: 32px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  border: 1px solid rgba(0, 102, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .airportInfo:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 102, 255, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .airportCity {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .airportCode {
-  font-size: 48px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #0066ff 0%, #80b3ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
-  letter-spacing: 0.05em;
-  text-shadow: 2px 2px 4px rgba(0, 102, 255, 0.2);
-  animation: codeGlow 2s infinite;
-}
-
-@keyframes codeGlow {
-  0% { text-shadow: 0 0 10px rgba(0, 102, 255, 0.5); }
-  50% { text-shadow: 0 0 20px rgba(0, 102, 255, 0.8); }
-  100% { text-shadow: 0 0 10px rgba(0, 102, 255, 0.5); }
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3498db;
+  margin-bottom: 0.75rem;
+  letter-spacing: 2px;
 }
 
 .airportName {
-  font-size: 14px;
-  color: #64748b;
-  margin-bottom: 16px;
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
   line-height: 1.4;
 }
 
 .airportTime {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e293b;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  color: #34495e;
+  margin-bottom: 0.75rem;
 }
 
 .timeIcon {
-  color: #64748b;
+  color: #3498db;
+  animation: pulse 2s infinite;
 }
 
 .airportMarker {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: #64748b;
-  font-size: 14px;
-  margin-top: 12px;
-  font-weight: 500;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #95a5a6;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.markerIcon {
+  color: #e74c3c;
+  animation: bounce 1s infinite;
 }
 
 .routeLine {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 32px;
   position: relative;
+  padding: 2rem 0;
 }
 
 .durationBadge {
-  background-color: #f0f7ff;
-  color: #0066ff;
-  padding: 8px 16px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.75rem 1rem;
   border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.1);
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  transition: all 0.3s ease;
+}
+
+.durationBadge:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.clockIcon {
+  animation: rotateIcon 2s linear infinite;
 }
 
 .lineWithPlane {
+  height: 2px;
+  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
   position: relative;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #0066ff 0%, #80b3ff 50%, #0066ff 100%);
-  background-size: 200% 100%;
-  animation: gradientMove 4s linear infinite;
-}
-
-@keyframes gradientMove {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  margin: 0 2rem;
 }
 
 .animatedPlane {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 28px;
-  color: #0066ff;
-  filter: drop-shadow(0 2px 4px rgba(0, 102, 255, 0.3));
-  animation: flyAndGlow 3s infinite;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  animation: flyPlane 3s linear infinite;
 }
 
-@keyframes flyAndGlow {
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes rotateIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flyPlane {
   0% {
-    transform: translate(-50%, -50%) translateX(-20px) rotate(0deg);
-    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.5));
+    left: 0;
+    transform: translateY(-50%) rotate(0deg);
   }
   50% {
-    transform: translate(-50%, -50%) translateX(20px) rotate(0deg);
-    filter: drop-shadow(0 0 20px rgba(0, 102, 255, 0.8));
+    transform: translateY(-50%) rotate(0deg) translateY(-10px);
   }
   100% {
-    transform: translate(-50%, -50%) translateX(-20px) rotate(0deg);
-    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.5));
+    left: 100%;
+    transform: translateY(-50%) rotate(0deg);
   }
 }
 

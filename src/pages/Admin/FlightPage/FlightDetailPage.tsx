@@ -6,6 +6,14 @@ import GlobeMap from '../RoutePage/components/GlobeMap/GlobeMap';
 import { flightService } from '../../../services/flight/flightService';
 import { Flight, CrewMember, Passenger } from './types';
 
+const getZoomLevel = (distance: number): number => {
+  if (distance < 1000) return 5;
+  if (distance < 2000) return 4;
+  if (distance < 3000) return 3.5;
+  if (distance < 5000) return 3;
+  return 2;
+};
+
 const FlightDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [flightDetail, setFlightDetail] = useState<Flight | null>(null);
@@ -144,7 +152,7 @@ const FlightDetailPage: React.FC = () => {
       {/* Route Card */}
       <div className={styles.routeCard}>
         <div className={styles.routeInfo}>
-          <div className={styles.airportInfo + ' ' + styles.departure}>
+          <div className={`${styles.airportInfo} ${styles.departure}`}>
             <div className={styles.airportCity}>{flightDetail.route.from_airport.city}</div>
             <div className={styles.airportCode}>{flightDetail.route.from_airport.iata_code}</div>
             <div className={styles.airportName}>{flightDetail.route.from_airport.name}</div>
@@ -153,14 +161,14 @@ const FlightDetailPage: React.FC = () => {
               {flightDetail.departure_time ? formatDateTime(flightDetail.departure_time).time : 'N/A'}
             </div>
             <div className={styles.airportMarker}>
-              <FaMapMarkerAlt />
+              <FaMapMarkerAlt className={styles.markerIcon} />
               Departure
             </div>
           </div>
 
           <div className={styles.routeLine}>
             <div className={styles.durationBadge}>
-              <FaClock />
+              <FaClock className={styles.clockIcon} />
               {flightDetail.route.estimated_duration}
             </div>
             <div className={styles.lineWithPlane}>
@@ -168,7 +176,7 @@ const FlightDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div className={styles.airportInfo + ' ' + styles.arrival}>
+          <div className={`${styles.airportInfo} ${styles.arrival}`}>
             <div className={styles.airportCity}>{flightDetail.route.to_airport.city}</div>
             <div className={styles.airportCode}>{flightDetail.route.to_airport.iata_code}</div>
             <div className={styles.airportName}>{flightDetail.route.to_airport.name}</div>
@@ -177,7 +185,7 @@ const FlightDetailPage: React.FC = () => {
               {flightDetail.arrival_time ? formatDateTime(flightDetail.arrival_time).time : 'N/A'}
             </div>
             <div className={styles.airportMarker}>
-              <FaMapMarkerAlt />
+              <FaMapMarkerAlt className={styles.markerIcon} />
               Arrival
             </div>
           </div>
@@ -187,6 +195,7 @@ const FlightDetailPage: React.FC = () => {
           <GlobeMap
             fromAirport={fromAirportMapped}
             toAirport={toAirportMapped}
+            zoomLevel={getZoomLevel(flightDetail.route.distance)}
           />
         </div>
       </div>

@@ -1,11 +1,11 @@
-import { Crew } from '../../../types/crew';
+import { CrewProfile } from '../../../types/crewuser';
 import CrewSchedule from './CrewUserSchedule';
 import { FaUser, FaPassport, FaEnvelope, FaArrowLeft, FaPen } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import './CrewPage.css';
+import './CrewUserPage.css';
 
 interface Props {
-  crew: Crew;
+  crew: CrewProfile;
 }
 
 const CrewProfileSection = ({ crew }: Props) => {
@@ -74,10 +74,10 @@ const CrewProfileSection = ({ crew }: Props) => {
         </div>
         <h1>Crew Details</h1>
         <div className="header-actions">
-          <button className="edit-button" onClick={() => navigate(`/admin/crew/edit/${crew.crew_id}`)}>
+          <button className="edit-button" onClick={() => navigate(`/crew/crew/edit/${crew.crew_id}`)}>
             <FaPen /> Edit
           </button>
-          <button className="back-button" onClick={() => navigate('/admin/crew')}>
+          <button className="back-button" onClick={() => navigate('/crew/crew')}>
             <FaArrowLeft /> Back
           </button>
         </div>
@@ -125,7 +125,7 @@ const CrewProfileSection = ({ crew }: Props) => {
               </div>
               <div className="info-item">
                 <label>Role</label>
-                <span className={`role-badge ${crew.role.toUpperCase()}`}>
+                <span className={`role-badge ${crew.role.toLowerCase()}`}>
                   {crew.role}
                 </span>
               </div>

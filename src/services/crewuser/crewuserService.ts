@@ -2,7 +2,10 @@ import { api } from "../../api";
 import { CrewAssignment, UpdateCrewProfilePayload, CrewProfile } from "../../types/crewuser";
 
 // Get crew profile
-export const getCrewProfile = async (): Promise<CrewProfile> => {
+export const getCrewProfile = async (id?: number): Promise<CrewProfile> => {
+  if (id) {
+    return api.get(`/api/crew/${id}`);
+  }
   return api.get('/api/crew/me');
 };
 

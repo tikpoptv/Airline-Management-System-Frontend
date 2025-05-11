@@ -3,14 +3,15 @@ import { useState, useEffect } from 'react';
 import { CrewProfile } from '../../../types/crewuser';
 import { getCrewProfile } from '../../../services/crewuser/crewuserService';
 import CrewList from './CrewUserList';
-import { useNavigate } from 'react-router-dom';
+
 
 const CrewPage = () => {
   const [crewList, setCrewList] = useState<CrewProfile[]>([]);
   const [loadingCrew, setLoadingCrew] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const navigate = useNavigate();
+
 
   const fetchCrew = async () => {
     setLoadingCrew(true);
@@ -30,19 +31,14 @@ const CrewPage = () => {
     fetchCrew();
   }, []);
 
-  const handleSelectCrew = (crew: CrewProfile) => {
-    navigate(`/admin/crew/${crew.crew_id}`);
-  };
-
   return (
     <div className="crew-page">
       {error && <div className="error-message">{error}</div>}
 
       <CrewList
         crewList={crewList}
-        isEditing={false}
-        setIsEditing={() => {}}
-        setSelectedCrew={handleSelectCrew}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
         loading={loadingCrew}
         selectedCrewIds={[]}
         setSelectedCrewIds={() => {}}

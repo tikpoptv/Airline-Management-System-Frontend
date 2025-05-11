@@ -3,13 +3,13 @@ import { FaEye, FaSearch } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
 import { CrewProfile } from '../../../types/crewuser';
+import { useNavigate } from 'react-router-dom';
 import './CrewUserPage.css';
 
 interface Props {
   crewList: CrewProfile[];
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
-  setSelectedCrew: (crew: CrewProfile) => void;
   loading: boolean;
   selectedCrewIds: number[];
   setSelectedCrewIds: React.Dispatch<React.SetStateAction<number[]>>;
@@ -20,12 +20,12 @@ const CrewList = ({
   crewList,
   isEditing,
   setIsEditing,
-  setSelectedCrew,
   loading,
   selectedCrewIds,
   setSelectedCrewIds,
   onDelete,
 }: Props) => {
+  const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [filterCrewId, setFilterCrewId] = useState('');
   const [filterName, setFilterName] = useState('');
@@ -38,7 +38,12 @@ const CrewList = ({
   };
 
   const handleRowClick = (crew: CrewProfile) => {
-    setSelectedCrew(crew);
+    navigate(`/crew/crew/${crew.crew_id}`);
+  };
+
+  const handleViewClick = (e: React.MouseEvent, crew: CrewProfile) => {
+    e.stopPropagation();
+    navigate(`/crew/crew/${crew.crew_id}`);
   };
 
   const filteredCrew = crewList.filter((crew) =>
@@ -68,7 +73,7 @@ const CrewList = ({
 
           <div className="button-group">
             {isEditing && (
-              <button className="add-button" onClick={() => window.location.href = '/admin/crew/create'}>
+              <button className="add-button" onClick={() => window.location.href = '/crew/crew/create'}>
                 Add New
               </button>
             )}
@@ -135,7 +140,7 @@ const CrewList = ({
                   <td className="action-column" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="view-button"
-                      onClick={() => setSelectedCrew(crew)}
+                      onClick={(e) => handleViewClick(e, crew)}
                       title="View Details"
                     >
                       <FaEye />

@@ -1,33 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { Crew } from '../../../types/crew';
+import { CrewProfile } from '../../../types/crewuser';
+// import { Flight } from '../../../types/flight';
 import CrewProfileSection from './CrewUserProfileSection';
 import Loading from '../../../components/Loading';
-import { getCrewById } from '../../../services/crew/crewService';
+import { getCrewProfile } from '../../../services/crewuser/crewuserService';
 
 const CrewDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const [crew, setCrew] = useState<Crew | null>(null);
+  const [crew, setCrew] = useState<CrewProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // const [isEditMode, setIsEditMode] = useState(false);
+  // const [sortOption, setSortOption] = useState<'date' | 'status'>('date');
+  // const [flightFilter, setFlightFilter] = useState<'all' | 'today'>('all');
+  // const [flightList, setFlightList] = useState<Flight[]>([]);
 
   const fetchData = useCallback(async () => {
-    if (!id) {
-      setError('Crew ID is required');
-      setLoading(false);
-      return;
-    }
-
-    const crewId = parseInt(id);
-    if (isNaN(crewId)) {
-      setError('Invalid Crew ID');
-      setLoading(false);
-      return;
-    }
-
     try {
       setLoading(true);
-      const crewData = await getCrewById(crewId);
+      const crewData = await getCrewProfile();
       setCrew(crewData);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data';
@@ -35,11 +25,13 @@ const CrewDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+
 
   if (loading) {
     return <Loading message="Loading crew data..." />;

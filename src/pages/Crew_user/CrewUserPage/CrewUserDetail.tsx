@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Crew } from '../../../types/crew';
 import { Flight } from '../../../types/flight';
-// import CrewProfileSection from './CrewProfileSection';
+import CrewProfileSection from './CrewUserProfileSection';
 // import CrewSchedule from './CrewSchedule';
 
 interface Props {
@@ -18,12 +18,12 @@ interface Props {
 
 const CrewDetail = ({
   crew,
-  flightList,
-  loading,
-  sortOption,
-  setSortOption,
-  flightFilter,
-  setFlightFilter,
+//   flightList,
+//   loading,
+//   sortOption,
+//   setSortOption,
+//   flightFilter,
+//   setFlightFilter,
   onBack,
   isEditMode,
 }: Props) => {
@@ -60,12 +60,12 @@ const CrewDetail = ({
 
       <h2 className="section-title">Crew Profile</h2>
 
-      {/* <CrewProfileSection
+      <CrewProfileSection
         editData={editData}
         originalData={originalData}
         isEditMode={isEditMode}
         handleChange={handleChange}
-      /> */}
+      />
 
       {/* <CrewSchedule
         flightList={flightList}

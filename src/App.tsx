@@ -28,6 +28,7 @@ import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
 import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
 import Crew from "./pages/Crew_user/Crew";
 import CrewUserPage from "./pages/Crew_user/CrewUserPage/CrewUserPage";
+import CrewUserDetailPage from "./pages/Crew_user/CrewUserPage/CrewDetailUserPage";
 
 function App() {
   return (
@@ -91,6 +92,7 @@ function App() {
           >
             <Route index element={<div>Welcom User</div>} />
             <Route path="crew" element={<CrewUserPage/>} />
+            <Route path="crew/:id" element={<CrewUserDetailPage/>} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

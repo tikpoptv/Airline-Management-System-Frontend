@@ -1,5 +1,6 @@
 import { api } from "../../api";
 import { Crew, CrewScheduleResponse } from "../../types/crew";
+import { CrewAssignment } from "../../types/crewuser";
 
 interface UpdateCrewData {
   name?: string;
@@ -33,6 +34,10 @@ interface CrewResponse {
 
 export const getCrewList = async (): Promise<Crew[]> => {
   return api.get('/api/crew');
+};
+
+export const getCrewAssignments = async (): Promise<CrewAssignment[]> => {
+  return api.get('/api/crew/assignments');
 };
 
 export const getCrewById = async (id: number): Promise<Crew> => {

@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  background-color: #183152;
+  height: 60rem; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.sidebarHeader {
+  background-color: #A93434;
+  padding: 0.8rem 2rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin-bottom: 5rem;
+}
+
+.sidebarLogo {
+  font-size: 2rem;
+  color: rgb(24, 12, 12);
+}
+
+.airlineName {
+  color: white;
+  font-weight: bold;
+}
+
+.sidebarItem {
+  width: 90%;
+  padding: 1.5rem 0.5rem;
+  margin-bottom: 0rem;
+  display: flex;
+  align-items: center;
+  color: white;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.sidebarItem .sidebarIcon {
+  margin-right: 0.75rem;
+  font-size: 3rem;
+}
+
+.active {
+  background-color: white;
+  color: #183152;
+  font-weight: bold;
+}
+
+.active .sidebarIcon {
+  color: #183152;
+}
+
+.sidebarItem:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f8fa;
+}
+
+.contentArea {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}

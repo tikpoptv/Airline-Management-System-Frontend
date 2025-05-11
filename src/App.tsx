@@ -26,6 +26,8 @@ import CreateMaintenance from "./pages/Admin/MaintenancePage/CreateMaintenance";
 import CrewDetailPage from './pages/Admin/CrewPage/CrewDetailPage';
 import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
 import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
+import Crew from "./pages/Crew_user/Crew";
+import CrewUserPage from "./pages/Crew_user/CrewUserPage/CrewUserPage";
 
 function App() {
   return (
@@ -71,12 +73,24 @@ function App() {
           <Route
             path="/Maintenance"
             element={
-              <ProtectedRoute allowedRole="admin">
+              <ProtectedRoute allowedRole="maintenance">
                 <Maintenance />
               </ProtectedRoute>
             }
           >
             <Route index element={<div>Helloworld Maintenance</div>} />
+          </Route>
+
+          <Route
+            path="/crew"
+            element={
+              <ProtectedRoute allowedRole="crew">
+                <Crew></Crew>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<div>Welcom User</div>} />
+            <Route path="crew" element={<CrewUserPage/>} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

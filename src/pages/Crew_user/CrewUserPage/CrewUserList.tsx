@@ -2,14 +2,14 @@ import { FaEye, FaSearch } from 'react-icons/fa';
 // import { FaUser } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
-import { CrewUser } from '../../../types/crew';
-import './CrewPage.css';
+import { CrewProfile } from '../../../types/crewuser';
+import './CrewUserPage.css';
 
 interface Props {
-  crewList: CrewUser[];
+  crewList: CrewProfile[];
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
-  setSelectedCrew: (crew: CrewUser) => void;
+  setSelectedCrew: (crew: CrewProfile) => void;
   loading: boolean;
   selectedCrewIds: number[];
   setSelectedCrewIds: React.Dispatch<React.SetStateAction<number[]>>;
@@ -30,7 +30,6 @@ const CrewList = ({
   const [filterCrewId, setFilterCrewId] = useState('');
   const [filterName, setFilterName] = useState('');
   const [filterRole, setFilterRole] = useState('');
-  const [filterStatus, setFilterStatus] = useState('');
 
   const handleCheckboxChange = (id: number) => {
     setSelectedCrewIds((prev) =>
@@ -38,49 +37,17 @@ const CrewList = ({
     );
   };
 
-  const handleRowClick = (crew: CrewUser) => {
+  const handleRowClick = (crew: CrewProfile) => {
     setSelectedCrew(crew);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'status-active';
-      case 'inactive':
-        return 'status-inactive';
-      case 'on_leave':
-        return 'status-on-leave';
-      case 'training':
-        return 'status-training';
-      default:
-        return '';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active':
-        return 'Active';
-      case 'inactive':
-        return 'Inactive';
-      case 'on_leave':
-        return 'On Leave';
-      case 'training':
-        return 'Training';
-      default:
-        return status;
-    }
   };
 
   const filteredCrew = crewList.filter((crew) =>
     crew.crew_id.toString().includes(filterCrewId.trim()) &&
     (filterName === '' || crew.name.toLowerCase().includes(filterName.toLowerCase())) &&
-    (filterRole === '' || crew.role === filterRole) &&
-    (filterStatus === '' || crew.status === filterStatus)
+    (filterRole === '' || crew.role === filterRole)
   );
 
-  const roleOptions = [...new Set(crewList.map((c) => c.role))];
-  const statusOptions = ['active', 'inactive', 'on_leave', 'training'];
+  const roleOptions = ['Pilot', 'Co-Pilot', 'Attendant', 'Technician'];
 
   return (
     <>
@@ -121,45 +88,39 @@ const CrewList = ({
       </div>
 
       {loading ? (
-    <Loading message="Loading crew..." />
-    ) : (
-    <div className="table-wrapper">
-    <table className="crew-table">
-        <thead>
-        <tr>
+        <Loading message="Loading crew..." />
+      ) : (
+        <div className="table-wrapper">
+          <table className="crew-table">
+            <thead>
+              <tr>
                 {isEditing && <th className="checkbox-column" />}
-            <th>Crew ID</th>
-                <th>Status</th>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Email</th>
-            <th>Passport Number</th>
+                <th>Crew ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Passport Number</th>
                 <th>Flight Hours</th>
                 <th className="action-column" />
-        </tr>
-        </thead>
-        <tbody>
-        {filteredCrew.map((crew) => (
-            <tr
-            key={crew.crew_id}
-            onClick={() => handleRowClick(crew)}
-            className="crew-row"
-            >
-            {isEditing && (
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCrew.map((crew) => (
+                <tr
+                  key={crew.crew_id}
+                  onClick={() => handleRowClick(crew)}
+                  className="crew-row"
+                >
+                  {isEditing && (
                     <td className="checkbox-column" onClick={(e) => e.stopPropagation()}>
-                <input
-                    type="checkbox"
-                    checked={selectedCrewIds.includes(crew.crew_id)}
-                    onChange={() => handleCheckboxChange(crew.crew_id)}
-                />
-                </td>
-            )}
+                      <input
+                        type="checkbox"
+                        checked={selectedCrewIds.includes(crew.crew_id)}
+                        onChange={() => handleCheckboxChange(crew.crew_id)}
+                      />
+                    </td>
+                  )}
                   <td className="crew-id">{crew.crew_id}</td>
-                  <td>
-                    <span className={`status-badge ${getStatusColor(crew.status)}`}>
-                      {getStatusText(crew.status)}
-                    </span>
-                  </td>
                   <td className="name-cell">
                     <div className="crew-name">{crew.name}</div>
                   </td>
@@ -168,24 +129,24 @@ const CrewList = ({
                       {crew.role}
                     </span>
                   </td>
-                  <td className="email-cell">{crew.user.email}</td>
-                  <td className="passport-cell">{crew.passport_number}</td>
-                  <td className="flight-hours">{crew.flight_hours.toFixed(1)}</td>
+                  <td>{crew.user.email}</td>
+                  <td>{crew.passport_number}</td>
+                  <td>{crew.flight_hours}</td>
                   <td className="action-column" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="view-button"
-                onClick={() => setSelectedCrew(crew)}
+                      onClick={() => setSelectedCrew(crew)}
                       title="View Details"
                     >
                       <FaEye />
                     </button>
-            </td>
-            </tr>
-        ))}
-        </tbody>
-    </table>
-    </div>
-    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Search Modal */}
       {showSearchModal && (
@@ -223,18 +184,6 @@ const CrewList = ({
               </select>
             </div>
 
-            <div className="input-group">
-              <label>Status</label>
-              <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-                <option value="">All Status</option>
-                {statusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {getStatusText(status)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div className="modal-actions">
               <button className="apply-button" onClick={() => setShowSearchModal(false)}>
                 Apply Filter
@@ -245,7 +194,6 @@ const CrewList = ({
                   setFilterCrewId('');
                   setFilterName('');
                   setFilterRole('');
-                  setFilterStatus('');
                 }}
               >
                 Clear All

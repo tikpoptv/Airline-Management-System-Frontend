@@ -37,33 +37,9 @@ const AddCrewModal: React.FC<Props> = ({
         console.log('Fetching crew data for flight ID:', flightId);
         
         try {
-          // Call API directly instead of using service to control response handling
-          const response = await fetch(`${window.location.origin.replace(window.location.port, '8080')}/api/flights/${flightId}/available-crews`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
-            }
-          });
-          
-          if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          console.log('Data received from API:', data);
-          
-          // Check where the data is located
-          let crewList: AvailableCrew[] = [];
-          
-          if (Array.isArray(data)) {
-            crewList = data;
-          } else if (data && typeof data === 'object' && 'data' in data && Array.isArray(data.data)) {
-            crewList = data.data;
-          } else {
-            console.error('Cannot identify crew data location in API response');
-          }
-          
+          // Use the service instead of direct fetch
+          const crewList = await flightService.getAvailableCrews(flightId);
+          console.log('Data received from API:', crewList);
           console.log('Number of crews found:', crewList.length);
           setCrews(crewList);
           

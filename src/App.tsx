@@ -29,6 +29,7 @@ import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
 import Crew from "./pages/Crew_user/Crew";
 import CrewUserPage from "./pages/Crew_user/CrewUserPage/CrewUserPage";
 import CrewUserDetailPage from "./pages/Crew_user/CrewUserPage/CrewDetailUserPage";
+import UserDashBoard from "./pages/Crew_user/UserDashBoard/UserDahboard"
 
 function App() {
   return (
@@ -90,7 +91,7 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<div>Welcom User</div>} />
+            <Route index element={<UserDashBoard/>} />
             <Route path="crew" element={<CrewUserPage/>} />
             <Route path="crew/:id" element={<CrewUserDetailPage/>} />
           </Route>

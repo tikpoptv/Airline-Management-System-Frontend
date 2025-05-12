@@ -108,7 +108,7 @@ const CrewSchedule = () => {
   return (
     <div className="schedule-container">
       <div className="schedule-header">
-        <h2 className="schedule-title">Flight Schedule</h2>
+        <h2 className="schedule-title">Crew Schedule</h2>
         <div className="filter-sort-bar">
           <div className="dropdown-group">
             <label htmlFor="filter">Show:</label>

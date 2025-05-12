@@ -4,12 +4,28 @@ import { FaUser } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import Sidebar from '../../components/Sidebar';
-// import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getCrewProfile } from '../../services/crewuser/crewuserService';
 
 function Crew() {
   // const [openPathway, setOpenPathway] = useState(false);
   // const location = useLocation();
   // const isPathwayActive = location.pathname.startsWith('/admin/pathways');
+  const [crewId, setCrewId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchCrewData = async () => {
+      try {
+        const crewData = await getCrewProfile();
+        setCrewId(crewData.crew_id);
+      } catch (error) {
+        console.error('Failed to fetch crew data:', error);
+      }
+    };
+
+    fetchCrewData();
+  }, []);
+
   return (
     <div className={styles['crew-container']}>
       {/* Sidebar */}
@@ -57,7 +73,7 @@ function Crew() {
           <span>Aircraft</span>
         </NavLink> */}
 
-        <NavLink to="/crew/crew" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
+        <NavLink to={crewId ? `/crew/crew/${crewId}` : "/crew/details"} className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
           <FaUser className={styles['sidebar-icon']} />
           <span>Crew</span>
         </NavLink>

@@ -13,14 +13,26 @@ const CrewDetailPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!id) return;
+      if (!id) {
+        setError('Crew ID is required');
+        setLoading(false);
+        return;
+      }
+
+      const crewId = parseInt(id);
+      if (isNaN(crewId)) {
+        setError('Invalid Crew ID');
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
-        const crewData = await getCrewById(parseInt(id));
+        const crewData = await getCrewById(crewId);
         setCrew(crewData);
-      } catch (err) {
-        setError('ไม่สามารถโหลดข้อมูลลูกเรือได้');
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -30,7 +42,7 @@ const CrewDetailPage = () => {
   }, [id]);
 
   if (loading) {
-    return <Loading message="กำลังโหลดข้อมูลลูกเรือ..." />;
+    return <Loading message="Loading crew data..." />;
   }
 
   if (error) {
@@ -38,7 +50,7 @@ const CrewDetailPage = () => {
   }
 
   if (!crew) {
-    return <div className="error-message">ไม่พบข้อมูลลูกเรือ</div>;
+    return <div className="error-message">Crew not found</div>;
   }
 
   return <CrewProfileSection crew={crew} />;

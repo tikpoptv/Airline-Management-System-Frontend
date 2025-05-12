@@ -1,4 +1,5 @@
 import { api } from "../../api";
+import { API_BASE_URL } from '../../config';
 import { Crew, CrewScheduleResponse } from "../../types/crew";
 
 export interface AvailableCrew {
@@ -41,8 +42,25 @@ interface CrewResponse {
   status: 'active' | 'inactive' | 'on_leave' | 'training';
 }
 
+const getToken = () => localStorage.getItem("token");
+
 export const getCrewList = async (): Promise<Crew[]> => {
-  return api.get('/api/crew');
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized: No token provided');
+
+  const response = await fetch(`${API_BASE_URL}/api/crew`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || 'Failed to fetch crew list');
+  }
+
+  return response.json();
 };
 
 export const getCrewById = async (id: number): Promise<Crew> => {
@@ -54,7 +72,17 @@ export const getCrewSchedule = async (id: number): Promise<CrewScheduleResponse>
 };
 
 export const deleteCrewById = async (id: number): Promise<void> => {
-  return api.delete(`/api/crew/${id}`);
+  const res = await fetch(`${API_BASE_URL}/crew/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ error: 'unknown error' }));
+    throw new Error(error.error || `Failed to delete crew with ID ${id}`);
+  }
 };
 
 export const updateCrew = async (id: number, data: UpdateCrewData): Promise<Crew> => {

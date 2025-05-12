@@ -36,7 +36,7 @@ const EditRoutePage: React.FC = () => {
   const [durationHours, setDurationHours] = useState('');
   const [durationMinutes, setDurationMinutes] = useState('');
   const [durationSeconds, setDurationSeconds] = useState('');
-  const [status, setStatus] = useState('active');
+  const [status, setStatus] = useState<'active' | 'inactive'>('active');
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const [fromInput, setFromInput] = useState<AirportInputState>({ airport_id: null, airport_name: '', iata_code: '', city: '', country: '' });
   const [toInput, setToInput] = useState<AirportInputState>({ airport_id: null, airport_name: '', iata_code: '', city: '', country: '' });
@@ -135,14 +135,18 @@ const EditRoutePage: React.FC = () => {
             iata_code: routeData.from_airport.iata_code,
             name: routeData.from_airport.name,
             lat: routeData.from_airport.latitude,
-            lon: routeData.from_airport.longitude
+            lon: routeData.from_airport.longitude,
+            city: routeData.from_airport.city,
+            country: routeData.from_airport.country
           });
           
           setMapToAirport({
             iata_code: routeData.to_airport.iata_code,
             name: routeData.to_airport.name,
             lat: routeData.to_airport.latitude,
-            lon: routeData.to_airport.longitude
+            lon: routeData.to_airport.longitude,
+            city: routeData.to_airport.city,
+            country: routeData.to_airport.country
           });
         } else {
           setError('Route data not found');
@@ -172,7 +176,7 @@ const EditRoutePage: React.FC = () => {
     };
   }, []);
 
-  const handleStatusChange = (newStatus: string, e: React.MouseEvent) => {
+  const handleStatusChange = (newStatus: 'active' | 'inactive', e: React.MouseEvent) => {
     e.stopPropagation();
     setStatus(newStatus);
     setStatusDropdownOpen(false);
@@ -191,10 +195,10 @@ const EditRoutePage: React.FC = () => {
     try {
       const routeId = parseInt(id, 10);
       
-      // ส่งเฉพาะสถานะไปอัปเดต
-      await updateRouteStatus(routeId, { status: status as 'active' | 'inactive' });
+      // Update route status
+      await updateRouteStatus(routeId, { status });
       
-      // แสดง success popup แทนการใช้ alert
+      // Show success popup
       setShowSuccessPopup(true);
       
       // หน่วงเวลาก่อนกลับไปหน้ารายการเส้นทาง

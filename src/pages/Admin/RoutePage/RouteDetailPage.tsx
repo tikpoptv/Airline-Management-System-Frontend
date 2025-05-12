@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getRouteById } from '../../../services/route/routeService';
 import { Route } from '../../../types/route';
-import GlobeMap, {
-  Airport as MapAirport
-} from './components/GlobeMap/GlobeMap';
+import GlobeMap, { Airport as MapAirport } from './components/GlobeMap/GlobeMap';
 import './RouteDetailPage.css';
 
 /* ---------- Local types ---------- */
@@ -60,7 +58,7 @@ const RouteDetailPage: React.FC = () => {
 
   /* ---------- helpers ---------- */
   const handleBack = (): void => {
-    navigate('/admin/pathways/routes') as void;
+    navigate('/admin/pathways/routes');
   };
 
   const formatDuration = (duration: string): string => {
@@ -123,13 +121,17 @@ const RouteDetailPage: React.FC = () => {
     iata_code: route.from_airport.iata_code,
     name: route.from_airport.name,
     lat: route.from_airport.latitude,
-    lon: route.from_airport.longitude
+    lon: route.from_airport.longitude,
+    city: route.from_airport.city,
+    country: route.from_airport.country
   };
   const toAirportMapped: MapAirport = {
     iata_code: route.to_airport.iata_code,
     name: route.to_airport.name,
     lat: route.to_airport.latitude,
-    lon: route.to_airport.longitude
+    lon: route.to_airport.longitude,
+    city: route.to_airport.city,
+    country: route.to_airport.country
   };
 
   /* ---------- main render ---------- */

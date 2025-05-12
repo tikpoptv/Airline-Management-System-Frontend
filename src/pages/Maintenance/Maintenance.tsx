@@ -1,40 +1,36 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import './Maintenance.css';
+import styles from './Maintenance.module.css';
 import { FaWrench } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import Navbar from '../../components/Sidebar';
 
-
-
 function Maintenance() {
   return (
-    <div className="Maintenance-container">
+    <div className={styles.container}>
       
       {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
-         <div className='sidebar-logo'> <MdAirplaneTicket /></div>
-          <div className="airline-name">Airline name</div>
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
+         <div className={styles.sidebarLogo}> <MdAirplaneTicket /></div>
+          <div className={styles.airlineName}>Airline name</div>
         </div>
 
-        <NavLink to="/Maintenance" end className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-          <TbLayoutDashboardFilled className="sidebar-icon" />
+        <NavLink to="/maintenance" end className={({ isActive }) => isActive ? `${styles.sidebarItem} ${styles.active}` : styles.sidebarItem}>
+          <TbLayoutDashboardFilled className={styles.sidebarIcon} />
           <span>Dashboard</span>
         </NavLink>
 
-        
-
-        <NavLink to="/Maintenance/Maintenance" className={({ isActive }) => isActive ? 'sidebar-item active' : 'sidebar-item'}>
-          <FaWrench className="sidebar-icon" />
+        <NavLink to="/maintenance/log" className={({ isActive }) => isActive ? `${styles.sidebarItem} ${styles.active}` : styles.sidebarItem}>
+          <FaWrench className={styles.sidebarIcon} />
           <span>Maintenance</span>
         </NavLink>
       </aside>
 
       {/* Main content */}
-      <div className="main-content">
+      <div className={styles.mainContent}>
         <Navbar />
-        <div className="content-area">
+        <div className={styles.contentArea}>
           <Outlet />
         </div>
       </div>

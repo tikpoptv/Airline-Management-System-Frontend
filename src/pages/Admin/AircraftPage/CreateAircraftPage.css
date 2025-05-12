@@ -282,7 +282,7 @@
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
-  color: #1e293b;
+  color: #0f172a;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -295,6 +295,23 @@
   background-position: right 1rem center;
   background-size: 1.25rem;
   padding-right: 2.75rem;
+  position: relative;
+  z-index: 1;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+.form-group select option {
+  color: #0f172a;
+  background-color: white;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.form-group select option[value=""],
+.form-group select option:first-child {
+  color: #4b5563;
+  font-weight: 500;
 }
 
 .form-group select:hover,
@@ -310,6 +327,26 @@
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group select::-ms-expand {
+  display: none;
+}
+
+.form-group select:focus option {
+  background-color: #f8fafc;
+}
+
+.form-group select option:checked,
+.form-group select option:hover {
+  background-color: #eff6ff;
+  color: #0f172a;
+  box-shadow: 0 0 10px 100px #eff6ff inset;
+}
+
+.form-group select:invalid {
+  color: #4b5563;
+  font-weight: 500;
 }
 
 .form-group textarea {
@@ -675,4 +712,117 @@ select[name="maintenance_status"] option[value="Retired"] {
 
 .notification-popup.hide {
   animation: slideOutRight 0.2s ease forwards;
+}
+
+/* สำหรับ Firefox */
+@-moz-document url-prefix() {
+  .form-group select {
+    color: #0f172a;
+    text-indent: 0.01px;
+    text-overflow: '';
+    padding-right: 1rem;
+  }
+  
+  .form-group select option {
+    background-color: white;
+  }
+}
+
+/* Custom Dropdown Styles */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-selection {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.dropdown-selection.placeholder {
+  color: #64748b;
+}
+
+.dropdown-selection:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.custom-dropdown.error .dropdown-selection {
+  border-color: #ef4444 !important;
+}
+
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dropdown-option {
+  padding: 0.75rem 1rem;
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dropdown-option:hover {
+  background: #f8fafc;
+}
+
+.dropdown-option.selected {
+  background: #eff6ff;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+/* Scroll styling for dropdown */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 } 

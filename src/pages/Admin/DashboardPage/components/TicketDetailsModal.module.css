@@ -123,6 +123,20 @@
   padding: 1.25rem 1.5rem;
 }
 
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.tableHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
 .tableContainer h3 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -253,6 +267,13 @@
   font-style: italic;
 }
 
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+  font-style: italic;
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -262,4 +283,67 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Pagination Styles */
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pageSizeSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.pageSizeSelector select {
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background-color: #f9fafb;
+  font-size: 14px;
+  color: #374151;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.pageButton {
+  background-color: #f0f2f5;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:hover:not(:disabled) {
+  background-color: #e5e7eb;
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.totalRecords {
+  font-size: 13px;
+  color: #9ca3af;
+  font-style: italic;
 } 

@@ -15,6 +15,7 @@ import TicketDetailsModal from './components/TicketDetailsModal';
 import { FilterStatus, Flight } from '../../../types/flight_dashboard';
 import { useFlightDashboard } from '../../../hooks/useFlightDashboard';
 import { usePaymentDashboard } from '../../../hooks/usePaymentDashboard';
+import { usePassengerDashboard } from '../../../hooks/usePassengerDashboard';
 import { useNavigate } from 'react-router-dom';
 import WeatherUpdates from '../../../components/WeatherUpdates';
 
@@ -23,11 +24,13 @@ const DashboardPage = () => {
   const [ticketModalType, setTicketModalType] = useState<'booking' | 'payment' | 'passenger' | null>(null);
   const { data, loading: flightLoading, error: flightError } = useFlightDashboard();
   const { stats: paymentStats, loading: paymentLoading, error: paymentError } = usePaymentDashboard();
+  const { stats: passengerStats, loading: passengerLoading, error: passengerError } = usePassengerDashboard();
   const navigate = useNavigate();
 
-  if (flightLoading || paymentLoading) return <div>กำลังโหลดข้อมูล...</div>;
-  if (flightError) return <div>เกิดข้อผิดพลาดกับข้อมูลเที่ยวบิน: {flightError.message}</div>;
-  if (paymentError) return <div>เกิดข้อผิดพลาดกับข้อมูลการชำระเงิน: {paymentError.message}</div>;
+  if (flightLoading || paymentLoading || passengerLoading) return <div>Loading data...</div>;
+  if (flightError) return <div>Flight data error: {flightError.message}</div>;
+  if (paymentError) return <div>Payment data error: {paymentError.message}</div>;
+  if (passengerError) return <div>Passenger data error: {passengerError.message}</div>;
   if (!data) return null;
 
   const stats = {
@@ -37,7 +40,7 @@ const DashboardPage = () => {
     cancelledFlights: data.flights.filter((f: Flight) => f.flight_status === 'Cancelled').length,
   };
 
-  // กรองเฉพาะเที่ยวบินที่ active
+  // Filter only active flights
   const activeFlights = data.flights.filter(
     f => ['Scheduled', 'Boarding'].includes(f.flight_status)
   );
@@ -51,7 +54,7 @@ const DashboardPage = () => {
       <div className={styles.header}>
         <h1>Dashboard</h1>
         <div className={styles.dateTime}>
-          {new Date().toLocaleDateString('th-TH', { 
+          {new Date().toLocaleDateString('en-US', { 
             weekday: 'long', 
             year: 'numeric', 
             month: 'long', 
@@ -65,27 +68,27 @@ const DashboardPage = () => {
       <div className={styles.statsGrid}>
         <StatCard
           icon={<MdFlightTakeoff />}
-          title="เที่ยวบินทั้งหมดวันนี้"
+          title="Total Flights Today"
           value={stats.totalFlights}
           onClick={() => setSelectedModal('all')}
         />
         <StatCard
           icon={<FaPlane />}
-          title="เที่ยวบินที่กำลังให้บริการ"
+          title="Active Flights"
           value={stats.activeFlights}
           status="active"
           onClick={() => setSelectedModal('active')}
         />
         <StatCard
           icon={<MdFlightLand />}
-          title="เที่ยวบินที่ล่าช้า"
+          title="Delayed Flights"
           value={stats.delayedFlights}
           status="warning"
           onClick={() => setSelectedModal('delayed')}
         />
         <StatCard
           icon={<TbPlaneOff />}
-          title="เที่ยวบินที่ยกเลิก"
+          title="Cancelled Flights"
           value={stats.cancelledFlights}
           status="error"
           onClick={() => setSelectedModal('cancelled')}
@@ -119,21 +122,21 @@ const DashboardPage = () => {
         >
           <div className={styles.statHeader}>
             <BsTicket className={styles.statIcon} />
-            <h3>สถานะการจอง</h3>
+            <h3>Booking Status</h3>
           </div>
           <div className={styles.statContent}>
             <div className={styles.statItem}>
-              <span>การจองทั้งหมด</span>
+              <span>Total Bookings</span>
               <strong>{paymentStats.totalBookings}</strong>
             </div>
             <div className={styles.statItem}>
-              <span>ชำระเงินเรียบร้อย</span>
+              <span>Completed Payments</span>
               <strong className={styles.active}>
                 <IoMdCheckmark /> {paymentStats.completedPayments}
               </strong>
             </div>
             <div className={styles.statItem}>
-              <span>รอชำระเงิน</span>
+              <span>Pending Payments</span>
               <strong className={styles.warning}>{paymentStats.pendingPayments}</strong>
             </div>
           </div>
@@ -145,19 +148,19 @@ const DashboardPage = () => {
         >
           <div className={styles.statHeader}>
             <BsCreditCard className={styles.statIcon} />
-            <h3>รายได้</h3>
+            <h3>Revenue</h3>
           </div>
           <div className={styles.statContent}>
             <div className={styles.statItem}>
-              <span>รายได้รวม</span>
+              <span>Total Revenue</span>
               <strong className={styles.revenue}>
                 ฿{paymentStats.totalRevenue.toLocaleString()}
               </strong>
             </div>
             <div className={styles.statItem}>
-              <span>วิธีชำระเงินยอดนิยม</span>
+              <span>Popular Payment Method</span>
               <strong>
-                {paymentStats.revenueByMethod[0]?.method || 'ไม่มีข้อมูล'}
+                {paymentStats.revenueByMethod[0]?.method || 'No data'}
               </strong>
             </div>
           </div>
@@ -169,16 +172,18 @@ const DashboardPage = () => {
         >
           <div className={styles.statHeader}>
             <FaUsers className={styles.statIcon} />
-            <h3>ผู้โดยสาร</h3>
+            <h3>Passengers</h3>
           </div>
           <div className={styles.statContent}>
             <div className={styles.statItem}>
-              <span>จำนวนผู้โดยสารวันนี้</span>
-              <strong>{paymentStats.completedPayments}</strong>
+              <span>Total Passengers</span>
+              <strong>{passengerStats.totalPassengers}</strong>
             </div>
             <div className={styles.statItem}>
-              <span>การจองล่มเหลว</span>
-              <strong className={styles.error}>{paymentStats.failedPayments}</strong>
+              <span>Popular Nationality</span>
+              <strong className={styles.active}>
+                {passengerStats.byNationality[0]?.name || 'No data'}
+              </strong>
             </div>
           </div>
         </div>

@@ -24,7 +24,7 @@ export const usePaymentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   
-  // สถิติที่คำนวณจากข้อมูลการชำระเงิน
+  // Statistics calculated from payment data
   const stats = useMemo<PaymentStats>(() => {
     if (!payments.length) {
       return {
@@ -39,13 +39,13 @@ export const usePaymentDashboard = () => {
       };
     }
 
-    // กรองข้อมูลตามสถานะ
+    // Filter data by status
     const completed = filterPaymentsByStatus(payments, 'Completed');
     const pending = filterPaymentsByStatus(payments, 'Pending');
     const failed = filterPaymentsByStatus(payments, 'Failed');
     const refunded = filterPaymentsByStatus(payments, 'Refunded');
 
-    // คำนวณสถิติต่างๆ
+    // Calculate various statistics
     const totalRevenue = calculateTotalRevenue(payments);
     const dailyRevenue = calculateDailyRevenue(payments, 7);
     const revenueByMethod = calculateRevenueByPaymentMethod(payments);
@@ -69,7 +69,7 @@ export const usePaymentDashboard = () => {
       setPayments(data);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ'));
+      setError(err instanceof Error ? err : new Error('Unknown error occurred'));
     } finally {
       setLoading(false);
     }

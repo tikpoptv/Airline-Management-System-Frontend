@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './TicketDetailsModal.module.css';
 import { IoMdClose } from 'react-icons/io';
 import { BsTicket } from 'react-icons/bs';
-import { FaUser, FaMoneyBillWave } from 'react-icons/fa';
+import { FaUser, FaMoneyBillWave, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { 
   BarChart, 
   Bar, 
@@ -19,9 +19,11 @@ import {
   Cell
 } from 'recharts';
 import { usePaymentDashboard } from '../../../../hooks/usePaymentDashboard';
+import { usePassengerDashboard } from '../../../../hooks/usePassengerDashboard';
 import { PaymentData } from '../../../../services/paymentService';
 
 const COLORS = ['#3b82f6', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 interface TicketDetailsModalProps {
   onClose: () => void;
@@ -29,8 +31,18 @@ interface TicketDetailsModalProps {
 }
 
 const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }) => {
-  const { payments, stats } = usePaymentDashboard();
+  const { payments, stats: paymentStats } = usePaymentDashboard();
+  const { 
+    passengers, 
+    stats: passengerStats, 
+    loading: passengerLoading, 
+    pagination,
+    refetch: fetchPassengers 
+  } = usePassengerDashboard();
+  
   const [chartView, setChartView] = useState<'bar' | 'pie' | 'line'>('bar');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(20);
 
   const getStatusClass = (status: string) => {
     switch (status) {
@@ -58,19 +70,19 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
   const renderTitle = () => {
     switch (type) {
       case 'booking':
-        return 'รายละเอียดการจองตั๋ว';
+        return 'Booking Details';
       case 'payment':
-        return 'รายละเอียดการชำระเงิน';
+        return 'Payment Details';
       case 'passenger':
-        return 'รายละเอียดผู้โดยสาร';
+        return 'Passenger Details';
       default:
-        return 'รายละเอียด';
+        return 'Details';
     }
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString('th-TH', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -79,52 +91,68 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     });
   };
 
-  // สร้างข้อมูลสำหรับกราฟรายได้
+  // Create data for revenue charts
   const generateRevenueData = () => {
-    // สร้างข้อมูลจำแนกตามวิธีการชำระเงิน
+    // Data categorized by payment method
     return {
-      byMethod: stats.revenueByMethod,
+      byMethod: paymentStats.revenueByMethod,
       byStatus: [
-        { name: 'Completed', value: stats.completedPayments },
-        { name: 'Pending', value: stats.pendingPayments },
-        { name: 'Failed', value: stats.failedPayments },
-        { name: 'Refunded', value: stats.refundedPayments }
+        { name: 'Completed', value: paymentStats.completedPayments },
+        { name: 'Pending', value: paymentStats.pendingPayments },
+        { name: 'Failed', value: paymentStats.failedPayments },
+        { name: 'Refunded', value: paymentStats.refundedPayments }
       ],
-      daily: stats.dailyRevenue
+      daily: paymentStats.dailyRevenue
     };
   };
 
-  // ข้อมูลสำหรับกราฟการจอง
+  // Data for booking charts
   const generateBookingData = () => {
     const byStatus = [
-      { name: 'Completed', value: stats.completedPayments },
-      { name: 'Pending', value: stats.pendingPayments },
-      { name: 'Failed', value: stats.failedPayments },
-      { name: 'Refunded', value: stats.refundedPayments }
+      { name: 'Completed', value: paymentStats.completedPayments },
+      { name: 'Pending', value: paymentStats.pendingPayments },
+      { name: 'Failed', value: paymentStats.failedPayments },
+      { name: 'Refunded', value: paymentStats.refundedPayments }
     ];
 
     return {
       byStatus,
-      daily: stats.dailyRevenue.map(item => ({
+      daily: paymentStats.dailyRevenue.map(item => ({
         date: item.date,
-        bookings: Math.round(item.revenue / 3500) // ประมาณจำนวนการจองจากรายได้
+        bookings: Math.round(item.revenue / 3500) // Estimate bookings from revenue
       }))
     };
   };
 
-  // ข้อมูลสำหรับกราฟผู้โดยสาร
+  // Data for passenger charts
   const generatePassengerData = () => {
-    // เนื่องจากไม่มีข้อมูลผู้โดยสารโดยตรง เราจะสร้างข้อมูลจากการชำระเงิน
+    // Use real passenger data from API
     return {
-      total: stats.completedPayments,
-      daily: stats.dailyRevenue.map(item => ({
-        date: item.date,
-        passengers: Math.round(item.revenue / 3500) // ประมาณจำนวนผู้โดยสารจากรายได้
-      }))
+      total: passengerStats.totalPassengers,
+      byNationality: passengerStats.byNationality,
+      bySpecialRequests: passengerStats.bySpecialRequests,
+      daily: passengerStats.dailyData
     };
   };
 
-  // เลือกชนิดของกราฟ
+  // Handle page change for passenger table
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || (pagination && newPage > pagination.totalPages)) {
+      return;
+    }
+    setCurrentPage(newPage);
+    fetchPassengers(newPage, pageSize);
+  };
+
+  // Handle page size change
+  const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newPageSize = parseInt(e.target.value, 10);
+    setPageSize(newPageSize);
+    setCurrentPage(1); // Reset to first page when changing page size
+    fetchPassengers(1, newPageSize);
+  };
+
+  // Select chart type
   const renderChart = () => {
     switch (type) {
       case 'booking':
@@ -138,14 +166,14 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     }
   };
 
-  // แสดงข้อมูลการจอง
+  // Display booking data
   const renderBookingChart = () => {
     const data = generateBookingData();
     
     if (chartView === 'pie') {
       return (
         <div className={styles.chartContainer}>
-          <h3>สถานะการจอง</h3>
+          <h3>Booking Status</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -162,7 +190,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`${value} การจอง`, 'จำนวน']} />
+              <Tooltip formatter={(value) => [`${value} bookings`, 'Count']} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -173,7 +201,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     if (chartView === 'line') {
       return (
         <div className={styles.chartContainer}>
-          <h3>จำนวนการจองรายวัน</h3>
+          <h3>Daily Bookings</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               data={data.daily}
@@ -182,7 +210,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip formatter={(value) => [`${value} การจอง`, 'จำนวน']} />
+              <Tooltip formatter={(value) => [`${value} bookings`, 'Count']} />
               <Legend />
               <Line type="monotone" dataKey="bookings" stroke="#8884d8" activeDot={{ r: 8 }} />
             </LineChart>
@@ -193,7 +221,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     
     return (
       <div className={styles.chartContainer}>
-        <h3>สถานะการจอง</h3>
+        <h3>Booking Status</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={data.byStatus}
@@ -202,7 +230,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip formatter={(value) => [`${value} การจอง`, 'จำนวน']} />
+            <Tooltip formatter={(value) => [`${value} bookings`, 'Count']} />
             <Legend />
             <Bar dataKey="value" fill="#8884d8">
               {data.byStatus.map((entry, index) => (
@@ -215,14 +243,47 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     );
   };
 
-  // แสดงข้อมูลผู้โดยสาร
+  // Display passenger data
   const renderPassengerChart = () => {
     const data = generatePassengerData();
+    
+    if (passengerLoading) {
+      return <div className={styles.loading}>Loading passenger data...</div>;
+    }
+    
+    if (chartView === 'pie') {
+      return (
+        <div className={styles.chartContainer}>
+          <h3>Passenger Nationalities</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={data.byNationality}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+                nameKey="name"
+                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              >
+                {data.byNationality.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [`${value} people`, 'Passenger Count']} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      );
+    }
     
     if (chartView === 'line') {
       return (
         <div className={styles.chartContainer}>
-          <h3>จำนวนผู้โดยสารรายวัน</h3>
+          <h3>Daily Passenger Count</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               data={data.daily}
@@ -231,7 +292,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip formatter={(value) => [`${value} คน`, 'จำนวนผู้โดยสาร']} />
+              <Tooltip formatter={(value) => [`${value} people`, 'Passenger Count']} />
               <Legend />
               <Line type="monotone" dataKey="passengers" stroke="#82ca9d" activeDot={{ r: 8 }} />
             </LineChart>
@@ -242,32 +303,36 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     
     return (
       <div className={styles.chartContainer}>
-        <h3>ผู้โดยสารทั้งหมด: {data.total} คน</h3>
+        <h3>Passenger Special Requests</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            data={data.daily}
+            data={data.bySpecialRequests}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip formatter={(value) => [`${value} คน`, 'จำนวนผู้โดยสาร']} />
+            <Tooltip formatter={(value) => [`${value} people`, 'Passenger Count']} />
             <Legend />
-            <Bar dataKey="passengers" fill="#82ca9d" />
+            <Bar dataKey="value" fill="#82ca9d">
+              {data.bySpecialRequests.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
     );
   };
 
-  // แสดงข้อมูลรายได้
+  // Display revenue data
   const renderRevenueChart = () => {
     const data = generateRevenueData();
     
     if (chartView === 'pie') {
       return (
         <div className={styles.chartContainer}>
-          <h3>รายได้ตามวิธีการชำระเงิน</h3>
+          <h3>Revenue by Payment Method</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -285,7 +350,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'รายได้']} />
+              <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'Revenue']} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -296,7 +361,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     if (chartView === 'line') {
       return (
         <div className={styles.chartContainer}>
-          <h3>รายได้รายวัน</h3>
+          <h3>Daily Revenue</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
               data={data.daily}
@@ -305,7 +370,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'รายได้']} />
+              <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'Revenue']} />
               <Legend />
               <Line type="monotone" dataKey="revenue" stroke="#f59e0b" activeDot={{ r: 8 }} />
             </LineChart>
@@ -316,7 +381,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
     
     return (
       <div className={styles.chartContainer}>
-        <h3>รายได้ตามวิธีการชำระเงิน</h3>
+        <h3>Revenue by Payment Method</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={data.byMethod}
@@ -325,7 +390,7 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="method" />
             <YAxis />
-            <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'รายได้']} />
+            <Tooltip formatter={(value) => [`฿${value.toLocaleString()}`, 'Revenue']} />
             <Legend />
             <Bar dataKey="amount" fill="#f59e0b">
               {data.byMethod.map((entry, index) => (
@@ -341,11 +406,11 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
   const getChartTitle = () => {
     switch (type) {
       case 'booking':
-        return 'การจองตั๋ว';
+        return 'Bookings';
       case 'payment':
-        return 'รายได้';
+        return 'Revenue';
       case 'passenger':
-        return 'ผู้โดยสาร';
+        return 'Passengers';
       default:
         return '';
     }
@@ -362,6 +427,48 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
       default:
         return null;
     }
+  };
+
+  // Render pagination for passenger table
+  const renderPagination = () => {
+    if (!pagination || type !== 'passenger') return null;
+    
+    return (
+      <div className={styles.paginationContainer}>
+        <div className={styles.pageSizeSelector}>
+          <span>Show:</span>
+          <select value={pageSize} onChange={handlePageSizeChange}>
+            {PAGE_SIZE_OPTIONS.map(size => (
+              <option key={size} value={size}>{size}</option>
+            ))}
+          </select>
+          <span>entries</span>
+        </div>
+
+        <div className={styles.pagination}>
+          <button 
+            className={styles.pageButton} 
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <FaChevronLeft />
+          </button>
+          
+          <span className={styles.pageInfo}>
+            Page {currentPage} of {pagination.totalPages}
+            {pagination.total && <span className={styles.totalRecords}> (Total: {pagination.total})</span>}
+          </span>
+          
+          <button 
+            className={styles.pageButton} 
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === pagination.totalPages}
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -383,36 +490,36 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
               className={chartView === 'bar' ? styles.active : ''}
               onClick={() => setChartView('bar')}
             >
-              แผนภูมิแท่ง
+              Bar Chart
             </button>
             <button 
               className={chartView === 'pie' ? styles.active : ''}
               onClick={() => setChartView('pie')}
             >
-              แผนภูมิวงกลม
+              Pie Chart
             </button>
             <button 
               className={chartView === 'line' ? styles.active : ''}
               onClick={() => setChartView('line')}
             >
-              แผนภูมิเส้น
+              Line Chart
             </button>
           </div>
           
           {renderChart()}
           
           <div className={styles.tableContainer}>
-            <h3>ตาราง{getChartTitle()}</h3>
+            {type !== 'passenger' && <h3>{getChartTitle()} Table</h3>}
             
             {type === 'payment' && (
               <table className={styles.dataTable}>
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>วิธีการชำระเงิน</th>
-                    <th>จำนวนเงิน (บาท)</th>
-                    <th>วันที่ชำระเงิน</th>
-                    <th>สถานะ</th>
+                    <th>Payment Method</th>
+                    <th>Amount (THB)</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -438,10 +545,10 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
                 <thead>
                   <tr>
                     <th>Ticket ID</th>
-                    <th>เลขที่นั่ง</th>
-                    <th>สถานะการชำระเงิน</th>
-                    <th>จำนวนเงิน (บาท)</th>
-                    <th>วันที่จอง</th>
+                    <th>Seat Number</th>
+                    <th>Payment Status</th>
+                    <th>Amount (THB)</th>
+                    <th>Booking Date</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -463,9 +570,40 @@ const TicketDetailsModal: React.FC<TicketDetailsModalProps> = ({ onClose, type }
             )}
             
             {type === 'passenger' && (
-              <div className={styles.noDataMessage}>
-                ข้อมูลผู้โดยสารที่เชื่อมโยงกับการชำระเงิน
-              </div>
+              <>
+                {passengerLoading ? (
+                  <div className={styles.loading}>Loading passenger data...</div>
+                ) : (
+                  <>
+                    <div className={styles.tableHeader}>
+                      <h3>{getChartTitle()} Table</h3>
+                      {renderPagination()}
+                    </div>
+                    <table className={styles.dataTable}>
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Passenger Name</th>
+                          <th>Passport Number</th>
+                          <th>Nationality</th>
+                          <th>Special Requests</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {passengers.map(passenger => (
+                          <tr key={passenger.passenger_id}>
+                            <td>{passenger.passenger_id}</td>
+                            <td>{passenger.name}</td>
+                            <td>{passenger.passport_number}</td>
+                            <td>{passenger.nationality}</td>
+                            <td>{passenger.special_requests || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+              </>
             )}
           </div>
         </div>

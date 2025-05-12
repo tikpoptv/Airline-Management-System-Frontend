@@ -6,6 +6,7 @@ import { createMaintenanceLog } from '../../../services/maintenance/maintenanceS
 import { getAircraftList } from '../../../services/aircraft/aircraftService';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 import { Select, Input, DatePicker, message } from 'antd';
+import type { ChangeEvent } from 'react';
 import dayjs from 'dayjs';
 
 const { Option } = Select;
@@ -291,7 +292,7 @@ const CreateMaintenance: React.FC = () => {
                 className="aircraft-select"
                 placeholder="Select Aircraft"
                 value={aircraftId}
-                onChange={(value) => setAircraftId(value)}
+                onChange={(value: number) => setAircraftId(value)}
                 style={{ width: '100%' }}
               >
                 {aircrafts.map((aircraft) => (
@@ -307,7 +308,7 @@ const CreateMaintenance: React.FC = () => {
               </span>
               <DatePicker
                 className="date-picker"
-                onChange={(date) => setDate(date ? date.toISOString() : '')}
+                onChange={(date: dayjs.Dayjs | null) => setDate(date ? date.toISOString() : '')}
                 format="DD/MM/YYYY"
               />
             </div>
@@ -317,7 +318,7 @@ const CreateMaintenance: React.FC = () => {
               </span>
               <Input
                 value={location}
-                onChange={e => setLocation(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setLocation(e.target.value)}
                 placeholder="Enter maintenance location"
               />
             </div>
@@ -329,7 +330,7 @@ const CreateMaintenance: React.FC = () => {
               <span className="form-label">Status</span>
               <Select
                 value={status}
-                onChange={value => setStatus(value as MaintenanceStatus)}
+                onChange={(value: MaintenanceStatus) => setStatus(value)}
                 style={{ width: '100%' }}
               >
                 {statusOptions.map(option => (
@@ -344,7 +345,7 @@ const CreateMaintenance: React.FC = () => {
               <Input
                 type="number"
                 value={assignedTo || ''}
-                onChange={e => setAssignedTo(e.target.value ? Number(e.target.value) : null)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setAssignedTo(e.target.value ? Number(e.target.value) : null)}
                 placeholder="Enter crew member ID"
               />
             </div>
@@ -357,7 +358,7 @@ const CreateMaintenance: React.FC = () => {
             <span className="form-label required">Details</span>
             <TextArea
               value={details}
-              onChange={e => setDetails(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDetails(e.target.value)}
               placeholder="Enter maintenance details"
               autoSize={{ minRows: 3, maxRows: 6 }}
             />

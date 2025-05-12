@@ -1,6 +1,17 @@
 import { api } from "../../api";
+import { API_BASE_URL } from '../../config';
 import { Crew, CrewScheduleResponse } from "../../types/crew";
 import { CrewAssignment } from "../../types/crewuser";
+
+export interface AvailableCrew {
+  crew_id: number;
+  first_name: string;
+  last_name: string;
+  position: string;
+  license_number: string;
+  passport_number: string;
+  status: string;
+}
 
 interface UpdateCrewData {
   name?: string;
@@ -32,8 +43,25 @@ interface CrewResponse {
   status: 'active' | 'inactive' | 'on_leave' | 'training';
 }
 
+const getToken = () => localStorage.getItem("token");
+
 export const getCrewList = async (): Promise<Crew[]> => {
-  return api.get('/api/crew');
+  const token = getToken();
+  if (!token) throw new Error('Unauthorized: No token provided');
+
+  const response = await fetch(`${API_BASE_URL}/api/crew`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || 'Failed to fetch crew list');
+  }
+
+  return response.json();
 };
 
 export const getCrewAssignments = async (): Promise<CrewAssignment[]> => {
@@ -49,40 +77,56 @@ export const getCrewSchedule = async (id: number): Promise<CrewScheduleResponse>
 };
 
 export const deleteCrewById = async (id: number): Promise<void> => {
-  return api.delete(`/api/crew/${id}`);
+  const res = await fetch(`${API_BASE_URL}/crew/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ error: 'unknown error' }));
+    throw new Error(error.error || `Failed to delete crew with ID ${id}`);
+  }
 };
 
 export const updateCrew = async (id: number, data: UpdateCrewData): Promise<Crew> => {
-  const response = await api.put(`/api/crew/${id}`, data);
-  return response;
+  return api.put(`/api/crew/${id}`, data);
 };
 
 export const createCrew = async (data: CreateCrewData): Promise<CrewResponse> => {
   try {
-    console.log('[DEBUG] Sending create crew request with data:', data);
-    
     const response = await api.post('/api/crew', data);
-    console.log('[DEBUG] Raw crew API response:', response);
     
     if (!response || typeof response !== 'object') {
       throw new Error('Invalid response format from server');
     }
 
-    // ตรวจสอบว่า response มี properties ที่จำเป็นครบถ้วน
     const { ID, name, role, status } = response;
     if (!ID || !name || !role || !status) {
-      console.error('[DEBUG] Invalid crew response structure:', response);
       throw new Error('Missing required fields in crew server response');
     }
-
-    console.log('[DEBUG] Parsed crew response:', response);
     
     return response as CrewResponse;
   } catch (error) {
-    console.error('[DEBUG] Error in createCrew:', error);
     if (error instanceof Error) {
       throw error;
     }
     throw new Error('Failed to create crew member');
+  }
+};
+
+export const crewService = {
+  // Get available crews for a flight
+  getAvailableCrews: async (flightId: number): Promise<AvailableCrew[]> => {
+    try {
+      const response = await api.get(`/api/flights/${flightId}/available-crews`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to fetch available crews');
+    }
   }
 };

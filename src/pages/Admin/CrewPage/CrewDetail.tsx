@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Crew } from '../../../types/crew';
 import { Flight } from '../../../types/flight';
- import CrewProfileSection from './CrewProfileSection';
-import CrewSchedule from './CrewSchedule';
+import CrewProfileSection from './CrewProfileSection';
+import FlightSchedule from './CrewFlightSchedule';
+import './CrewDetail.css'
 
 interface Props {
   crew: Crew;
@@ -28,19 +29,12 @@ const CrewDetail = ({
   isEditMode,
 }: Props) => {
   const [editData, setEditData] = useState<Crew>(crew);
-  const [originalData, setOriginalData] = useState<Crew>(crew);
 
   useEffect(() => {
-    setEditData(crew);
-    setOriginalData(crew);
+    if (crew) {
+      setEditData(crew);
+    }
   }, [crew]);
-
-  const handleChange = <K extends keyof Crew>(field: K, value: Crew[K]) => {
-    setEditData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
 
   return (
     <div className="crew-detail">
@@ -60,14 +54,9 @@ const CrewDetail = ({
 
       <h2 className="section-title">Crew Profile</h2>
 
-      <CrewProfileSection
-        editData={editData}
-        originalData={originalData}
-        isEditMode={isEditMode}
-        handleChange={handleChange}
-      />
+      <CrewProfileSection crew={editData} />
 
-      <CrewSchedule
+      <FlightSchedule
         flightList={flightList}
         loading={loading}
         sortOption={sortOption}

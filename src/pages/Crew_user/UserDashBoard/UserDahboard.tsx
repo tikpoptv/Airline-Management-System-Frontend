@@ -57,8 +57,8 @@ const Dashboard = () => {
 
         <div className={styles.aircraftList}>
           <p style={{fontWeight:600, fontSize:'1.2rem', marginBottom:'1rem'}}>Crew Schedule</p>
-          <div className="table-wrapper">
-            <table className="crew-table">
+          <div className={styles.tableWrapper}>
+            <table className={styles.crewTable}>
               <thead>
                 <tr>
                   <th>Status</th>
@@ -114,8 +114,8 @@ const Dashboard = () => {
         ) : error ? (
           <div className={styles.errorMessage}>{error}</div>
         ) : crewProfile ? (
-          <div className="table-wrapper">
-            <table className="crew-table">
+          <div className={styles.tableWrapper}>
+            <table className={styles.crewTable}>
               <thead>
                 <tr>
                   <th>Crew ID</th>

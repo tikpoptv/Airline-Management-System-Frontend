@@ -2,7 +2,7 @@ import { api } from '../../api';
 import { MaintenanceLog, MaintenanceSearchParams } from '../../types/maintenance';
 
 interface UpdateMaintenanceLogPayload {
-  status?: 'Pending' | 'In Progress' | 'Completed';
+  status?: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
   maintenance_location?: string;
   assigned_to?: number;
   details?: string;
@@ -13,8 +13,26 @@ interface CreateMaintenanceLogPayload {
   date_of_maintenance: string;
   details: string;
   maintenance_location: string;
-  status?: 'Pending' | 'In Progress' | 'Completed';
+  status?: 'Pending' | 'In Progress' | 'Completed'| 'Cancelled';
   assigned_to?: number;
+}
+
+interface MaintenanceStats {
+  maintenance_stats: {
+    scheduled: number;
+    in_progress: number;
+    completed: number;
+    delayed: number;
+  };
+  today_maintenance: Array<{
+    log_id: number;
+    aircraft_id: number;
+    date_of_maintenance: string;
+    details: string;
+    maintenance_location: string;
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    assigned_to: number | null;
+  }>;
 }
 
 /**
@@ -29,9 +47,9 @@ export const getMaintenanceLogs = async (params?: MaintenanceSearchParams): Prom
       ? `?${new URLSearchParams(
           Object.entries(params)
             .filter(([, value]) => value !== undefined)
-            .reduce((acc, [key, value]) => ({
+            .reduce<Record<string, string>>((acc, [key, value]) => ({
               ...acc,
-              [key]: value.toString()
+              [key]: String(value)
             }), {})
         ).toString()}`
       : '';
@@ -96,4 +114,28 @@ export const createMaintenanceLog = async (data: CreateMaintenanceLogPayload): P
     console.error('Error creating maintenance log:', error);
     throw error;
   }
-}; 
+};
+
+export const getMaintenanceStats = async (): Promise<MaintenanceStats> => {
+  return api.get('/api/maintenance-logs/stats');
+};
+
+export const getMyMaintenanceTasks = async (): Promise<MaintenanceLog[]> => {
+  try {
+    const response = await api.get('/api/maintenance-tasks/me');
+    
+    if (response && Array.isArray(response)) {
+      return response;
+    }
+    
+    if (response && response.data && Array.isArray(response.data)) {
+      return response.data;
+    }
+    
+    console.warn('Unexpected API response format for my tasks:', response);
+    return [];
+  } catch (error) {
+    console.error('Error fetching my maintenance tasks:', error);
+    throw error;
+  }
+};

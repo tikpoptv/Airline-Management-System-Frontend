@@ -1,4 +1,4 @@
-import { FaEye, FaSearch } from 'react-icons/fa';
+import { FaEye, FaSearch, FaEdit } from 'react-icons/fa';
 // import { FaUser } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
@@ -96,7 +96,7 @@ const CrewList = ({
             onClick={() => setShowSearchModal(true)}
             title="Advanced Search"
           >
-            <FaSearch className="search-icon" />
+            <FaSearch />
           </button>
 
           <div className="button-group">
@@ -114,7 +114,7 @@ const CrewList = ({
               className={`edit-button ${isEditing ? 'done-button' : ''}`}
               onClick={() => setIsEditing(!isEditing)}
             >
-              {isEditing ? 'Done' : 'Edit'}
+              {isEditing ? 'Done' : <><FaEdit /> Edit</>}
             </button>
           </div>
         </div>

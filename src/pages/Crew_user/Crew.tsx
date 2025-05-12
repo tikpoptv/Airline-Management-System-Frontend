@@ -1,15 +1,15 @@
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import { Outlet, NavLink} from 'react-router-dom';
 import styles from './Crew.module.css';
-import { FaPlane, FaPlaneDeparture, FaRoute, FaUser, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import { MdAirplaneTicket } from "react-icons/md";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import Sidebar from '../../components/Sidebar';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 function Crew() {
-  const [openPathway, setOpenPathway] = useState(false);
-  const location = useLocation();
-  const isPathwayActive = location.pathname.startsWith('/admin/pathways');
+  // const [openPathway, setOpenPathway] = useState(false);
+  // const location = useLocation();
+  // const isPathwayActive = location.pathname.startsWith('/admin/pathways');
   return (
     <div className={styles['crew-container']}>
       {/* Sidebar */}
@@ -24,13 +24,13 @@ function Crew() {
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/crew/flight" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
+        {/* <NavLink to="/crew/flight" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
           <FaPlaneDeparture className={styles['sidebar-icon']} />
           <span>Flight</span>
-        </NavLink>
+        </NavLink> */}
 
         {/* Pathway Dropdown */}
-        <div 
+        {/* <div 
           className={isPathwayActive ? `${styles['sidebar-item']} ${styles['pathway-item']} ${styles.active}` : `${styles['sidebar-item']} ${styles['pathway-item']}`}
           style={{cursor:'pointer'}} 
           onClick={() => setOpenPathway(v => !v)}
@@ -50,12 +50,12 @@ function Crew() {
               Airport
             </NavLink>
           </div>
-        )}
+        )} */}
 
-        <NavLink to="/crew/aircrafts" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
+        {/* <NavLink to="/crew/aircrafts" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
           <FaPlane className={styles['sidebar-icon']} />
           <span>Aircraft</span>
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="/crew/crew" className={({ isActive }) => isActive ? `${styles['sidebar-item']} ${styles.active}` : styles['sidebar-item']}>
           <FaUser className={styles['sidebar-icon']} />

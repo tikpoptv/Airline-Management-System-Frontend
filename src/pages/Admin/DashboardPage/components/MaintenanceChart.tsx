@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { getMaintenanceStats } from '../../../../services/maintenance/maintenanceService';
 import MaintenanceModal from './MaintenanceModal';
 import styles from './MaintenanceChart.module.css';

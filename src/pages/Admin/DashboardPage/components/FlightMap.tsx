@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-// import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
-// import { LatLngExpression, Map as LeafletMap, DivIcon } from 'leaflet';
-// import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet';
+import { LatLngExpression, Map as LeafletMap, DivIcon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import styles from './FlightMap.module.css';
 import { Flight } from '../../../../types/flight_dashboard';
 

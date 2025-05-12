@@ -70,3 +70,7 @@ const CrewDetailPage = () => {
 };
 
 export default CrewDetailPage;
+
+function fetchData() {
+    throw new Error('Function not implemented.');
+}

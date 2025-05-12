@@ -3,21 +3,21 @@ import styles from './TicketDetailsModal.module.css';
 import { IoMdClose } from 'react-icons/io';
 import { BsTicket } from 'react-icons/bs';
 import { FaUser, FaMoneyBillWave, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-// import { 
-//   BarChart, 
-//   Bar, 
-//   PieChart, 
-//   Pie, 
-//   LineChart, 
-//   Line, 
-//   XAxis, 
-//   YAxis, 
-//   CartesianGrid, 
-//   Tooltip, 
-//   Legend, 
-//   ResponsiveContainer,
-//   Cell
-// } from 'recharts';
+import { 
+  BarChart, 
+  Bar, 
+  PieChart, 
+  Pie, 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 import { usePaymentDashboard } from '../../../../hooks/usePaymentDashboard';
 import { usePassengerDashboard } from '../../../../hooks/usePassengerDashboard';
 import { PaymentData } from '../../../../services/paymentService';

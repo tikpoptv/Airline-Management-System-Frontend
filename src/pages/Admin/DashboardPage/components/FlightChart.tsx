@@ -1,4 +1,4 @@
-// import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Flight } from '../../../../types/flight_dashboard';
 import styles from './FlightChart.module.css';
 

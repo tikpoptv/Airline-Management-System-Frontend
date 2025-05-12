@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch } from 'react-icons/fa';
 import { CrewProfile, CrewAssignment } from '../../../types/crewuser';
 import { getCrewAssignments, getCrewProfile } from '../../../services/crewuser/crewuserService';
 import styles from './UserDashboard.module.css';
 
 const Dashboard = () => {
   const [todayTasks, setTodayTasks] = useState(0);
-  const [showSearchModal, setShowSearchModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [crewProfile, setCrewProfile] = useState<CrewProfile | null>(null);
   const [crewAssignments, setCrewAssignments] = useState<CrewAssignment[]>([]);
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,13 +36,13 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  
-
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.titleGroup}>
-        <h4>dashboard</h4>
-        <h2 className={styles.title}>Hi, Maintenance</h2>
+        <h4>DASHBOARD</h4>
+        <h2 className={styles.title}>
+          {crewProfile ? `Hi, ${crewProfile.name.toUpperCase()}` : 'Hi, CREW'}
+        </h2>
       </div>
 
       <div className={styles.taskAndListContainer}>
@@ -56,16 +52,16 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.aircraftList}>
-          <p style={{fontWeight:600, fontSize:'1.2rem', marginBottom:'1rem'}}>Crew Schedule</p>
+          <p>Crew Schedule</p>
           <div className={styles.tableWrapper}>
             <table className={styles.crewTable}>
               <thead>
                 <tr>
-                  <th>Status</th>
-                  <th>Flight</th>
-                  <th>Date</th>
-                  <th>Route</th>
-                  <th>Time</th>
+                  <th>STATUS</th>
+                  <th>FLIGHT</th>
+                  <th>DATE</th>
+                  <th>ROUTE</th>
+                  <th>TIME</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,11 +76,15 @@ const Dashboard = () => {
                     const arrTime = arr.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     return (
                       <tr key={idx}>
-                        <td><span className={`role-badge ${assignment.flight.flight_status.toLowerCase()}`}>{assignment.flight.flight_status.toUpperCase()}</span></td>
-                        <td style={{fontWeight:600}}>{assignment.flight.flight_number}</td>
+                        <td>
+                          <span className={`${styles.roleBadge} ${styles[assignment.flight.flight_status.toLowerCase()]}`}>
+                            {assignment.flight.flight_status.toUpperCase()}
+                          </span>
+                        </td>
+                        <td>{assignment.flight.flight_number}</td>
                         <td>{dateStr}</td>
-                        <td>{assignment.flight.route.from_airport.iata_code} &rarr; {assignment.flight.route.to_airport.iata_code}</td>
-                        <td>{depTime} &ndash; {arrTime}</td>
+                        <td>{assignment.flight.route.from_airport.iata_code} → {assignment.flight.route.to_airport.iata_code}</td>
+                        <td>{depTime} – {arrTime}</td>
                       </tr>
                     );
                   })
@@ -98,16 +98,6 @@ const Dashboard = () => {
       <div className={styles.historySection}>
         <div className={styles.historyHeader}>
           <h3>Crew Profile</h3>
-          <div className={styles.historyActions}>
-            <button
-              className={styles.searchPopupButton}
-              onClick={() => setShowSearchModal(true)}
-              title="Advanced Search"
-            >
-              <FaSearch />
-            </button>
-            
-          </div>
         </div>
         {loading ? (
           <div className={styles.loadingMessage}>Loading crew profile...</div>
@@ -118,12 +108,12 @@ const Dashboard = () => {
             <table className={styles.crewTable}>
               <thead>
                 <tr>
-                  <th>Crew ID</th>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th>Email</th>
-                  <th>Passport Number</th>
-                  <th>Flight Hours</th>
+                  <th>CREW ID</th>
+                  <th>NAME</th>
+                  <th>ROLE</th>
+                  <th>EMAIL</th>
+                  <th>PASSPORT NUMBER</th>
+                  <th>FLIGHT HOURS</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,7 +121,9 @@ const Dashboard = () => {
                   <td>{crewProfile.crew_id}</td>
                   <td>{crewProfile.name}</td>
                   <td>
-                    <span className="role-badge attendant">{crewProfile.role}</span>
+                    <span className={`${styles.roleBadge} ${styles[crewProfile.role.toLowerCase().replace('-', '')]}`}>
+                      {crewProfile.role}
+                    </span>
                   </td>
                   <td>{crewProfile.user.email}</td>
                   <td>{crewProfile.passport_number}</td>
@@ -141,43 +133,6 @@ const Dashboard = () => {
             </table>
           </div>
         ) : null}
-        {showSearchModal && (
-          <div className="search-modal-backdrop">
-            <div className="search-modal">
-              <h3>Advanced Search</h3>
-              <div className="input-group">
-                <label>Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter Name"
-                />
-              </div>
-              <div className="input-group">
-                <label>Role</label>
-                <select>
-                  <option value="">All Roles</option>
-                  <option value="Pilot">Pilot</option>
-                  <option value="Co-Pilot">Co-Pilot</option>
-                  <option value="Attendant">Attendant</option>
-                  <option value="Technician">Technician</option>
-                </select>
-              </div>
-              <div className="modal-actions">
-                <button className="apply-button" onClick={() => setShowSearchModal(false)}>
-                  Apply Filter
-                </button>
-                <button
-                  className="clear-button"
-                  onClick={() => {
-                    setShowSearchModal(false);
-                  }}
-                >
-                  Clear & Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

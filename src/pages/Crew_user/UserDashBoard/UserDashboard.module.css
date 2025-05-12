@@ -1,23 +1,22 @@
 .dashboardContainer {
-  padding: 2rem 3rem;
+  padding: 1.5rem 2rem;
   min-height: 100vh;
-  
 }
 
 .titleGroup {
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .titleGroup h4 {
   color: #7b8794;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
   text-transform: uppercase;
   margin-bottom: 0.2rem;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #183152;
   margin-bottom: 0.5rem;
@@ -27,19 +26,19 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 2rem;
-  margin-bottom: 2.5rem;
-  gap: 2.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
 }
 
 .taskBox {
   background: linear-gradient(135deg, #e0f7fa 0%, #f0f4ff 100%);
-  padding: 2rem 1.5rem;
-  border-radius: 18px;
-  width: 260px;
-  height: 220px;
+  padding: 1.5rem 1rem;
+  border-radius: 10px;
+  width: 200px;
+  height: 180px;
   text-align: center;
-  box-shadow: 0 6px 24px rgba(24, 49, 82, 0.08);
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
   border: 1px solid #e3e8ee;
   display: flex;
   flex-direction: column;
@@ -49,16 +48,16 @@
 
 .taskBox p {
   color: #484a4c;
-  font-size: 1.2rem;
-  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .taskCount {
-  font-size: 4rem;
+  font-size: 3.5rem;
   color: #065a25;
   font-weight: bold;
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
   line-height: 1;
 }
@@ -66,118 +65,138 @@
 .aircraftList {
   flex-grow: 1;
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(24, 49, 82, 0.10);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
   border: 1px solid #e3e8ee;
-  padding: 2.5rem 2rem 2rem 2rem;
+  padding: 1.5rem;
   min-width: 0;
   overflow-x: auto;
   position: relative;
-  margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
-  border-left: 8px solid #4f8cff;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4f8cff;
 }
 
 .aircraftList p {
   color: #183152;
-  font-size: 1.4rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(24,49,82,0.04);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
 }
 
-.table-wrapper {
+.tableWrapper {
   width: 100%;
   overflow-x: auto;
 }
 
-.crew-table {
+.crewTable {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   background: #fff;
-  border-radius: 14px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(24, 49, 82, 0.04);
+  box-shadow: 0 2px 4px rgba(24, 49, 82, 0.04);
 }
 
-.crew-table th, .crew-table td {
-  padding: 1.2rem 1.3rem;
+.crewTable th, .crewTable td {
+  padding: 0.8rem 1rem;
   text-align: left;
 }
 
-.crew-table th {
+.crewTable th {
   background: #eaf1fb;
   color: #1a2747;
-  font-size: 1.08rem;
-  font-weight: 800;
-  border-bottom: 2px solid #dbeafe;
-  letter-spacing: 1.5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-bottom: 1px solid #dbeafe;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-.crew-table tbody tr {
+.crewTable tbody tr {
   transition: background 0.15s;
 }
 
-.crew-table tbody tr:hover {
+.crewTable tbody tr:hover {
   background: #f0f4ff;
 }
 
-.crew-table td {
+.crewTable td {
   color: #2d3748;
-  font-size: 1.01rem;
+  font-size: 0.9rem;
   border-bottom: 1px solid #f1f3f7;
 }
 
-.role-badge {
+.roleBadge {
   display: inline-block;
-  padding: 0.4em 1.1em;
-  border-radius: 8px;
-  font-size: 0.98em;
+  padding: 0.3em 0.8em;
+  border-radius: 4px;
+  font-size: 0.8em;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   background: #e3f2fd;
   color: #1976d2;
   border: 1px solid #bbdefb;
   text-transform: uppercase;
-  box-shadow: 0 1px 4px rgba(24,49,82,0.04);
 }
 
 /* Status-based badge colors for flight status */
-.role-badge.scheduled {
-  background: #85c7f7 ;
+.scheduled {
+  background: #85c7f7;
   color: #1976d2;
   border-color: #bbdefb;
 }
-.role-badge.boarding {
+.boarding {
   background: #fffde7;
   color: #fbc02d;
   border-color: #ffe082;
 }
-.role-badge.departed {
+.departed {
   background: #e8f5e9;
   color: #388e3c;
   border-color: #a5d6a7;
 }
-.role-badge.delayed {
+.delayed {
   background: #ffebee;
   color: #d32f2f;
   border-color: #ffcdd2;
 }
-.role-badge.cancelled {
+.cancelled {
   background: #ececec;
   color: #757575;
   border-color: #e0e0e0;
 }
 
+/* Role-based badge colors */
+.pilot {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+.copilot {
+  background: #e1f5fe;
+  color: #0288d1;
+  border-color: #b3e5fc;
+}
+.attendant {
+  background: #f3e5f5;
+  color: #8e24aa;
+  border-color: #e1bee7;
+}
+.technician {
+  background: #ede7f6;
+  color: #5e35b1;
+  border-color: #d1c4e9;
+}
+
 .historySection {
   background: #fff;
-  padding: 2rem 1.5rem;
-  border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(24, 49, 82, 0.08);
-  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
+  margin-bottom: 1.5rem;
   border: 1px solid #e3e8ee;
 }
 
@@ -185,7 +204,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .historyActions {
@@ -242,8 +261,8 @@
 .loadingMessage,
 .errorMessage {
   text-align: center;
-  padding: 2rem;
-  font-size: 1.1rem;
+  padding: 1rem;
+  font-size: 1rem;
   color: #484a4c;
 }
 

@@ -1,8 +1,8 @@
 .mapContainer {
-  width: 100%;
-  height: 400px;
   position: relative;
-  border-radius: 8px;
+  width: 100%;
+  height: 500px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -68,21 +68,22 @@
 }
 
 .planeIcon div {
-  font-size: 24px;
-  transition: transform 0.5s ease;
-  transform-origin: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
 }
 
 .planeIcon div.focused {
-  font-size: 28px;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
-  z-index: 1000;
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }
 
 .controls {
   position: absolute;
   top: 20px;
   right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   z-index: 1000;
 }
 
@@ -91,36 +92,30 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
   color: #1f2937;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .button:hover {
+  background: #f3f4f6;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .button.active {
-  background-color: #3b82f6;
+  background: #3b82f6;
   color: white;
-  border-color: #3b82f6;
 }
 
 .button.active:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background: #2563eb;
 }
 
 .flightOverlay {
@@ -128,23 +123,23 @@
   bottom: 20px;
   left: 20px;
   background: white;
-  padding: 12px;
+  padding: 16px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
   z-index: 1000;
-  max-width: 300px;
-  display: none;
 }
 
 .flightOverlay.visible {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .flightOverlay h4 {
   margin: 0 0 8px 0;
   color: #1f2937;
-  font-size: 16px;
-  font-weight: bold;
 }
 
 .flightOverlay p {

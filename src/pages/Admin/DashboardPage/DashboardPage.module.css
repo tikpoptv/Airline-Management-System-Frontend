@@ -1,14 +1,46 @@
 .container {
   padding: 2rem;
-  background-color: #f8fafc;
   min-height: 100vh;
+  background-color: #f1f5f9;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(392.8px, 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+
+.gridItem {
+  min-width: 0;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
 }
 
 .header h1 {
@@ -132,6 +164,11 @@
   color: #ea580c;
 }
 
+.statItem strong.revenue {
+  color: #047857;
+  font-size: 1.25rem;
+}
+
 .bottomGrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -153,9 +190,22 @@
   gap: 1.5rem;
 }
 
-.weatherWidget,
+.weatherWidget {
+  height: 100%;
+}
+
 .notifications {
   flex: 1;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1536px) {

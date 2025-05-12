@@ -1,19 +1,35 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Flight } from '../../../../types/flight_dashboard';
 import styles from './FlightChart.module.css';
 
-// Mock data
-const data = [
-  { name: '00:00', flights: 12 },
-  { name: '03:00', flights: 8 },
-  { name: '06:00', flights: 25 },
-  { name: '09:00', flights: 35 },
-  { name: '12:00', flights: 30 },
-  { name: '15:00', flights: 28 },
-  { name: '18:00', flights: 32 },
-  { name: '21:00', flights: 20 },
-];
+interface FlightChartProps {
+  flights: Flight[];
+}
 
-const FlightChart = () => {
+const FlightChart = ({ flights }: FlightChartProps) => {
+  // จัดกลุ่มเที่ยวบินตามช่วงเวลา
+  const getFlightsByHour = () => {
+    const flightsByHour = new Array(8).fill(0).map((_, index) => {
+      const hour = index * 3;
+      return {
+        name: `${hour.toString().padStart(2, '0')}:00`,
+        flights: 0
+      };
+    });
+
+    flights.forEach(flight => {
+      const hour = new Date(flight.departure_time).getHours();
+      const index = Math.floor(hour / 3);
+      if (index >= 0 && index < 8) {
+        flightsByHour[index].flights++;
+      }
+    });
+
+    return flightsByHour;
+  };
+
+  const data = getFlightsByHour();
+
   return (
     <div className={styles.chartContainer}>
       <ResponsiveContainer width="100%" height={300}>

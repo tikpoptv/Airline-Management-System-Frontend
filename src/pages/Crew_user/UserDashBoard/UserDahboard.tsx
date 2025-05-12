@@ -106,7 +106,7 @@ const Dashboard = () => {
             >
               <FaSearch />
             </button>
-            <button className={styles.addButton}>+ Add new</button>
+            
           </div>
         </div>
         {loading ? (

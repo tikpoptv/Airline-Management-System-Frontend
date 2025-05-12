@@ -19,11 +19,9 @@ interface Props {
 const CrewList = ({
   crewList,
   isEditing,
-  setIsEditing,
   loading,
   selectedCrewIds,
   setSelectedCrewIds,
-  onDelete,
 }: Props) => {
   const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -71,24 +69,7 @@ const CrewList = ({
             <FaSearch className="search-icon" />
           </button>
 
-          <div className="button-group">
-            {isEditing && (
-              <button className="add-button" onClick={() => window.location.href = '/crew/crew/create'}>
-                Add New
-              </button>
-            )}
-            {isEditing && selectedCrewIds.length > 0 && (
-              <button className="delete-button" onClick={onDelete}>
-                Delete Selected ({selectedCrewIds.length})
-              </button>
-            )}
-            <button
-              className={`edit-button ${isEditing ? 'done-button' : ''}`}
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              {isEditing ? 'Done' : 'Edit'}
-            </button>
-          </div>
+          
         </div>
       </div>
 

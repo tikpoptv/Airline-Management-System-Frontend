@@ -304,3 +304,67 @@
   color: #0ea5e9;
   transform: scale(1.1);
 }
+
+@media (max-width: 900px) {
+  .crew-profile-grid {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .profile-image-section, .crew-details-sections {
+    width: 100%;
+    min-width: 0;
+  }
+  .info-section {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .edit-header, .details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .crew-profile-grid {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  .profile-image-section {
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  .crew-image {
+    width: 80px;
+    height: 80px;
+  }
+  .info-section {
+    padding: 0.5rem 0.2rem;
+    min-width: 0;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .edit-input, .edit-select {
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    width: 100%;
+  }
+  .save-button, .back-button, .edit-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  .modal-content {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 0.5rem;
+  }
+} 

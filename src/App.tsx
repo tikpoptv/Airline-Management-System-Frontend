@@ -30,6 +30,7 @@ import Crew from "./pages/Crew_user/Crew";
 import CrewUserPage from "./pages/Crew_user/CrewUserPage/CrewUserPage";
 import CrewUserDetailPage from "./pages/Crew_user/CrewUserPage/CrewDetailUserPage";
 import UserDashBoard from "./pages/Crew_user/UserDashBoard/UserDahboard"
+import EditCrewUserPage from "./pages/Crew_user/CrewUserPage/EditCrewUserPage"
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function App() {
             <Route index element={<UserDashBoard/>} />
             <Route path="crew" element={<CrewUserPage/>} />
             <Route path="crew/:id" element={<CrewUserDetailPage/>} />
+            <Route path="crew/edit/:id" element={<EditCrewUserPage/>} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

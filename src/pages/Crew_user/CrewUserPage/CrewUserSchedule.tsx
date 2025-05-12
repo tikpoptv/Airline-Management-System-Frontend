@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { CrewAssignment } from '../../../types/crewuser';
 import Loading from '../../../components/Loading';
 import { getCrewAssignments } from '../../../services/crewuser/crewuserService';
 
-const CrewSchedule = () => {
+const CrewSchedule: React.FC = () => {
   const [schedules, setSchedules] = useState<CrewAssignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +18,7 @@ const CrewSchedule = () => {
         const response = await getCrewAssignments();
         setSchedules(response);
         setError(null);
-      } catch (err) {
+      } catch {
         setError('Unable to load flight schedule. Please try again.');
       } finally {
         setLoading(false);

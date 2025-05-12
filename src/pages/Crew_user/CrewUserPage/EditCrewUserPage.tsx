@@ -1,31 +1,29 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Crew } from '../../../types/crew';
-import { getCrewById, updateCrew } from '../../../services/crew/crewService';
+import { useNavigate} from 'react-router-dom';
+import { CrewProfile, UpdateCrewProfilePayload } from '../../../types/crewuser';
+import { getCrewProfile, updateCrewProfile } from '../../../services/crewuser/crewuserService';
 import { FaUser, FaPassport, FaEnvelope, FaArrowLeft, FaSave } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
-import './EditCrewPage.css';
+import './EditCrewUserPage.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
-type CrewRole = 'Pilot' | 'Co-Pilot' | 'Attendant' | 'Technician';
 type CrewStatus = 'active' | 'inactive' | 'on_leave' | 'training';
 
-interface FormData {
-  name: string;
-  role: CrewRole;
-  flight_hours: number;
+interface FormData extends UpdateCrewProfilePayload {
   status: CrewStatus;
 }
 
-const EditCrewPage = () => {
-  const { id } = useParams();
+const EditCrewUserPage = () => {
   const navigate = useNavigate();
-  const [crew, setCrew] = useState<Crew | null>(null);
+  const [crew, setCrew] = useState<CrewProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     role: 'Pilot',
-    flight_hours: 0,
+    passport_number: '',
+    license_expiry_date: '',
+    passport_expiry_date: '',
     status: 'active'
   });
   const [saving, setSaving] = useState(false);
@@ -38,12 +36,14 @@ const EditCrewPage = () => {
     const fetchCrew = async () => {
       try {
         setLoading(true);
-        const crewData = await getCrewById(Number(id));
+        const crewData = await getCrewProfile();
         setCrew(crewData);
         setFormData({
           name: crewData.name,
           role: crewData.role,
-          flight_hours: crewData.flight_hours,
+          passport_number: crewData.passport_number,
+          license_expiry_date: crewData.license_expiry_date,
+          passport_expiry_date: crewData.passport_expiry_date,
           status: crewData.status
         });
       } catch (err) {
@@ -54,17 +54,22 @@ const EditCrewPage = () => {
       }
     };
 
-    if (id) {
-      fetchCrew();
-    }
-  }, [id]);
+    fetchCrew();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'flight_hours' ? parseFloat(value) : value
-    }));
+    if (name === 'passport_expiry_date' || name === 'license_expiry_date') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value.slice(0, 10)
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const showToast = (message: string, type: 'success' | 'error') => {
@@ -84,11 +89,14 @@ const EditCrewPage = () => {
 
     try {
       setSaving(true);
-      await updateCrew(crew.crew_id, formData);
+      const { name, role, passport_number } = formData;
+      const license_expiry_date = formData.license_expiry_date.slice(0, 10);
+      const passport_expiry_date = formData.passport_expiry_date.slice(0, 10);
+      await updateCrewProfile({ name, role, passport_number, license_expiry_date, passport_expiry_date });
       setShowConfirmModal(false);
       showToast('Crew member updated successfully!', 'success');
       setTimeout(() => {
-        navigate(`/admin/crew/${crew.crew_id}`);
+        navigate(`/crew/crew/${crew.crew_id}`);
       }, 2000);
     } catch (err) {
       setShowConfirmModal(false);
@@ -100,53 +108,59 @@ const EditCrewPage = () => {
     }
   };
 
+  // Simple date format validation (yyyy-mm-dd)
+  const isValidDate = (dateStr: string) => {
+    const datePart = dateStr.slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(datePart);
+  };
+
   if (loading) return <Loading message="Loading crew member data..." />;
   if (error) return <div className="error-message">{error}</div>;
   if (!crew) return <div className="error-message">Crew member not found</div>;
 
-  const getChangedFields = () => {
-    const changes = [];
-    if (formData.name !== crew.name) {
-      changes.push({ field: 'Name', from: crew.name, to: formData.name });
+  // Helper functions for status/role display
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active': return 'status-active';
+      case 'inactive': return 'status-inactive';
+      case 'on_leave': return 'status-on-leave';
+      case 'training': return 'status-training';
+      default: return '';
     }
-    if (formData.role !== crew.role) {
-      changes.push({ field: 'Role', from: crew.role, to: formData.role });
+  };
+  const getStatusText = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active': return 'Active';
+      case 'inactive': return 'Inactive';
+      case 'on_leave': return 'On Leave';
+      case 'training': return 'Training';
+      default: return status;
     }
-    if (formData.flight_hours !== crew.flight_hours) {
-      changes.push({ 
-        field: 'Flight Hours', 
-        from: crew.flight_hours.toFixed(1), 
-        to: formData.flight_hours.toFixed(1) 
-      });
-    }
-    if (formData.status !== crew.status) {
-      changes.push({ field: 'Status', from: crew.status, to: formData.status });
-    }
-    return changes;
   };
 
+  const getNameParts = (fullName: string) => {
+    const parts = fullName.trim().split(/\s+/);
+    return {
+      firstName: parts[0] || '',
+      lastName: parts.slice(1).join(' ') || ''
+    };
+  };
+  const { firstName, lastName } = getNameParts(formData.name);
+
   return (
-    <div className="edit-crew-page">
-      <div className="edit-header">
+    <div className="crew-details-page">
+      <div className="details-header">
         <div className="breadcrumb">
           <span>Crew</span>
           <span className="separator">/</span>
           <span>Edit</span>
         </div>
-        <h1>Edit Crew Member</h1>
+        <h1>Edit Crew Details</h1>
         <div className="header-actions">
-          <button 
-            className="save-button" 
-            onClick={handleSave}
-            disabled={saving}
-          >
+          <button className="save-button" onClick={handleSave} disabled={saving}>
             <FaSave /> {saving ? 'Saving...' : 'Save Changes'}
           </button>
-          <button 
-            className="back-button" 
-            onClick={() => navigate(`/admin/crew/${crew.crew_id}`)}
-            disabled={saving}
-          >
+          <button className="back-button" onClick={() => navigate('/crew/crew')} disabled={saving}>
             <FaArrowLeft /> Cancel
           </button>
         </div>
@@ -154,10 +168,10 @@ const EditCrewPage = () => {
 
       <div className="crew-profile-grid">
         <div className="profile-image-section">
-          <img 
+          <img
             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            alt={`${crew.name}'s profile`}
-            className="crew-image" 
+            alt={`${formData.name}'s profile`}
+            className="crew-image"
           />
           <div className="crew-basic-info">
             <div className="info-row">
@@ -176,17 +190,7 @@ const EditCrewPage = () => {
             </div>
             <div className="info-row">
               <span className="label">STATUS</span>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className="edit-select"
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="on_leave">On Leave</option>
-                <option value="training">Training</option>
-              </select>
+              <span className={`status-badge ${getStatusColor(formData.status)}`}>{getStatusText(formData.status)}</span>
             </div>
           </div>
         </div>
@@ -198,6 +202,14 @@ const EditCrewPage = () => {
               <h2>Personal Information</h2>
             </div>
             <div className="info-grid">
+              <div className="info-item">
+                <label>First Name</label>
+                <span>{firstName}</span>
+              </div>
+              <div className="info-item">
+                <label>Last Name</label>
+                <span>{lastName}</span>
+              </div>
               <div className="info-item">
                 <label>Role</label>
                 <select
@@ -214,15 +226,7 @@ const EditCrewPage = () => {
               </div>
               <div className="info-item">
                 <label>Flight Hours</label>
-                <input
-                  type="number"
-                  name="flight_hours"
-                  value={formData.flight_hours}
-                  onChange={handleInputChange}
-                  step="0.1"
-                  min="0"
-                  className="edit-input"
-                />
+                <span>{crew.flight_hours.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} hours</span>
               </div>
             </div>
           </div>
@@ -235,33 +239,41 @@ const EditCrewPage = () => {
             <div className="info-grid">
               <div className="info-item">
                 <label>Passport Number</label>
-                <span className="readonly-value">{crew.passport_number}</span>
+                <input
+                  type="text"
+                  name="passport_number"
+                  value={formData.passport_number}
+                  onChange={handleInputChange}
+                  className="edit-input"
+                />
               </div>
               <div className="info-item">
                 <label>Passport Expiry</label>
-                <span className="readonly-value">
-                  {new Date(crew.passport_expiry_date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </span>
+                <input
+                  type="text"
+                  name="passport_expiry_date"
+                  value={formData.passport_expiry_date.slice(0, 10)}
+                  onChange={handleInputChange}
+                  className={`edit-input${formData.passport_expiry_date && !isValidDate(formData.passport_expiry_date) ? ' invalid-date' : ''}`}
+                  placeholder="yyyy-mm-dd"
+                />
               </div>
               <div className="info-item">
                 <label>License Expiry</label>
-                <span className="readonly-value">
-                  {new Date(crew.license_expiry_date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </span>
+                <input
+                  type="text"
+                  name="license_expiry_date"
+                  value={formData.license_expiry_date.slice(0, 10)}
+                  onChange={handleInputChange}
+                  className={`edit-input${formData.license_expiry_date && !isValidDate(formData.license_expiry_date) ? ' invalid-date' : ''}`}
+                  placeholder="yyyy-mm-dd"
+                />
               </div>
             </div>
           </div>
 
           {crew.user && (
-            <div className="info-section">
+            <div className="info-section contact-section">
               <div className="section-header">
                 <FaEnvelope className="section-icon" />
                 <h2>Contact Information</h2>
@@ -269,15 +281,15 @@ const EditCrewPage = () => {
               <div className="info-grid">
                 <div className="info-item">
                   <label>User ID</label>
-                  <span className="readonly-value">{crew.user.user_id}</span>
+                  <span>{crew.user.user_id}</span>
                 </div>
                 <div className="info-item">
                   <label>Username</label>
-                  <span className="readonly-value">{crew.user.username}</span>
+                  <span>{crew.user.username}</span>
                 </div>
                 <div className="info-item">
                   <label>Email</label>
-                  <span className="readonly-value">{crew.user.email}</span>
+                  <span>{crew.user.email}</span>
                 </div>
               </div>
             </div>
@@ -296,31 +308,17 @@ const EditCrewPage = () => {
         <div className="modal-backdrop">
           <div className="modal-content">
             <h3>Confirm Changes</h3>
-            <div className="modal-diff">
-              {getChangedFields().map((change, index) => (
-                <div key={index} className="change-item">
-                  <span className="change-field">{change.field}:</span>
-                  <div className="change-values">
-                    <span className="old-value">{change.from}</span>
-                    <span className="arrow">→</span>
-                    <span className="new-value">{change.to}</span>
-                  </div>
-                </div>
-              ))}
-              {getChangedFields().length === 0 && (
-                <p>No changes detected</p>
-              )}
-            </div>
+            {/* You can add a diff view here if you want */}
             <div className="modal-actions">
-              <button 
-                className="confirm-button" 
+              <button
+                className="confirm-button"
                 onClick={handleConfirmedSave}
-                disabled={saving || getChangedFields().length === 0}
+                disabled={saving}
               >
                 {saving ? 'Saving...' : 'Confirm'}
               </button>
-              <button 
-                className="cancel-button" 
+              <button
+                className="cancel-button"
                 onClick={() => setShowConfirmModal(false)}
                 disabled={saving}
               >
@@ -341,4 +339,4 @@ const EditCrewPage = () => {
   );
 };
 
-export default EditCrewPage; 
+export default EditCrewUserPage; 

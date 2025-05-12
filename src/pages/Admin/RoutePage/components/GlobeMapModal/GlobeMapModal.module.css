@@ -1,4 +1,4 @@
-.globe-map-modal-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-.globe-map-modal {
+.modal {
   background-color: white;
   border-radius: 8px;
   width: 90%;
@@ -22,7 +22,7 @@
   overflow: hidden;
 }
 
-.globe-map-modal-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,12 +30,12 @@
   border-bottom: 1px solid #eee;
 }
 
-.globe-map-modal-header h2 {
+.header h2 {
   margin: 0;
   font-size: 1.5rem;
 }
 
-.globe-map-modal-close {
+.closeButton {
   background: none;
   border: none;
   font-size: 24px;
@@ -43,7 +43,7 @@
   color: #666;
 }
 
-.globe-map-modal-body {
+.body {
   overflow-y: auto;
   padding: 0;
   flex-grow: 1;
@@ -51,46 +51,54 @@
   flex-direction: column;
 }
 
-.globe-map-modal-info {
+.mapContainer {
+  height: 500px;
+  width: 100%;
+}
+
+.info {
   padding: 16px 24px;
   background-color: #f8f9fa;
   border-top: 1px solid #eee;
 }
 
-.globe-map-modal-airports {
+.airports {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
 }
 
-.globe-map-modal-airport {
+.airport {
   flex: 1;
 }
 
-.globe-map-modal-flight-icon {
+.flightIcon {
   padding: 0 32px;
   font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.globe-map-modal-airport-code {
+.airportCode {
   font-size: 24px;
   font-weight: bold;
   color: #0066cc;
 }
 
-.globe-map-modal-airport-name {
+.airportName {
   font-size: 16px;
   margin-top: 4px;
 }
 
-.globe-map-modal-airport-location {
+.airportLocation {
   font-size: 14px;
   color: #666;
   margin-top: 4px;
 }
 
-.globe-map-modal-actions {
+.actions {
   padding: 16px 24px;
   display: flex;
   justify-content: flex-end;
@@ -98,7 +106,7 @@
   border-top: 1px solid #eee;
 }
 
-.globe-map-modal-button {
+.button {
   padding: 10px 16px;
   border-radius: 4px;
   font-weight: 500;
@@ -110,34 +118,34 @@
   color: white;
 }
 
-.globe-map-modal-button:hover {
+.button:hover {
   background-color: #0052a3;
 }
 
-.globe-map-modal-button.btn-secondary {
+.secondaryButton {
   background-color: #f0f0f0;
   color: #333;
 }
 
-.globe-map-modal-button.btn-secondary:hover {
+.secondaryButton:hover {
   background-color: #e0e0e0;
 }
 
-.globe-map-modal-button:disabled {
+.button:disabled {
   background-color: #cccccc;
   color: #777777;
   cursor: not-allowed;
 }
 
 /* ส่วนแสดงข้อมูลทางเลือก */
-.route-options {
+.routeOptions {
   margin-top: 24px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.route-option {
+.routeOption {
   background-color: white;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -146,11 +154,11 @@
   border: 2px solid transparent;
 }
 
-.route-option:hover {
+.routeOption:hover {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-.route-option h3 {
+.routeOption h3 {
   margin-top: 0;
   margin-bottom: 12px;
   font-size: 16px;
@@ -159,21 +167,21 @@
   padding-bottom: 8px;
 }
 
-.route-details {
+.routeDetails {
   min-height: 80px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.route-placeholder {
+.placeholder {
   color: #888;
   font-style: italic;
   padding: 10px 0;
 }
 
 /* ปุ่มเลือกข้อมูล */
-.route-option-button {
+.optionButton {
   padding: 8px 12px;
   background-color: #f0f0f0;
   border: 1px solid #ddd;
@@ -187,14 +195,14 @@
   text-align: center;
 }
 
-.route-option-button:hover {
+.optionButton:hover {
   background-color: #0066cc;
   color: white;
   border-color: #0052a3;
 }
 
 /* ข้อมูลที่คำนวณได้ */
-.globe-map-calculated-distance {
+.calculatedValues {
   padding: 12px;
   background-color: #e6f2ff;
   border-radius: 6px;
@@ -202,16 +210,16 @@
   font-size: 16px;
 }
 
-.globe-map-calculated-distance div {
+.calculatedValues div {
   margin-bottom: 6px;
 }
 
-.globe-map-calculated-distance div:last-child {
+.calculatedValues div:last-child {
   margin-bottom: 0;
 }
 
 /* ข้อมูลที่กรอกด้วยมือ */
-.globe-map-manual-values {
+.manualValues {
   padding: 12px;
   background-color: #f0f7e6;
   border-radius: 6px;
@@ -219,17 +227,17 @@
   font-size: 16px;
 }
 
-.globe-map-manual-values div {
+.manualValues div {
   margin-bottom: 6px;
 }
 
-.globe-map-manual-values div:last-child {
+.manualValues div:last-child {
   margin-bottom: 0;
 }
 
 /* สำหรับหน้าจอมือถือ */
 @media (max-width: 768px) {
-  .route-options {
+  .routeOptions {
     grid-template-columns: 1fr;
   }
 } 

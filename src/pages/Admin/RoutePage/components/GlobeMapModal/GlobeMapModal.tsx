@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GlobeMap, { Airport } from '../GlobeMap/GlobeMap';
-import './GlobeMapModal.css';
+import styles from './GlobeMapModal.module.css';
 
 interface GlobeMapModalProps {
   isOpen: boolean;
@@ -30,7 +30,6 @@ const GlobeMapModal: React.FC<GlobeMapModalProps> = ({
   manualDistance,
   manualDuration
 }) => {
-  console.log('GlobeMapModal props:', { isOpen, fromAirport, toAirport, manualDistance, manualDuration });
   const [calculatedDistance, setCalculatedDistance] = useState<number | null>(null);
   const [calculatedDuration, setCalculatedDuration] = useState<number | null>(null);
   
@@ -42,11 +41,6 @@ const GlobeMapModal: React.FC<GlobeMapModalProps> = ({
   }, [isOpen, fromAirport, toAirport]);
 
   if (!isOpen || !fromAirport || !toAirport) {
-    console.log('GlobeMapModal not showing due to:', { 
-      isOpen, 
-      fromAirport: !!fromAirport, 
-      toAirport: !!toAirport 
-    });
     return null;
   }
 
@@ -189,93 +183,111 @@ const GlobeMapModal: React.FC<GlobeMapModalProps> = ({
     );
   };
 
+  // ปรับ GlobeMap สำหรับใช้ใน GlobeMapModal
+  const convertToGlobeMapFormat = (airport: Airport): Airport => {
+    return {
+      iata_code: airport.iata_code,
+      name: airport.name,
+      lat: airport.lat,
+      lon: airport.lon,
+      city: airport.city,
+      country: airport.country
+    };
+  };
+
   return (
-    <div className="globe-map-modal-overlay">
-      <div className="globe-map-modal">
-        <div className="globe-map-modal-header">
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <div className={styles.header}>
           <h2>{isRoutePlanning ? 'Check Flight Route' : 'Flight Route Visualization'}</h2>
-          <button className="globe-map-modal-close" onClick={onClose}>
+          <button className={styles.closeButton} onClick={onClose}>
             &times;
           </button>
         </div>
         
-        <div className="globe-map-modal-body">
-          <GlobeMap 
-            fromAirport={fromAirport} 
-            toAirport={toAirport} 
-          />
+        <div className={styles.body}>
+          <div className={styles.mapContainer}>
+            <GlobeMap 
+              fromAirport={convertToGlobeMapFormat(fromAirport)} 
+              toAirport={convertToGlobeMapFormat(toAirport)} 
+            />
+          </div>
           
-          <div className="globe-map-modal-info">
-            <div className="globe-map-modal-airports">
-              <div className="globe-map-modal-airport">
-                <div className="globe-map-modal-airport-code">{fromAirport.iata_code}</div>
-                <div className="globe-map-modal-airport-name">{fromAirport.name}</div>
+          <div className={styles.info}>
+            <div className={styles.airports}>
+              <div className={styles.airport}>
+                <div className={styles.airportCode}>{fromAirport.iata_code}</div>
+                <div className={styles.airportName}>{fromAirport.name}</div>
                 {fromAirport.city && fromAirport.country && (
-                  <div className="globe-map-modal-airport-location">
+                  <div className={styles.airportLocation}>
                     {fromAirport.city}, {fromAirport.country}
                   </div>
                 )}
               </div>
               
-              <div className="globe-map-modal-flight-icon">✈️</div>
+              <div className={styles.flightIcon}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3b82f6" width="24" height="24">
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+              </div>
               
-              <div className="globe-map-modal-airport">
-                <div className="globe-map-modal-airport-code">{toAirport.iata_code}</div>
-                <div className="globe-map-modal-airport-name">{toAirport.name}</div>
+              <div className={styles.airport}>
+                <div className={styles.airportCode}>{toAirport.iata_code}</div>
+                <div className={styles.airportName}>{toAirport.name}</div>
                 {toAirport.city && toAirport.country && (
-                  <div className="globe-map-modal-airport-location">
+                  <div className={styles.airportLocation}>
                     {toAirport.city}, {toAirport.country}
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="route-options">
-              <div className="route-option">
+            <div className={styles.routeOptions}>
+              <div className={styles.routeOption}>
                 <h3>Automatically Calculated Data</h3>
                 {calculatedDistance !== null && calculatedDuration !== null ? (
-                  <div className="route-details">
-                    <div className="globe-map-calculated-distance">
+                  <div className={styles.routeDetails}>
+                    <div className={styles.calculatedValues}>
                       <div>Distance: <strong>{calculatedDistance} kilometers</strong></div>
                       <div>Estimated Time: <strong>{formatDuration(calculatedDuration)}</strong></div>
                     </div>
                     <button 
-                      className="route-option-button"
+                      className={styles.optionButton}
                       onClick={handleUseCalculated}
                     >
                       Use Calculated Values
                     </button>
                   </div>
                 ) : (
-                  <div className="route-placeholder">Calculating...</div>
+                  <div className={styles.placeholder}>Calculating...</div>
                 )}
               </div>
 
-              <div className="route-option">
+              <div className={styles.routeOption}>
                 <h3>Previously Entered Data</h3>
                 {hasManualData() ? (
-                  <div className="route-details">
-                    <div className="globe-map-manual-values">
+                  <div className={styles.routeDetails}>
+                    <div className={styles.manualValues}>
                       <div>Distance: <strong>{manualDistance} kilometers</strong></div>
                       <div>Estimated Time: <strong>{getFormattedManualDuration()}</strong></div>
                     </div>
                     <button 
-                      className="route-option-button"
+                      className={styles.optionButton}
                       onClick={handleUseManual}
                     >
                       Use Manual Values
                     </button>
                   </div>
                 ) : (
-                  <div className="route-placeholder">No previously entered data found</div>
+                  <div className={styles.placeholder}>No previously entered data found</div>
                 )}
               </div>
             </div>
           </div>
         </div>
         
-        <div className="globe-map-modal-actions">
-          <button className="globe-map-modal-button btn-secondary" onClick={onClose}>
+        <div className={styles.actions}>
+          <button className={`${styles.button} ${styles.secondaryButton}`} onClick={onClose}>
             Cancel
           </button>
         </div>

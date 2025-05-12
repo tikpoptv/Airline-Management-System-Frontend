@@ -4,7 +4,7 @@
   height: 100%;
   min-height: 500px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
@@ -12,27 +12,158 @@
   aspect-ratio: 2.2/1;
 }
 
+.globe-map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
 /* Map elements styling */
-.globe-map-container > div,
-.globe-map-container .mapboxgl-map,
-.globe-map-container .deckgl-map,
-.globe-map-container canvas,
-.globe-map-container img,
-.globe-map-container .mapboxgl-canvas {
+.globe-map .leaflet-container {
+  width: 100%;
+  height: 100%;
   border-radius: inherit;
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  background: transparent;
 }
 
-/* Custom map style overrides */
-.globe-map-container .mapboxgl-map {
-  background: transparent !important;
+/* Custom icons */
+.globe-map-plane-icon div {
+  font-size: 24px;
+  transform-origin: center;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
 }
 
-.globe-map-container .mapboxgl-canvas {
-  filter: contrast(1.1) saturate(1.2);
+.globe-map-plane-icon div:hover {
+  transform: scale(1.2) !important;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+}
+
+.globe-map-plane-icon div.focused {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+  font-size: 28px;
+}
+
+/* สไตล์ของไอคอนสนามบิน */
+.globe-map-airport-icon div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.globe-map-from-airport {
+  font-size: 18px;
+  padding: 4px;
+}
+
+.globe-map-to-airport {
+  font-size: 18px;
+  padding: 4px;
+}
+
+.globe-map-airport-icon div:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Popup styling */
+.globe-map-popup {
+  min-width: 200px;
+  padding: 5px;
+  text-align: center;
+}
+
+.globe-map-popup h3 {
+  margin: 0 0 8px 0;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.globe-map-popup p {
+  margin: 4px 0;
+  color: #334155;
+  font-size: 12px;
+}
+
+/* กล่องควบคุมและแสดงข้อมูล */
+.globe-map-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  min-width: 200px;
+}
+
+.globe-map-flight-info {
+  text-align: center;
+}
+
+.globe-map-flight-info h4 {
+  margin: 0 0 8px 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.globe-map-flight-info p {
+  margin: 4px 0;
+  color: #334155;
+  font-size: 14px;
+  display: inline-block;
+  background-color: #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+/* ปรับแต่ง Leaflet Controls */
+.leaflet-control-zoom {
+  margin-top: 15px !important;
+  margin-left: 15px !important;
+  border: none !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  border-radius: 8px !important;
+  background-color: white !important;
+  color: #0f172a !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: #f8fafc !important;
+  color: #3b82f6 !important;
+}
+
+/* ปรับแต่ง Attribution */
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
 }
 
 /* Responsive adjustments */

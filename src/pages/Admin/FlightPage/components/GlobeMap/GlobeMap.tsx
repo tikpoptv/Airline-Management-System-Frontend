@@ -17,6 +17,7 @@ interface GlobeMapProps {
   fromAirport: Airport;
   toAirport: Airport;
   onLocationClick?: (lat: number, lon: number) => void;
+  zoomLevel?: number;
 }
 
 interface FlightPosition {
@@ -134,7 +135,7 @@ const MapEvents: React.FC<MapEventsProps> = ({ onLocationClick }) => {
   return null;
 };
 
-const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick }) => {
+const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationClick, zoomLevel }) => {
   const [animationProgress, setAnimationProgress] = useState(0);
   const [flightPosition, setFlightPosition] = useState<FlightPosition>({
     id: 'flight-1',
@@ -165,7 +166,9 @@ const GlobeMap: React.FC<GlobeMapProps> = ({ fromAirport, toAirport, onLocationC
     (fromAirport.lat + toAirport.lat) / 2,
     (fromAirport.lon + toAirport.lon) / 2
   ];
-  const zoom = calculateZoomLevel(startPos, endPos);
+  
+  // ใช้ค่า zoomLevel ที่รับมาถ้ามี มิฉะนั้นคำนวณ zoom จากระยะทาง
+  const zoom = zoomLevel !== undefined ? zoomLevel : calculateZoomLevel(startPos, endPos);
 
   // อัพเดทตำแหน่งเครื่องบินแบบอนิเมชัน
   useEffect(() => {

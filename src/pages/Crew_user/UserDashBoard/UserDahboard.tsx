@@ -4,13 +4,6 @@ import { CrewProfile, CrewAssignment } from '../../../types/crewuser';
 import { getCrewAssignments, getCrewProfile } from '../../../services/crewuser/crewuserService';
 import styles from './UserDashboard.module.css';
 
-interface Aircraft {
-  id: string;
-  status: string;
-}
-
-
-
 const Dashboard = () => {
   const [todayTasks, setTodayTasks] = useState(0);
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -47,10 +40,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  };
+  
 
   return (
     <div className={styles.dashboardContainer}>
@@ -90,7 +80,7 @@ const Dashboard = () => {
                     const arrTime = arr.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     return (
                       <tr key={idx}>
-                        <td><span className="role-badge attendant">{assignment.flight.flight_status.toUpperCase()}</span></td>
+                        <td><span className={`role-badge ${assignment.flight.flight_status.toLowerCase()}`}>{assignment.flight.flight_status.toUpperCase()}</span></td>
                         <td style={{fontWeight:600}}>{assignment.flight.flight_number}</td>
                         <td>{dateStr}</td>
                         <td>{assignment.flight.route.from_airport.iata_code} &rarr; {assignment.flight.route.to_airport.iata_code}</td>

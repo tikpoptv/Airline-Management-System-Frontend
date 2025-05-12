@@ -145,7 +145,7 @@ const CrewSchedule = () => {
           <table className="schedule-table">
             <thead>
               <tr>
-                <th>Role</th>
+                <th>Status</th>
                 <th>Flight</th>
                 <th>Date</th>
                 <th>Route</th>
@@ -157,8 +157,8 @@ const CrewSchedule = () => {
                 getFilteredAndSortedSchedules().map((schedule) => (
                   <tr key={`${schedule.flight.flight_id}-${schedule.role_in_flight}`}>
                     <td>
-                      <span className={`role-badge ${schedule.role_in_flight.toUpperCase()}`}>
-                        {schedule.role_in_flight}
+                      <span className={`role-badge ${schedule.flight.flight_status.toLowerCase()}`}>
+                        {schedule.flight.flight_status.toUpperCase()}
                       </span>
                     </td>
                     <td className="flight-number">{schedule.flight.flight_number}</td>

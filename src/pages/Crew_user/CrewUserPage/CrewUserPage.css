@@ -271,6 +271,36 @@
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
+.role-badge.scheduled {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.role-badge.boarding {
+  background: #fffde7;
+  color: #fbc02d;
+  border: 1px solid #ffe082;
+}
+
+.role-badge.departed {
+  background: #e8f5e9;
+  color: #388e3c;
+  border: 1px solid #a5d6a7;
+}
+
+.role-badge.delayed {
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+.role-badge.cancelled {
+  background: #ececec;
+  color: #757575;
+  border: 1px solid #e0e0e0;
+}
+
 .role-badge:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

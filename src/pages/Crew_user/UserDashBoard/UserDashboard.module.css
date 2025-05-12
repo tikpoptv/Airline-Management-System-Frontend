@@ -67,19 +67,24 @@
   flex-grow: 1;
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(24, 49, 82, 0.08);
+  box-shadow: 0 8px 32px rgba(24, 49, 82, 0.10);
   border: 1px solid #e3e8ee;
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 2rem 2rem 2rem;
   min-width: 0;
   overflow-x: auto;
+  position: relative;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 8px solid #4f8cff;
 }
 
 .aircraftList p {
   color: #183152;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
   letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(24,49,82,0.04);
 }
 
 .table-wrapper {
@@ -92,26 +97,27 @@
   border-collapse: separate;
   border-spacing: 0;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(24, 49, 82, 0.04);
 }
 
 .crew-table th, .crew-table td {
-  padding: 1.1rem 1.2rem;
+  padding: 1.2rem 1.3rem;
   text-align: left;
 }
 
 .crew-table th {
-  background: #f4f7fb;
-  color: #183152;
-  font-size: 1.05rem;
-  font-weight: 700;
-  border-bottom: 2px solid #e3e8ee;
-  letter-spacing: 1px;
+  background: #eaf1fb;
+  color: #1a2747;
+  font-size: 1.08rem;
+  font-weight: 800;
+  border-bottom: 2px solid #dbeafe;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
-.crew-table tr {
+.crew-table tbody tr {
   transition: background 0.15s;
 }
 
@@ -121,7 +127,7 @@
 
 .crew-table td {
   color: #2d3748;
-  font-size: 1rem;
+  font-size: 1.01rem;
   border-bottom: 1px solid #f1f3f7;
 }
 
@@ -132,13 +138,39 @@
   font-size: 0.98em;
   font-weight: 700;
   letter-spacing: 1px;
-  background: #fbe9ec;
-  color: #c2185b;
-  border: 1px solid #f8bbd0;
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
   text-transform: uppercase;
+  box-shadow: 0 1px 4px rgba(24,49,82,0.04);
 }
 
-/* Add more status-based badge colors if needed */
+/* Status-based badge colors for flight status */
+.role-badge.scheduled {
+  background: #85c7f7 ;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+.role-badge.boarding {
+  background: #fffde7;
+  color: #fbc02d;
+  border-color: #ffe082;
+}
+.role-badge.departed {
+  background: #e8f5e9;
+  color: #388e3c;
+  border-color: #a5d6a7;
+}
+.role-badge.delayed {
+  background: #ffebee;
+  color: #d32f2f;
+  border-color: #ffcdd2;
+}
+.role-badge.cancelled {
+  background: #ececec;
+  color: #757575;
+  border-color: #e0e0e0;
+}
 
 .historySection {
   background: #fff;
@@ -192,7 +224,7 @@
   padding: 0.5rem 1.2rem;
   border: none;
   border-radius: 7px;
-  background-color: #065a25;
+  background-color: #7ec2e7;
   color: white;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -204,7 +236,7 @@
 }
 
 .addButton:hover {
-  background-color: #126f31;
+  background-color: #31a8e8;
 }
 
 .loadingMessage,

@@ -131,23 +131,29 @@
 
 .roleBadge {
   display: inline-block;
-  padding: 0.3em 0.8em;
+  padding: 0.25em 0.5em;
   border-radius: 4px;
-  font-size: 0.8em;
-  font-weight: 700;
+  font-size: 0.75em;
+  font-weight: 600;
   letter-spacing: 0.5px;
   background: #e3f2fd;
-  color: #1976d2;
-  border: 1px solid #bbdefb;
+  color: #0d47a1;
   text-transform: uppercase;
 }
 
-/* Status-based badge colors for flight status */
+/* Status badge - SCHEDULED */
 .scheduled {
-  background: #85c7f7;
-  color: #1976d2;
-  border-color: #bbdefb;
+  background: #bde5f8;
+  color: #0d47a1;
 }
+
+/* Role badge - CO-PILOT */
+.copilot {
+  background: #bde5f8;
+  color: #0d47a1;
+}
+
+/* Status-based badge colors for flight status */
 .boarding {
   background: #fffde7;
   color: #fbc02d;
@@ -174,11 +180,6 @@
   background: #e3f2fd;
   color: #1976d2;
   border-color: #bbdefb;
-}
-.copilot {
-  background: #e1f5fe;
-  color: #0288d1;
-  border-color: #b3e5fc;
 }
 .attendant {
   background: #f3e5f5;

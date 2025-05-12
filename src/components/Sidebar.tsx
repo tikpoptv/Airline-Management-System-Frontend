@@ -1,4 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { NavLink, useNavigate } from 'react-router-dom';
 import './Sidebar.css';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { getUser, logout } from '../services/auth/authService';

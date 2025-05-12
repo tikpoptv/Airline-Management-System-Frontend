@@ -2,7 +2,7 @@ import { api } from '../../api';
 import { MaintenanceLog, MaintenanceSearchParams } from '../../types/maintenance';
 
 interface UpdateMaintenanceLogPayload {
-  status?: 'Pending' | 'In Progress' | 'Completed';
+  status?: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
   maintenance_location?: string;
   assigned_to?: number;
   details?: string;
@@ -13,7 +13,7 @@ interface CreateMaintenanceLogPayload {
   date_of_maintenance: string;
   details: string;
   maintenance_location: string;
-  status?: 'Pending' | 'In Progress' | 'Completed';
+  status?: 'Pending' | 'In Progress' | 'Completed'| 'Cancelled';
   assigned_to?: number;
 }
 
@@ -47,9 +47,9 @@ export const getMaintenanceLogs = async (params?: MaintenanceSearchParams): Prom
       ? `?${new URLSearchParams(
           Object.entries(params)
             .filter(([, value]) => value !== undefined)
-            .reduce((acc, [key, value]) => ({
+            .reduce<Record<string, string>>((acc, [key, value]) => ({
               ...acc,
-              [key]: value.toString()
+              [key]: String(value)
             }), {})
         ).toString()}`
       : '';
@@ -118,4 +118,4 @@ export const createMaintenanceLog = async (data: CreateMaintenanceLogPayload): P
 
 export const getMaintenanceStats = async (): Promise<MaintenanceStats> => {
   return api.get('/api/maintenance-logs/stats');
-}; 
+};

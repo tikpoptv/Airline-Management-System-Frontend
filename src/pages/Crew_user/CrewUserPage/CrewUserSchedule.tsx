@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
-import { CrewScheduleItem } from '../../../types/crew';
+import { CrewAssignment } from '../../../types/crewuser';
 import Loading from '../../../components/Loading';
-import { getCrewSchedule } from '../../../services/crew/crewService';
+import { getCrewAssignments } from '../../../services/crewuser/crewuserService';
 
-interface Props {
-  crewId: number;
-}
-
-const CrewSchedule = ({ crewId }: Props) => {
-  const [schedules, setSchedules] = useState<CrewScheduleItem[]>([]);
+const CrewSchedule = () => {
+  const [schedules, setSchedules] = useState<CrewAssignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortOption, setSortOption] = useState<'date' | 'role'>('date');
@@ -18,32 +14,21 @@ const CrewSchedule = ({ crewId }: Props) => {
     const fetchSchedule = async () => {
       try {
         setLoading(true);
-        const response = await getCrewSchedule(crewId);
-        if (!response || !Array.isArray(response)) {
-          throw new Error('Invalid response data');
-        }
+        const response = await getCrewAssignments();
         setSchedules(response);
         setError(null);
       } catch (err) {
-        if (err instanceof Error && err.message.includes('no flight assignments found')) {
-          setError('No flight schedule available');
-        } else {
-          setError('Unable to load flight schedule. Please try again.');
-        }
-        console.error('Error fetching schedule:', err);
+        setError('Unable to load flight schedule. Please try again.');
       } finally {
         setLoading(false);
       }
     };
-
     fetchSchedule();
-  }, [crewId]);
+  }, []);
 
-  const getFilteredAndSortedSchedules = (): CrewScheduleItem[] => {
+  const getFilteredAndSortedSchedules = (): CrewAssignment[] => {
     if (!schedules) return [];
-    
     let filtered = [...schedules];
-
     try {
       if (flightFilter === 'today') {
         const today = new Date().toISOString().split('T')[0];
@@ -56,7 +41,6 @@ const CrewSchedule = ({ crewId }: Props) => {
           }
         });
       }
-
       filtered.sort((a, b) => {
         try {
           if (sortOption === 'date') {
@@ -68,7 +52,6 @@ const CrewSchedule = ({ crewId }: Props) => {
           return 0;
         }
       });
-
       return filtered;
     } catch (e) {
       console.error('Error in getFilteredAndSortedSchedules:', e);
@@ -139,7 +122,6 @@ const CrewSchedule = ({ crewId }: Props) => {
               <option value="today">Today</option>
             </select>
           </div>
-
           <div className="dropdown-group">
             <label htmlFor="sort">Sort by:</label>
             <select
@@ -154,7 +136,6 @@ const CrewSchedule = ({ crewId }: Props) => {
           </div>
         </div>
       </div>
-
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px] w-full">
           <Loading message="Loading flight schedule..." />

@@ -2,7 +2,7 @@
 // import { Crew } from '../../../types/crew';
 // import { Flight } from '../../../types/flight';
 // // import CrewProfileSection from './CrewProfileSection';
-// import CrewSchedule from './CrewSchedule';
+import CrewSchedule from './CrewSchedule';
 
 // interface Props {
 //   crew: Crew;

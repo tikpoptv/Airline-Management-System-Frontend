@@ -17,6 +17,24 @@ interface CreateMaintenanceLogPayload {
   assigned_to?: number;
 }
 
+interface MaintenanceStats {
+  maintenance_stats: {
+    scheduled: number;
+    in_progress: number;
+    completed: number;
+    delayed: number;
+  };
+  today_maintenance: Array<{
+    log_id: number;
+    aircraft_id: number;
+    date_of_maintenance: string;
+    details: string;
+    maintenance_location: string;
+    status: 'Pending' | 'In Progress' | 'Completed' | 'Cancelled';
+    assigned_to: number | null;
+  }>;
+}
+
 /**
  * Fetches maintenance logs with optional filters
  * @param params Optional search parameters
@@ -96,4 +114,8 @@ export const createMaintenanceLog = async (data: CreateMaintenanceLogPayload): P
     console.error('Error creating maintenance log:', error);
     throw error;
   }
+};
+
+export const getMaintenanceStats = async (): Promise<MaintenanceStats> => {
+  return api.get('/api/maintenance-logs/stats');
 }; 

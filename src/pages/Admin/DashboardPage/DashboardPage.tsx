@@ -11,34 +11,37 @@ import WeatherWidget from './components/WeatherWidget';
 import NotificationList from './components/NotificationList';
 import FlightMap from './components/FlightMap';
 import FlightDetailsModal from './components/FlightDetailsModal';
-import { Notification } from './types';
+import { FilterStatus, Flight, Notification } from '../../../types/flight_dashboard';
+import { useFlightDashboard } from '../../../hooks/useFlightDashboard';
+import { useNavigate } from 'react-router-dom';
 
-// Mock data
-const mockStats = {
-  totalFlights: 156,
-  activeFlights: 24,
-  delayedFlights: 3,
-  cancelledFlights: 1,
-  totalAircrafts: 45,
-  activeAircrafts: 38,
-  maintenanceAircrafts: 7,
-  totalCrews: 320,
-  activeCrews: 180,
-  totalRoutes: 89,
-  activeRoutes: 76,
-  totalAirports: 120
-};
-
+// Mock data - เฉพาะส่วนที่ยังไม่มี API
 const mockNotifications: Notification[] = [
   { id: 1, type: 'delay', message: 'Flight TH103 delayed by 30 minutes', time: '10 mins ago' },
   { id: 2, type: 'maintenance', message: 'Aircraft TH-789 due for maintenance', time: '25 mins ago' },
   { id: 3, type: 'weather', message: 'Strong winds at BKK airport', time: '1 hour ago' },
 ];
 
-type ModalType = 'total' | 'active' | 'delayed' | 'cancelled' | null;
-
 const DashboardPage = () => {
-  const [selectedModal, setSelectedModal] = useState<ModalType>(null);
+  const [selectedModal, setSelectedModal] = useState<FilterStatus | null>(null);
+  const { data, loading, error } = useFlightDashboard();
+  const navigate = useNavigate();
+
+  if (loading) return <div>กำลังโหลดข้อมูล...</div>;
+  if (error) return <div>เกิดข้อผิดพลาด: {error.message}</div>;
+  if (!data) return null;
+
+  const stats = {
+    totalFlights: data.total_flights,
+    activeFlights: data.flights.filter((f: Flight) => ['Scheduled', 'Boarding'].includes(f.flight_status)).length,
+    delayedFlights: data.flights.filter((f: Flight) => f.flight_status === 'Delayed').length,
+    cancelledFlights: data.flights.filter((f: Flight) => f.flight_status === 'Cancelled').length,
+  };
+
+  // กรองเฉพาะเที่ยวบินที่ active
+  const activeFlights = data.flights.filter(
+    f => ['Scheduled', 'Boarding'].includes(f.flight_status)
+  );
 
   return (
     <div className={styles.container}>
@@ -60,28 +63,27 @@ const DashboardPage = () => {
         <StatCard
           icon={<MdFlightTakeoff />}
           title="Total Flights Today"
-          value={mockStats.totalFlights}
-          trend={+12.5}
-          onClick={() => setSelectedModal('total')}
+          value={stats.totalFlights}
+          onClick={() => setSelectedModal('all')}
         />
         <StatCard
           icon={<FaPlane />}
           title="Active Flights"
-          value={mockStats.activeFlights}
+          value={stats.activeFlights}
           status="active"
           onClick={() => setSelectedModal('active')}
         />
         <StatCard
           icon={<MdFlightLand />}
           title="Delayed Flights"
-          value={mockStats.delayedFlights}
+          value={stats.delayedFlights}
           status="warning"
           onClick={() => setSelectedModal('delayed')}
         />
         <StatCard
           icon={<TbPlaneOff />}
           title="Cancelled Flights"
-          value={mockStats.cancelledFlights}
+          value={stats.cancelledFlights}
           status="error"
           onClick={() => setSelectedModal('cancelled')}
         />
@@ -92,22 +94,25 @@ const DashboardPage = () => {
           <div className={styles.sectionHeader}>
             <h2>Live Flight Map</h2>
             <span className={styles.activeFlight}>
-              {mockStats.activeFlights} Active Flights
+              {stats.activeFlights} Active Flights
             </span>
           </div>
-          <FlightMap />
+          <FlightMap flights={activeFlights} />
         </div>
 
         <div className={styles.chartSection}>
           <div className={styles.sectionHeader}>
             <h2>Flight Statistics</h2>
           </div>
-          <FlightChart />
+          <FlightChart flights={data.flights} />
         </div>
       </div>
 
       <div className={styles.statsRow}>
-        <div className={styles.statBox}>
+        <div 
+          className={`${styles.statBox} ${styles.clickable}`} 
+          onClick={() => navigate('/admin/aircrafts')}
+        >
           <div className={styles.statHeader}>
             <FaPlane className={styles.statIcon} />
             <h3>Aircraft Status</h3>
@@ -115,20 +120,23 @@ const DashboardPage = () => {
           <div className={styles.statContent}>
             <div className={styles.statItem}>
               <span>Total Aircraft</span>
-              <strong>{mockStats.totalAircrafts}</strong>
+              <strong>{data.total_aircrafts}</strong>
             </div>
             <div className={styles.statItem}>
               <span>Active</span>
-              <strong className={styles.active}>{mockStats.activeAircrafts}</strong>
+              <strong className={styles.active}>{data.active_aircrafts}</strong>
             </div>
             <div className={styles.statItem}>
               <span>In Maintenance</span>
-              <strong className={styles.maintenance}>{mockStats.maintenanceAircrafts}</strong>
+              <strong className={styles.maintenance}>{data.maintenance_aircrafts}</strong>
             </div>
           </div>
         </div>
 
-        <div className={styles.statBox}>
+        <div 
+          className={`${styles.statBox} ${styles.clickable}`} 
+          onClick={() => navigate('/admin/crew')}
+        >
           <div className={styles.statHeader}>
             <FaUsers className={styles.statIcon} />
             <h3>Crew Status</h3>
@@ -136,16 +144,19 @@ const DashboardPage = () => {
           <div className={styles.statContent}>
             <div className={styles.statItem}>
               <span>Total Crew</span>
-              <strong>{mockStats.totalCrews}</strong>
+              <strong>{data.total_crews}</strong>
             </div>
             <div className={styles.statItem}>
               <span>On Duty</span>
-              <strong className={styles.active}>{mockStats.activeCrews}</strong>
+              <strong className={styles.active}>{data.active_crews}</strong>
             </div>
           </div>
         </div>
 
-        <div className={styles.statBox}>
+        <div 
+          className={`${styles.statBox} ${styles.clickable}`} 
+          onClick={() => navigate('/admin/pathways/routes')}
+        >
           <div className={styles.statHeader}>
             <FaRoute className={styles.statIcon} />
             <h3>Routes & Airports</h3>
@@ -153,11 +164,11 @@ const DashboardPage = () => {
           <div className={styles.statContent}>
             <div className={styles.statItem}>
               <span>Active Routes</span>
-              <strong>{mockStats.activeRoutes}/{mockStats.totalRoutes}</strong>
+              <strong>{data.active_routes}/{data.total_routes}</strong>
             </div>
             <div className={styles.statItem}>
               <span>Airports Served</span>
-              <strong>{mockStats.totalAirports}</strong>
+              <strong>{data.total_airports}</strong>
             </div>
           </div>
         </div>
@@ -201,6 +212,7 @@ const DashboardPage = () => {
       {selectedModal && (
         <FlightDetailsModal
           type={selectedModal}
+          flights={data.flights}
           onClose={() => setSelectedModal(null)}
         />
       )}

@@ -181,7 +181,7 @@ const CrewProfileSection = ({ crew }: Props) => {
           )}
 
           <div className="schedule-section">
-            <CrewSchedule />
+            <CrewSchedule crewId={crew.crew_id} />
           </div>
         </div>
       </div>

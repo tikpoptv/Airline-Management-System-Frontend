@@ -40,7 +40,7 @@ const CrewDetailPage = () => {
 
     try {
       setLoading(true);
-    //   const crewData = await getCrewById(crewId);
+      const crewData = await getCrewById(crewId);
       setCrew(crewData);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data';

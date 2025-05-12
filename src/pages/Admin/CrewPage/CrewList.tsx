@@ -2,14 +2,14 @@ import { FaEye, FaSearch, FaEdit } from 'react-icons/fa';
 // import { FaUser } from 'react-icons/fa';
 import Loading from '../../../components/Loading';
 import { useState } from 'react';
-import { CrewUser } from '../../../types/crew';
+import { Crew } from '../../../types/crew';
 import './CrewPage.css';
 
 interface Props {
-  crewList: CrewUser[];
+  crewList: Crew[];
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
-  setSelectedCrew: (crew: CrewUser) => void;
+  setSelectedCrew: (crew: Crew) => void;
   loading: boolean;
   selectedCrewIds: number[];
   setSelectedCrewIds: React.Dispatch<React.SetStateAction<number[]>>;
@@ -38,7 +38,7 @@ const CrewList = ({
     );
   };
 
-  const handleRowClick = (crew: CrewUser) => {
+  const handleRowClick = (crew: Crew) => {
     setSelectedCrew(crew);
   };
 

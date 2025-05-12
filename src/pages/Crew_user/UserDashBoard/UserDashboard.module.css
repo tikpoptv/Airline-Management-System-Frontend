@@ -1,0 +1,272 @@
+.dashboardContainer {
+  padding: 1.5rem 2rem;
+  min-height: 100vh;
+}
+
+.titleGroup {
+  margin-bottom: 1.5rem;
+}
+
+.titleGroup h4 {
+  color: #7b8794;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #183152;
+  margin-bottom: 0.5rem;
+}
+
+.taskAndListContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+}
+
+.taskBox {
+  background: linear-gradient(135deg, #e0f7fa 0%, #f0f4ff 100%);
+  padding: 1.5rem 1rem;
+  border-radius: 10px;
+  width: 200px;
+  height: 180px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
+  border: 1px solid #e3e8ee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.taskBox p {
+  color: #484a4c;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.taskCount {
+  font-size: 3.5rem;
+  color: #065a25;
+  font-weight: bold;
+  margin: 0.3rem 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+  line-height: 1;
+}
+
+.aircraftList {
+  flex-grow: 1;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
+  border: 1px solid #e3e8ee;
+  padding: 1.5rem;
+  min-width: 0;
+  overflow-x: auto;
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-left: 4px solid #4f8cff;
+}
+
+.aircraftList p {
+  color: #183152;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.crewTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(24, 49, 82, 0.04);
+}
+
+.crewTable th, .crewTable td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+.crewTable th {
+  background: #eaf1fb;
+  color: #1a2747;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-bottom: 1px solid #dbeafe;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.crewTable tbody tr {
+  transition: background 0.15s;
+}
+
+.crewTable tbody tr:hover {
+  background: #f0f4ff;
+}
+
+.crewTable td {
+  color: #2d3748;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f1f3f7;
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: #e3f2fd;
+  color: #0d47a1;
+  text-transform: uppercase;
+}
+
+/* Status badge - SCHEDULED */
+.scheduled {
+  background: #bde5f8;
+  color: #0d47a1;
+}
+
+/* Role badge - CO-PILOT */
+.copilot {
+  background: #bde5f8;
+  color: #0d47a1;
+}
+
+/* Status-based badge colors for flight status */
+.boarding {
+  background: #fffde7;
+  color: #fbc02d;
+  border-color: #ffe082;
+}
+.departed {
+  background: #e8f5e9;
+  color: #388e3c;
+  border-color: #a5d6a7;
+}
+.delayed {
+  background: #ffebee;
+  color: #d32f2f;
+  border-color: #ffcdd2;
+}
+.cancelled {
+  background: #ececec;
+  color: #757575;
+  border-color: #e0e0e0;
+}
+
+/* Role-based badge colors */
+.pilot {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+.attendant {
+  background: #f3e5f5;
+  color: #8e24aa;
+  border-color: #e1bee7;
+}
+.technician {
+  background: #ede7f6;
+  color: #5e35b1;
+  border-color: #d1c4e9;
+}
+
+.historySection {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(24, 49, 82, 0.08);
+  margin-bottom: 1.5rem;
+  border: 1px solid #e3e8ee;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.historyActions {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.searchPopupButton {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #484a4c;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+}
+
+.searchPopupButton svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.searchPopupButton:hover {
+  background-color: #e5e7eb;
+}
+
+.addButton {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 7px;
+  background-color: #7ec2e7;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.addButton:hover {
+  background-color: #31a8e8;
+}
+
+.loadingMessage,
+.errorMessage {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #484a4c;
+}
+
+.errorMessage {
+  color: #991b1b;
+}

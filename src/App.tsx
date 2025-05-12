@@ -32,6 +32,11 @@ import CreateMaintenance from "./pages/Admin/MaintenancePage/CreateMaintenance";
 import CrewDetailPage from './pages/Admin/CrewPage/CrewDetailPage';
 import EditCrewPage from './pages/Admin/CrewPage/EditCrewPage';
 import CreateCrewPage from "./pages/Admin/CrewPage/CreateCrewPage";
+import Crew from "./pages/Crew_user/Crew";
+import CrewUserPage from "./pages/Crew_user/CrewUserPage/CrewUserPage";
+import CrewUserDetailPage from "./pages/Crew_user/CrewUserPage/CrewDetailUserPage";
+import UserDashboard from "./pages/Crew_user/UserDashBoard/UserDashboard"
+import EditCrewUserPage from "./pages/Crew_user/CrewUserPage/EditCrewUserPage"
 import AddFlightPage from "./pages/Admin/FlightPage/AddFlightPage/AddFlightPage";
 import DashboardPage from "./pages/Admin/DashboardPage/DashboardPage";
 
@@ -96,6 +101,22 @@ function App() {
             <Route path="maintenance/edit/:id" element={<EditMaintenance />} />
           </Route>
 
+       
+          <Route
+            path="/crew"
+            element={
+              <ProtectedRoute allowedRole="crew">
+                <Crew></Crew>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<UserDashboard/>} />
+            <Route path="crew" element={<CrewUserPage/>} />
+            <Route path="crew/:id" element={<CrewUserDetailPage/>} />
+            <Route path="crew/edit/:id" element={<EditCrewUserPage/>} />
+          </Route>
+
+      
             <Route
               path="/maintenance"
               element={

@@ -1,0 +1,451 @@
+.edit-crew-page {
+  padding: 2rem;
+  background: #f8fafc;
+}
+
+.edit-header {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: #10b981;
+  color: white;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  height: 2.5rem;
+}
+
+.save-button:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.save-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: white;
+  color: #64748b;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  height: 2.5rem;
+}
+
+.back-button:hover:not(:disabled) {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.back-button:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.edit-input.react-datepicker-ignore-onclickoutside, .edit-input.small-datepicker, .edit-input {
+  font-size: 1rem;
+  padding: 6px 10px;
+  height: 32px;
+  width: 160px;
+  box-sizing: border-box;
+}
+
+.react-datepicker {
+  font-size: 0.8rem !important;
+  min-width: 120px !important;
+  width: 140px !important;
+  padding: 0.2rem 0.2rem !important;
+}
+
+.react-datepicker__month-container {
+  width: 140px !important;
+}
+
+.react-datepicker__header {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name {
+  width: 1.2rem !important;
+  line-height: 1.2rem !important;
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  padding: 0 !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  font-size: 0.85rem !important;
+}
+
+.react-datepicker__input-container input {
+  font-size: 1rem;
+  padding: 6px 10px;
+  height: 32px;
+  width: 160px;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.edit-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-select:hover {
+  border-color: #94a3b8;
+}
+
+.edit-select option {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: white;
+}
+
+.readonly-value {
+  color: #64748b;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  background: #e2e8f0;
+  border-radius: 0.375rem;
+  border: 1px solid #cbd5e1;
+  user-select: none;
+  cursor: not-allowed;
+}
+
+.readonly-value:hover {
+  background: #e2e8f0;
+}
+
+.info-item {
+  position: relative;
+}
+
+.info-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.info-item .readonly-label::after {
+  content: ' (Read Only)';
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.schedule-section.disabled {
+  position: relative;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.disabled-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #64748b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin: 2rem;
+  font-weight: 500;
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-content h3 {
+  margin: 0 0 1.5rem;
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-diff {
+  margin: 1.5rem 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.change-item {
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.change-field {
+  display: block;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.change-values {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.old-value {
+  color: #ef4444;
+  text-decoration: line-through;
+}
+
+.arrow {
+  color: #94a3b8;
+}
+
+.new-value {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.confirm-button {
+  background: #10b981;
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.confirm-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  background: white;
+  color: #64748b;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.cancel-button:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Notification Toast */
+.notification-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000;
+}
+
+.notification-toast.success {
+  background: #10b981;
+}
+
+.notification-toast.error {
+  background: #ef4444;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.info-section {
+  padding: 0.5rem 1.5rem;
+  background: #f9fbfd;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  min-height: 220px;
+}
+
+/* Add extra space above Contact Information section */
+
+
+.contact-section.extra-space {
+  margin-top: 0;
+  transition: margin-top 0.2s;
+}
+
+.invalid-date {
+  border: 1.5px solid #ef4444 !important;
+  background: #fef2f2 !important;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 900px) {
+  .crew-profile-grid {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .profile-image-section, .crew-details-sections {
+    width: 100%;
+    min-width: 0;
+  }
+  .info-section {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .edit-header, .details-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .crew-profile-grid {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  .profile-image-section {
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  .crew-image {
+    width: 80px;
+    height: 80px;
+  }
+  .info-section {
+    padding: 0.5rem 0.2rem;
+    min-width: 0;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .edit-input, .edit-select {
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    width: 100%;
+  }
+  .save-button, .back-button, .edit-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.7rem 0;
+  }
+  .modal-content {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 0.5rem;
+  }
+} 

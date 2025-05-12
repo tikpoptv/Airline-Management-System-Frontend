@@ -111,7 +111,6 @@ export const flightService = {
 
   // Get available crews for a flight
   getAvailableCrews: async (flightId: number): Promise<AvailableCrew[]> => {
-    const response = await api.get(`/api/flights/${flightId}/available-crews`);
-    return response.data;
+    return api.get(`/api/flights/${flightId}/available-crews`);
   }
 };

@@ -11,33 +11,33 @@ const CrewDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchData = async () => {
+    if (!id) {
+      setError('Crew ID is required');
+      setLoading(false);
+      return;
+    }
+
+    const crewId = parseInt(id);
+    if (isNaN(crewId)) {
+      setError('Invalid Crew ID');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const crewData = await getCrewById(crewId);
+      setCrew(crewData);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (!id) {
-        setError('Crew ID is required');
-        setLoading(false);
-        return;
-      }
-
-      const crewId = parseInt(id);
-      if (isNaN(crewId)) {
-        setError('Invalid Crew ID');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const crewData = await getCrewById(crewId);
-        setCrew(crewData);
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [id]);
 

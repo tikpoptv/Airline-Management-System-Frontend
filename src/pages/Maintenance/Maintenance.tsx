@@ -21,7 +21,7 @@ function Maintenance() {
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/maintenance/maintenance" className={({ isActive }) => isActive ? `${styles.sidebarItem} ${styles.active}` : styles.sidebarItem}>
+        <NavLink to="/maintenance/log" className={({ isActive }) => isActive ? `${styles.sidebarItem} ${styles.active}` : styles.sidebarItem}>
           <FaWrench className={styles.sidebarIcon} />
           <span>Maintenance</span>
         </NavLink>

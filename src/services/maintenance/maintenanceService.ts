@@ -119,3 +119,23 @@ export const createMaintenanceLog = async (data: CreateMaintenanceLogPayload): P
 export const getMaintenanceStats = async (): Promise<MaintenanceStats> => {
   return api.get('/api/maintenance-logs/stats');
 };
+
+export const getMyMaintenanceTasks = async (): Promise<MaintenanceLog[]> => {
+  try {
+    const response = await api.get('/api/maintenance-tasks/me');
+    
+    if (response && Array.isArray(response)) {
+      return response;
+    }
+    
+    if (response && response.data && Array.isArray(response.data)) {
+      return response.data;
+    }
+    
+    console.warn('Unexpected API response format for my tasks:', response);
+    return [];
+  } catch (error) {
+    console.error('Error fetching my maintenance tasks:', error);
+    throw error;
+  }
+};

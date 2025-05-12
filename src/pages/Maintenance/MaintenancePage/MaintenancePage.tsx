@@ -72,34 +72,19 @@ const MaintenancePage = () => {
     <div className={styles.maintenancePage}>
       {error && <div className={styles.errorMessage}>{error}</div>}
 
-      {selectedMaintenanceLog ? (
-        <>
-          <div className={styles.pageActions} style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-            <button className={styles.editButton} onClick={() => setIsEditMode((prev) => !prev)}>
-              {isEditMode ? 'Done' : 'Edit'}
-            </button>
-          </div>
-          <MaintenanceDetail
-            maintenanceLog={selectedMaintenanceLog}
-            onBack={() => setSelectedMaintenanceLog(null)}
-            isEditMode={isEditMode}
-          />
-        </>
-      ) : (
-        <MaintenanceLogList
-          maintenanceList={maintenanceList}
-          isEditing={isEditing}
-          setIsEditing={(v) => {
-            setIsEditing(v);
-            if (!v) setSelectedLogIds([]);
-          }}
-          setSelectedMaintenanceLog={handleSelectMaintenanceLog}
-          loading={loading}
-          selectedLogIds={selectedLogIds}
-          setSelectedLogIds={setSelectedLogIds}
-          onDelete={() => setShowConfirmModal(true)}
-        />
-      )}
+      <MaintenanceLogList
+        maintenanceList={maintenanceList}
+        isEditing={isEditing}
+        setIsEditing={(v) => {
+          setIsEditing(v);
+          if (!v) setSelectedLogIds([]);
+        }}
+        setSelectedMaintenanceLog={handleSelectMaintenanceLog}
+        loading={loading}
+        selectedLogIds={selectedLogIds}
+        setSelectedLogIds={setSelectedLogIds}
+        onDelete={() => setShowConfirmModal(true)}
+      />
 
       {showConfirmModal && (
         <div className={styles.modalBackdrop}>

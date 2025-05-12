@@ -32,6 +32,22 @@ const CreateMaintenancePage = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
+    // Get user ID from localStorage and set in form
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        const userData = JSON.parse(userJson);
+        if (userData && userData.user_id) {
+          setFormData(prev => ({
+            ...prev,
+            assigned_to: userData.user_id
+          }));
+        }
+      } catch (error) {
+        console.error('Error parsing user data from localStorage:', error);
+      }
+    }
+
     if (toast.show) {
       const timer = setTimeout(() => {
         setToast(prev => ({ ...prev, show: false }));
@@ -51,7 +67,11 @@ const CreateMaintenancePage = () => {
     if (!formData.date_of_maintenance) newErrors.date_of_maintenance = 'Please select a date';
     if (!formData.maintenance_location) newErrors.maintenance_location = 'Please enter maintenance location';
     if (!formData.details) newErrors.details = 'Please enter maintenance details';
-    if (!formData.assigned_to) newErrors.assigned_to = 'Please enter user ID';
+    
+    // Only validate assigned_to if it's not available from localStorage
+    if (!formData.assigned_to && !localStorage.getItem('userId')) {
+      newErrors.assigned_to = 'User ID not available';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -73,7 +93,7 @@ const CreateMaintenancePage = () => {
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      navigate('/maintenance/maintenance', { 
+      navigate('/maintenance/log', { 
         state: { 
           notification: {
             type: 'success',
@@ -178,7 +198,7 @@ const CreateMaintenancePage = () => {
           </div>
           <h1 className={styles['page-title']}>Create New Maintenance Log</h1>
         </div>
-        <button className={styles['back-button']} onClick={() => navigate('/maintenance/maintenance')}>
+        <button className={styles['back-button']} onClick={() => navigate('/maintenance/log')}>
           <FaArrowLeft /> Back to List
         </button>
       </div>
@@ -281,9 +301,9 @@ const CreateMaintenancePage = () => {
                 <input
                   type="number"
                   value={formData.assigned_to}
-                  onChange={(e) => setFormData({ ...formData, assigned_to: Number(e.target.value) })}
-                  className={errors.assigned_to ? styles['error'] : ''}
-                  placeholder="Enter User ID"
+                  className={`${errors.assigned_to ? styles['error'] : ''} ${styles['readonly-field']}`}
+                  placeholder="Auto-filled from login"
+                  readOnly
                 />
                 {errors.assigned_to && (
                   <span className={styles['error-message']}>
@@ -299,8 +319,10 @@ const CreateMaintenancePage = () => {
               <div className={`${styles['form-group']} ${styles['full-width']}`}>
                 <label>Status</label>
                 <select
+                  name="status"
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as MaintenanceLog['status'] })}
+                  style={{ position: 'relative', zIndex: 1000 }}
                 >
                   <option value="Pending">Pending</option>
                   <option value="In Progress">In Progress</option>
@@ -363,11 +385,29 @@ const CreateMaintenancePage = () => {
               <div className={styles['detail-row']}>
                 <strong>Location:</strong> {formData.maintenance_location}
               </div>
-              <div className={`${styles['detail-row']} ${styles['status']}`}>
+              <div className={styles['detail-row']}>
+                <strong>Assigned To:</strong> Current User (ID: {formData.assigned_to})
+              </div>
+              <div className={styles['detail-row']}>
                 <strong>Status:</strong> 
-                <span className={getStatusBadgeClass(formData.status)}>
-                  {formData.status}
-                </span>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'flex-start'
+                }}>
+                  <div 
+                    className={getStatusBadgeClass(formData.status)}
+                    style={{ 
+                      marginLeft: 0, 
+                      display: 'inline-flex', 
+                      justifyContent: 'center',
+                      width: 'auto',
+                      minWidth: '100px'
+                    }}
+                  >
+                    {formData.status}
+                  </div>
+                </div>
               </div>
               <div className={styles['detail-row']}>
                 <strong>Details:</strong> 

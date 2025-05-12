@@ -64,6 +64,7 @@ const MaintenanceLogList = ({
 
   const handleRowClick = (log: MaintenanceLog) => {
     setSelectedMaintenanceLog(log);
+    navigate(`/maintenance/log/${log.log_id}`);
   };
 
   const filteredLogs = maintenanceList.filter((log) =>
@@ -105,7 +106,7 @@ const MaintenanceLogList = ({
 
           <div className={styles.buttonGroup}>
             {isEditing && (
-              <button className={styles.addButton} onClick={() => navigate('/maintenance/maintenance/create')}>
+              <button className={styles.addButton} onClick={() => navigate('/maintenance/log/create')}>
                 <FaPlus /> Add New
               </button>
             )}
@@ -174,7 +175,7 @@ const MaintenanceLogList = ({
                   <td className={styles.actionsColumn} onClick={(e) => e.stopPropagation()}>
                     <button
                       className={styles.viewButton}
-                      onClick={() => navigate(`/maintenance/maintenance/detail/${log.log_id}`)}
+                      onClick={() => navigate(`/maintenance/log/${log.log_id}`)}
                       title="View Details"
                     >
                       <FaEye />

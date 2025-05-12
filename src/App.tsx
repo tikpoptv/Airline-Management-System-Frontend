@@ -105,9 +105,9 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="maintenance" element={<MaintenanceuserPage />} />
-              <Route path="maintenance/create" element={<CreateMaintenanceuser />} />
-              <Route path="maintenance/detail/:id" element={<MaintenanceuserDetailPage />} />
+              <Route path="log" element={<MaintenanceuserPage />} />
+              <Route path="log/create" element={<CreateMaintenanceuser />} />
+              <Route path="log/:id" element={<MaintenanceuserDetailPage />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

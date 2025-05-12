@@ -135,18 +135,9 @@ const MaintenanceProfileSection = ({
               <div className={styles.fieldGroup}>
                 <label>User ID</label>
                 {isEditMode ? (
-                  <input
-                    type="number"
-                    value={editData.assigned_user?.user_id || ''}
-                    onChange={(e) => {
-                      const user_id = Number(e.target.value);
-                      handleChange('assigned_user', {
-                        user_id,
-                        username: editData.assigned_user?.username || ''
-                      });
-                    }}
-                    placeholder="Enter User ID"
-                  />
+                  <div className={`${styles.readOnlyField} ${styles.disabledField}`}>
+                    {editData.assigned_user?.user_id || 'N/A'}
+                  </div>
                 ) : (
                   <div className={styles.readOnlyField}>{editData.assigned_user?.user_id || 'N/A'}</div>
                 )}
@@ -155,17 +146,9 @@ const MaintenanceProfileSection = ({
               <div className={styles.fieldGroup}>
                 <label>Username</label>
                 {isEditMode ? (
-                  <input
-                    type="text"
-                    value={editData.assigned_user?.username || ''}
-                    onChange={(e) => {
-                      handleChange('assigned_user', {
-                        user_id: editData.assigned_user?.user_id || 0,
-                        username: e.target.value
-                      });
-                    }}
-                    placeholder="Enter Username"
-                  />
+                  <div className={`${styles.readOnlyField} ${styles.disabledField}`}>
+                    {editData.assigned_user?.username || 'N/A'}
+                  </div>
                 ) : (
                   <div className={styles.readOnlyField}>{editData.assigned_user?.username || 'N/A'}</div>
                 )}

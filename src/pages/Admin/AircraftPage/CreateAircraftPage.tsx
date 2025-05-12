@@ -1,10 +1,87 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Aircraft, AircraftModel, AirlineModel } from '../../../types/aircraft';
 import { createAircraft, getAircraftModels, getAirlineModels } from '../../../services/aircraft/aircraftService';
-import { FaArrowLeft, FaCheckCircle, FaExclamationCircle, FaCloudUploadAlt, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaCheckCircle, FaExclamationCircle, FaCloudUploadAlt, FaTimes, FaChevronDown } from 'react-icons/fa';
 import uploadPlaceholder from '../../../assets/images/upload.png';
 import './CreateAircraftPage.css';
+
+// Custom Dropdown Component
+const CustomDropdown = ({ 
+  options, 
+  value, 
+  onChange, 
+  placeholder, 
+  error,
+  isRequired
+}: { 
+  options: {id: string|number; value: string; label: string}[]; 
+  value: string; 
+  onChange: (value: string) => void; 
+  placeholder: string;
+  error?: string;
+  isRequired?: boolean;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Update selected label when value changes
+    const option = options.find(opt => opt.value === value);
+    setSelectedLabel(option ? option.label : "");
+  }, [value, options]);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className={`custom-dropdown ${error ? 'error' : ''}`} ref={dropdownRef}>
+      <div 
+        className={`dropdown-selection ${!value ? 'placeholder' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {value ? selectedLabel : placeholder}
+        <FaChevronDown className={`dropdown-arrow ${isOpen ? 'open' : ''}`} />
+      </div>
+      
+      {isOpen && (
+        <div className="dropdown-options">
+          {options.map((option) => (
+            <div 
+              key={option.id} 
+              className={`dropdown-option ${option.value === value ? 'selected' : ''}`}
+              onClick={() => {
+                onChange(option.value);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </div>
+          ))}
+        </div>
+      )}
+      
+      {error && (
+        <span className="error-message">
+          <FaExclamationCircle />
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const CreateAircraftPage = () => {
   const navigate = useNavigate();
@@ -249,67 +326,55 @@ const CreateAircraftPage = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Model Name</label>
-                <select
+                <CustomDropdown
+                  options={modelOptions.map(model => ({
+                    id: model.model_id,
+                    value: model.model_name,
+                    label: model.model_name
+                  }))}
                   value={formData.model}
-                  onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-                  className={errors.model ? 'error' : ''}
-                >
-                  <option value="">Select Model</option>
-                  {modelOptions.map((model) => (
-                    <option key={model.model_id} value={model.model_name}>
-                      {model.model_name}
-                    </option>
-                  ))}
-                </select>
-                {errors.model && (
-                  <span className="error-message">
-                    <FaExclamationCircle />
-                    {errors.model}
-                  </span>
-                )}
+                  onChange={(value) => setFormData({ ...formData, model: value })}
+                  placeholder="Select Model"
+                  error={errors.model}
+                  isRequired
+                />
               </div>
 
               <div className="form-group">
                 <label>Airline Owner</label>
-                <select
+                <CustomDropdown
+                  options={airlineOptions.map(airline => ({
+                    id: airline.id,
+                    value: airline.name,
+                    label: airline.name
+                  }))}
                   value={formData.airline_owner}
-                  onChange={(e) => setFormData({ ...formData, airline_owner: e.target.value })}
-                  className={errors.airline_owner ? 'error' : ''}
-                >
-                  <option value="">Select Airline</option>
-                  {airlineOptions.map((airline) => (
-                    <option key={airline.id} value={airline.name}>
-                      {airline.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.airline_owner && (
-                  <span className="error-message">
-                    <FaExclamationCircle />
-                    {errors.airline_owner}
-                  </span>
-                )}
+                  onChange={(value) => setFormData({ ...formData, airline_owner: value })}
+                  placeholder="Select Airline"
+                  error={errors.airline_owner}
+                  isRequired
+                />
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-group">
                 <label>Maintenance Status</label>
-                <select
+                <CustomDropdown
+                  options={[
+                    { id: 1, value: 'Operational', label: 'Operational' },
+                    { id: 2, value: 'In Maintenance', label: 'In Maintenance' },
+                    { id: 3, value: 'Retired', label: 'Retired' }
+                  ]}
                   value={formData.maintenance_status}
-                  onChange={(e) => setFormData({ ...formData, maintenance_status: e.target.value as Aircraft['maintenance_status'] })}
-                  className={errors.maintenance_status ? 'error' : ''}
-                >
-                  <option value="Operational">Operational</option>
-                  <option value="In Maintenance">In Maintenance</option>
-                  <option value="Retired">Retired</option>
-                </select>
-                {errors.maintenance_status && (
-                  <span className="error-message">
-                    <FaExclamationCircle />
-                    {errors.maintenance_status}
-                  </span>
-                )}
+                  onChange={(value) => setFormData({ 
+                    ...formData, 
+                    maintenance_status: value as Aircraft['maintenance_status'] 
+                  })}
+                  placeholder="Select Status"
+                  error={errors.maintenance_status}
+                  isRequired
+                />
               </div>
 
               <div className="form-group">

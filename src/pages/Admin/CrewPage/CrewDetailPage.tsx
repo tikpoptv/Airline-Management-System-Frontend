@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Crew } from '../../../types/crew';
 import CrewProfileSection from './CrewProfileSection';
@@ -11,48 +11,35 @@ const CrewDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!id) {
-        setError('Crew ID is required');
-        setLoading(false);
-        return;
-      }
+  const fetchData = async () => {
+    if (!id) {
+      setError('Crew ID is required');
+      setLoading(false);
+      return;
+    }
 
-      const crewId = parseInt(id);
-      if (isNaN(crewId)) {
-        setError('Invalid Crew ID');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const crewData = await getCrewById(crewId);
-        setCrew(crewData);
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const crewId = parseInt(id);
+    if (isNaN(crewId)) {
+      setError('Invalid Crew ID');
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
       const crewData = await getCrewById(crewId);
       setCrew(crewData);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data';
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load crew data. Please try again later.';
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  };
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [id]);
 
   if (loading) {
     return <Loading message="Loading crew data..." />;
@@ -70,7 +57,3 @@ const CrewDetailPage = () => {
 };
 
 export default CrewDetailPage;
-
-function fetchData() {
-    throw new Error('Function not implemented.');
-}
